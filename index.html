@@ -1,591 +1,17 @@
 <!DOCTYPE html>
-<html lang="vi"><head><script>(function(firebaseConfig, initialAuthToken, appId) {
-        window.__firebase_config = firebaseConfig;
-        window.__initial_auth_token = initialAuthToken;
-        window.__app_id = appId;
-            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg4NWQ3NDljYzY2NDljMDMxOWY1YmJlYWYwMWU4ZmVjZDIyZjk1YzQiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eXRvb2xraXQuZ29vZ2xlYXBpcy5jb20vZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIwMzU2ODczNDIzOTQ2MTM0OTg0MCIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjXzMyMjA4Y2ZiNmVlODZjMjRfTmV1cm9fTGluZ29fVW5pdDFfR3JhZGU4Lmh0bWwtOTg0In0sImV4cCI6MTc3ODU2MzIzOSwiaWF0IjoxNzc4NTU5NjM5LCJhbGciOiJSUzI1NiJ9.P-XknxKIdAf5Av-pfZZ-dB_6UC8KEtYLz-vNN50XszjOh0R3Ep1JshtiL458G0yBSGvQ7tbVN2XND4GaBb5MeujDSdzZrASP66RwFkBYwnTh4E3oX8IcWwpnmUeNCsh0sxi2HjRI6RNbK7pbSMnubLMnuUBMApFT6iRDuDcLAh4cuJ-hbfHOLHzxdt7ejiGa_Ipxi0eJPQ9sWgflJkFoWJxVl_81QB_bmPlnnosf6qQoHvCipuYLcIbIIJp0trivKhgeVUjLiKrnfFdliUEF1iqJd7zZV-kU186tiYzm_UWgUIFGWbvFIO1ahRjWTf5gdBeqBGDw_yr_uLN4s5wByw","c_32208cfb6ee86c24_Neuro_Lingo_Unit1_Grade8.html-984")</script><script>(function(){'use strict';var h=typeof Object.defineProperties=="function"?Object.defineProperty:function(a,b,d){if(a==Array.prototype||a==Object.prototype)return a;a[b]=d.value;return a};function l(a){a=["object"==typeof globalThis&&globalThis,a,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var b=0;b<a.length;++b){var d=a[b];if(d&&d.Math==Math)return d}throw Error("Cannot find global object");}var n=l(this);
-function p(a,b){if(b)a:{var d=n;a=a.split(".");for(var c=0;c<a.length-1;c++){var e=a[c];if(!(e in d))break a;d=d[e]}a=a[a.length-1];c=d[a];b=b(c);b!=c&&b!=null&&h(d,a,{configurable:!0,writable:!0,value:b})}}function r(a){function b(c){return a.next(c)}function d(c){return a.throw(c)}return new Promise(function(c,e){function f(g){g.done?c(g.value):Promise.resolve(g.value).then(b,d).then(f,e)}f(a.next())})}function t(a){return r(a())}
-p("Object.values",function(a){return a?a:function(b){var d=[],c;for(c in b)Object.prototype.hasOwnProperty.call(b,c)&&d.push(b[c]);return d}});p("Array.prototype.includes",function(a){return a?a:function(b,d){var c=this;c instanceof String&&(c=String(c));var e=c.length;d=d||0;for(d<0&&(d=Math.max(d+e,0));d<e;d++){var f=c[d];if(f===b||Object.is(f,b))return!0}return!1}});/*
-
- MIT License
-
- Copyright (c) 2017-2023 W.Y.
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-
-*/
-function u(a,b){var d=a.style;b.backgroundColor&&(d.backgroundColor=b.backgroundColor);b.width&&(d.width=`${b.width}px`);b.height&&(d.height=`${b.height}px`);var c=b.style;c!=null&&Object.keys(c).forEach(e=>{d[e]=c[e]})};var v=(()=>{var a=0;return()=>{a+=1;return`u${`0000${(Math.random()*1679616<<0).toString(36)}`.slice(-4)}${a}`}})();function w(a){var b=[];for(let d=0,c=a.length;d<c;d++)b.push(a[d]);return b}let x=null;function y(a={}){return x?x:a.l?x=a.l:x=w(window.getComputedStyle(document.documentElement))}function z(a,b){return(a=(a.ownerDocument.defaultView||window).getComputedStyle(a).getPropertyValue(b))?parseFloat(a.replace("px","")):0}
-function A(a,b={}){var d;if(!(d=b.width)){d=z(a,"border-left-width");var c=z(a,"border-right-width");d=a.clientWidth+d+c}(b=b.height)||(b=z(a,"border-top-width"),c=z(a,"border-bottom-width"),b=a.clientHeight+b+c);return{width:d,height:b}}function B(a){return new Promise((b,d)=>{var c=new Image;c.onload=()=>{c.decode().then(()=>{requestAnimationFrame(()=>b(c))})};c.onerror=d;c.crossOrigin="anonymous";c.decoding="async";c.src=a})}
-function C(a){return t(function*(){return Promise.resolve().then(()=>(new XMLSerializer).serializeToString(a)).then(encodeURIComponent).then(b=>`data:image/svg+xml;charset=utf-8,${b}`)})}
-function D(a,b,d){return t(function*(){var c=document.createElementNS("http://www.w3.org/2000/svg","svg"),e=document.createElementNS("http://www.w3.org/2000/svg","foreignObject");c.setAttribute("width",`${b}`);c.setAttribute("height",`${d}`);c.setAttribute("viewBox",`0 0 ${b} ${d}`);e.setAttribute("width","100%");e.setAttribute("height","100%");e.setAttribute("x","0");e.setAttribute("y","0");e.setAttribute("externalResourcesRequired","true");c.appendChild(e);e.appendChild(a);return C(c)})}
-var E=(a,b)=>{if(a instanceof b)return!0;a=Object.getPrototypeOf(a);return a===null?!1:a.constructor.name===b.name||E(a,b)};function F(a,b){return y(b).map(d=>{var c=a.getPropertyValue(d),e=a.getPropertyPriority(d);return`${d}: ${c}${e?" !important":""};`}).join(" ")}
-function G(a,b,d,c){a=window.getComputedStyle(a,d);var e=a.getPropertyValue("content");if(e!==""&&e!=="none"){var f=v();try{b.className=`${b.className} ${f}`}catch(k){return}e=document.createElement("style");var g=e.appendChild;d=`.${f}:${d}`;a.cssText?(c=a.getPropertyValue("content"),c=`${a.cssText} content: '${c.replace(/'|"/g,"")}';`):c=F(a,c);g.call(e,document.createTextNode(`${d}{${c}}`));b.appendChild(e)}};function H(a){return a.search(/^(data:)/)!==-1}function I(a,b,d){return t(function*(){var c=yield fetch(a,b);if(c.status===404)throw Error(`Resource "${c.url}" not found`);var e=yield c.blob();return new Promise((f,g)=>{var k=new FileReader;k.onerror=g;k.onloadend=()=>{try{f(d({o:c,result:k.result}))}catch(m){g(m)}};k.readAsDataURL(e)})})}const J={};function K(a,b,d){var c=a.replace(/\?.*/,"");d&&(c=a);/ttf|otf|eot|woff2?/i.test(c)&&(c=c.replace(/.*\//,""));return b?`[${b}]${c}`:c}
-function L(a,b,d){return t(function*(){var c=K(a,b,d.C);if(J[c]!=null)return J[c];d.u&&(a+=(/\?/.test(a)?"&":"?")+(new Date).getTime());try{let f=yield I(a,d.i,({o:g,result:k})=>{b||(b=g.headers.get("Content-Type")||"");return k.split(/,/)[1]});var e=`data:${b};base64,${f}`}catch(f){e=d.B||""}return J[c]=e})};const M={P:"application/font-woff",R:"application/font-woff",N:"application/font-truetype",v:"application/vnd.ms-fontobject",H:"image/png",F:"image/jpeg",D:"image/jpeg",A:"image/gif",M:"image/tiff",L:"image/svg+xml",O:"image/webp"};function N(a){return(a=/\.([^./]*?)$/g.exec(a))?a[1]:""};function O(a){return t(function*(){var b=a.toDataURL();return b==="data:,"?a.cloneNode(!1):B(b)})}function aa(a,b){return t(function*(){if(a.currentSrc){var d=document.createElement("canvas");let c=d.getContext("2d");d.width=a.clientWidth;d.height=a.clientHeight;c==null||c.drawImage(a,0,0,d.width,d.height);d=d.toDataURL();return B(d)}d=a.poster;d=yield L(d,M[N(d).toLowerCase()]||"",b);return B(d)})}
-function ba(a,b){return t(function*(){try{let d;if(a==null?0:(d=a.contentDocument)==null?0:d.body)return yield P(a.contentDocument.body,b,!0)}catch(d){}return a.cloneNode(!1)})}function ca(a,b){return t(function*(){return E(a,HTMLCanvasElement)?O(a):E(a,HTMLVideoElement)?aa(a,b):E(a,HTMLIFrameElement)?ba(a,b):a.cloneNode(a.tagName!=null&&a.tagName.toUpperCase()==="SVG")})}
-function da(a,b,d){return t(function*(){if(b.tagName!=null&&b.tagName.toUpperCase()==="SVG")return b;var c=[];if(a.tagName!=null&&a.tagName.toUpperCase()==="SLOT"&&a.assignedNodes)c=w(a.assignedNodes());else{let e;if(E(a,HTMLIFrameElement)&&((e=a.contentDocument)==null?0:e.body))c=w(a.contentDocument.body.childNodes);else{let f;c=w(((f=a.shadowRoot)!=null?f:a).childNodes)}}if(c.length===0||E(a,HTMLVideoElement))return b;yield c.reduce((e,f)=>e.then(()=>P(f,d)).then(g=>{g&&b.appendChild(g)}),Promise.resolve());
-return b})}function ea(a,b,d){var c=b.style;if(c){var e=window.getComputedStyle(a);e.cssText?(c.cssText=e.cssText,c.transformOrigin=e.transformOrigin):y(d).forEach(f=>{var g=e.getPropertyValue(f);f==="font-size"&&g.endsWith("px")&&(g=`${Math.floor(parseFloat(g.substring(0,g.length-2)))-.1}px`);E(a,HTMLIFrameElement)&&f==="display"&&g==="inline"&&(g="block");f==="d"&&b.getAttribute("d")&&(g=`path(${b.getAttribute("d")})`);c.setProperty(f,g,e.getPropertyPriority(f))})}}
-function fa(a,b){E(a,HTMLSelectElement)&&(b=Array.from(b.children).find(d=>a.value===d.getAttribute("value")))&&b.setAttribute("selected","")}
-function ha(a,b){return t(function*(){var d=a.querySelectorAll?a.querySelectorAll("use"):[];if(d.length===0)return a;var c={};for(var e=0;e<d.length;e++){var f=d[e].getAttribute("xlink:href");if(f){let g=document.querySelector(f);a.querySelector(f)||!g||c[f]||(c[f]=yield P(g,b,!0))}}d=Object.values(c);if(d.length){c=document.createElementNS("http://www.w3.org/1999/xhtml","svg");c.setAttribute("xmlns","http://www.w3.org/1999/xhtml");c.style.position="absolute";c.style.width="0";c.style.height="0";
-c.style.overflow="hidden";c.style.display="none";e=document.createElementNS("http://www.w3.org/1999/xhtml","defs");c.appendChild(e);for(f=0;f<d.length;f++)e.appendChild(d[f]);a.appendChild(c)}return a})}
-function P(a,b,d){return t(function*(){return d||!b.filter||b.filter(a)?Promise.resolve(a).then(c=>ca(c,b)).then(c=>da(a,c,b)).then(c=>{E(c,Element)&&(ea(a,c,b),G(a,c,":before",b),G(a,c,":after",b),E(a,HTMLTextAreaElement)&&(c.textContent=a.value),E(a,HTMLInputElement)&&c.setAttribute("value",a.value),fa(a,c));return c}).then(c=>ha(c,b)):null})};const Q=/url\((['"]?)([^'"]+?)\1\)/g,ia=/url\([^)]+\)\s*format\((["']?)([^"']+)\1\)/g,ja=/src:\s*(?:url\([^)]+\)\s*format\([^)]+\)[,;]\s*)+/g;function ka(a){var b=[];a.replace(Q,(d,c,e)=>{b.push(e);return d});return b.filter(d=>!H(d))}
-function la(a,b,d,c){return t(function*(){try{let e=d?(new URL(b,d||void 0)).toString():b,f;f=yield L(e,M[N(b).toLowerCase()]||"",c);return a.replace(new RegExp(`(url\\(['"]?)(${b.replace(/([.*+?^${}()|\[\]\/\\])/g,"\\$1")})(['"]?\\))`,"g"),`$1${f}$3`)}catch(e){}return a})}function ma(a,{I:b}){return b?a.replace(ja,d=>{for(;;){let [c,,e]=ia.exec(d)||[];if(!e)return"";if(e===b)return`src: ${c};`}}):a}
-function R(a,b,d){return t(function*(){if(a.search(Q)===-1)return a;var c=ma(a,d);return ka(c).reduce((e,f)=>e.then(g=>la(g,f,b,d)),Promise.resolve(c))})};function S(a,b,d){return t(function*(){var c,e=(c=b.style)==null?void 0:c.getPropertyValue(a);return e?(c=yield R(e,null,d),b.style.setProperty(a,c,b.style.getPropertyPriority(a)),!0):!1})}function na(a,b){return t(function*(){(yield S("background",a,b))||(yield S("background-image",a,b));(yield S("mask",a,b))||(yield S("-webkit-mask",a,b))||(yield S("mask-image",a,b))||(yield S("-webkit-mask-image",a,b))})}
-function oa(a,b){return t(function*(){var d=E(a,HTMLImageElement);if(d&&!H(a.src)||E(a,SVGImageElement)&&!H(a.href.baseVal)){var c=d?a.src:a.href.baseVal,e=yield L(c,M[N(c).toLowerCase()]||"",b);yield new Promise((f,g)=>{a.onload=f;a.onerror=b.m?(...k)=>{try{f(b.m(...k))}catch(m){g(m)}}:g;a.decode&&(a.decode=f);a.loading==="lazy"&&(a.loading="eager");d?(a.srcset="",a.src=e):a.href.baseVal=e})}})}
-function pa(a,b){return t(function*(){var d=w(a.childNodes).map(c=>T(c,b));yield Promise.all(d).then(()=>a)})}function T(a,b){return t(function*(){E(a,Element)&&(yield na(a,b),yield oa(a,b),yield pa(a,b))})};const U={};function V(a){return t(function*(){var b=U[a];if(b!=null)return b;b=yield(yield fetch(a)).text();b={url:a,cssText:b};return U[a]=b})}function W(a,b){return t(function*(){var d=a.cssText,c=/url\(["']?([^"')]+)["']?\)/g,e=(d.match(/url\([^)]+\)/g)||[]).map(f=>t(function*(){var g=f.replace(c,"$1");g.startsWith("https://")||(g=(new URL(g,a.url)).href);return I(g,b.i,({result:k})=>{d=d.replace(f,`url(${k})`);return[f,k]})}));return Promise.all(e).then(()=>d)})}
-function X(a){if(a==null)return[];var b=[];a=a.replace(/(\/\*[\s\S]*?\*\/)/gi,"");for(var d=RegExp("((@.*?keyframes [\\s\\S]*?){([\\s\\S]*?}\\s*?)})","gi");;){var c=d.exec(a);if(c===null)break;b.push(c[0])}a=a.replace(d,"");d=/@import[\s\S]*?url\([^)]*\)[\s\S]*?;/gi;for(c=RegExp("((\\s*?(?:\\/\\*[\\s\\S]*?\\*\\/)?\\s*?@media[\\s\\S]*?){([\\s\\S]*?)}\\s*?})|(([\\s\\S]*?){([\\s\\S]*?)})","gi");;){let e=d.exec(a);if(e===null)if(e=c.exec(a),e===null)break;else d.lastIndex=c.lastIndex;else c.lastIndex=
-d.lastIndex;b.push(e[0])}return b}
-function qa(a,b){return t(function*(){var d=[],c=[];a.forEach(e=>{if("cssRules"in e)try{w(e.cssRules||[]).forEach((f,g)=>{if(f.type===CSSRule.IMPORT_RULE){let k=g+1;f=V(f.href).then(m=>W(m,b)).then(m=>X(m).forEach(q=>{try{e.insertRule(q,q.startsWith("@import")?k+=1:e.cssRules.length)}catch(Da){}})).catch(()=>{});c.push(f)}})}catch(f){let g=a.find(k=>k.href==null)||document.styleSheets[0];e.href!=null&&c.push(V(e.href).then(k=>W(k,b)).then(k=>X(k).forEach(m=>{g.insertRule(m,g.cssRules.length)})).catch(()=>
-{}))}});return Promise.all(c).then(()=>{a.forEach(e=>{if("cssRules"in e)try{w(e.cssRules||[]).forEach(f=>{d.push(f)})}catch(f){}});return d})})}function ra(a){return a.filter(b=>b.type===CSSRule.FONT_FACE_RULE).filter(b=>b.style.getPropertyValue("src").search(Q)!==-1)}function sa(a,b){return t(function*(){if(a.ownerDocument==null)throw Error("Provided element is not within a Document");var d=w(a.ownerDocument.styleSheets);d=yield qa(d,b);return ra(d)})}
-function ta(a){function b(c){(c.style.fontFamily||getComputedStyle(c).fontFamily).split(",").forEach(e=>{d.add(e.trim().replace(/["']/g,""))});Array.from(c.children).forEach(e=>{e instanceof HTMLElement&&b(e)})}var d=new Set;b(a);return d}function ua(a,b){return t(function*(){var d=yield sa(a,b),c=ta(a);return(yield Promise.all(d.filter(e=>c.has(e.style.fontFamily.trim().replace(/["']/g,""))).map(e=>R(e.cssText,e.parentStyleSheet?e.parentStyleSheet.href:null,b)))).join("\n")})}
-function va(a,b){return t(function*(){var d=b.j!=null?b.j:b.K?null:yield ua(a,b);if(d){let c=document.createElement("style");c.appendChild(document.createTextNode(d));a.firstChild?a.insertBefore(c,a.firstChild):a.appendChild(c)}})};function wa(a,b={}){return t(function*(){var {width:d,height:c}=A(a,b),e=yield P(a,b,!0);yield va(e,b);yield T(e,b);u(e,b);return yield D(e,d,c)})}
-function xa(a,b={}){return t(function*(){var {width:d,height:c}=A(a,b),e=yield wa(a,b);e=yield B(e);var f=document.createElement("canvas"),g=f.getContext("2d"),k=b.G||window.devicePixelRatio||1,m=b.h||d,q=b.g||c;f.width=m*k;f.height=q*k;!b.J&&(f.width>16384||f.height>16384)&&(f.width>16384&&f.height>16384?f.width>f.height?(f.height*=16384/f.width,f.width=16384):(f.width*=16384/f.height,f.height=16384):f.width>16384?(f.height*=16384/f.width,f.width=16384):(f.width*=16384/f.height,f.height=16384));
-f.style.width=`${m}`;f.style.height=`${q}`;b.backgroundColor&&(g.fillStyle=b.backgroundColor,g.fillRect(0,0,f.width,f.height));g.drawImage(e,0,0,f.width,f.height);return f})}function ya(a,b={}){return t(function*(){return(yield xa(a,b)).toDataURL()})};const za=["gemini.google.com","corp.google.com","proxy.googlers.com"];function Y(){return document.body.querySelectorAll('[class*="animate"]').length>0}function Z(a){return t(function*(){try{return yield ya(a,{h:a.offsetWidth,g:a.offsetHeight})}catch(d){var b=a.offsetHeight;let c=document.createElement("canvas");c.width=a.offsetWidth;c.height=b;return c.toDataURL("image/png")}})}
-function Aa(){return t(function*(){var a=document.body.offsetWidth,b=document.body.offsetHeight,d=document.body.cloneNode(!0);d.querySelectorAll('[class*="animate"]').forEach(c=>{c.classList.remove(...Array.from(c.classList).filter(e=>e.startsWith("animate")))});d.style.width=`${a}px`;d.style.height=`${b}px`;return d})}
-function Ba(a){return t(function*(){var b=document.body;if(Y()){var d=yield Aa();b=d;document.body.appendChild(d)}d=yield Z(b);Y()&&document.body.removeChild(b);window.parent.postMessage({type:"SEND_SCREENSHOT",image:d,topOffset:document.documentElement.scrollTop},a.origin)})}function Ca(a){return t(function*(){var b={type:"SEND_SCREENSHOT_FOR_DATA_VISUALIZATION",image:yield Z(document.body),topOffset:0};window.parent.postMessage(b,a.origin)})}
-window.addEventListener("message",a=>t(function*(){if(za.some(d=>a.origin.includes(d))){var b=a.data;b&&(b.type==="MAKE_SCREENSHOT"&&(yield Ba(a)),b.type==="MAKE_SCREENSHOT_FOR_DATA_VISUALIZATION"&&(yield Ca(a)))}}));
-})();</script><script>(function() {
-  // Ensure this script is executed only once
-  if (window.firebaseAuthBridgeScriptLoaded) {
-    return;
-  }
-  window.firebaseAuthBridgeScriptLoaded = true;
-
-  let nextTokenPromiseId = 0;
-
-  // Stores { resolve, reject } for ongoing token requests
-  const pendingTokenPromises = {};
-
-  // Listen for messages from the Host Application
-  window.addEventListener('message', function(event) {
-
-    const messageData = event.data;
-
-  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
-      const { success, token, error, promiseId } = messageData ?? {};
-      if (pendingTokenPromises[promiseId]) {
-        if (success) {
-          pendingTokenPromises[promiseId].resolve(token);
-        } else {
-          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
-        }
-        delete pendingTokenPromises[promiseId];
-      }
-    }
-  });
-
-  // Expose a function for the Generated App to request a new Firebase token
-  window.requestNewFirebaseToken = function() {
-    const currentPromiseId = nextTokenPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingTokenPromises[currentPromiseId] = { resolve, reject };
-    });
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'REQUEST_NEW_FIREBASE_TOKEN',
-        promiseId: currentPromiseId
-      }, '*');
-    } else {
-      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
-      delete pendingTokenPromises[currentPromiseId];
-    }
-    return promise;
-  };
-})();</script><script>
-let realOriginalGetUserMedia = null;
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-}
-
-(function() {
-  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
-    try {
-      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
-        get: function() {
-          return undefined; // Or throw an error
-        },
-        configurable: false
-      });
-    } catch (error) {
-      console.error("Error defining prototype getter:", error);
-    }
-  }
-})();
-
-(function() {
-  const pendingMediaResolvers = {};
-  let nextMediaPromiseId = 0;
-
-  function requestMediaPermissions(constraints) {
-    const mediaPromiseId = nextMediaPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingMediaResolvers[mediaPromiseId] = (granted) => {
-        delete pendingMediaResolvers[mediaPromiseId];
-        resolve(granted);
-      };
-    });
-
-    window.parent.postMessage({
-      type: 'requestMediaPermission',
-      constraints: constraints,
-      promiseId: mediaPromiseId,
-    }, '*');
-
-    return promise;
-  }
-
-  let originalGetUserMedia = realOriginalGetUserMedia;
-
-  function interceptGetUserMedia() {
-    if (navigator.mediaDevices) {
-      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
-        value: function(constraints) {
-          return requestMediaPermissions(constraints).then((granted) => {
-            if (granted) {
-              if (originalGetUserMedia) {
-                return originalGetUserMedia(constraints);
-              } else {
-                throw new Error("Original getUserMedia not available.");
-              }
-            } else {
-              throw new DOMException('Permission denied', 'NotAllowedError');
-            }
-          });
-        },
-        writable: false,
-        configurable: false
-      });
-    }
-  }
-
-  interceptGetUserMedia();
-
-  const observer = new MutationObserver(function(mutationsList, observer) {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'childList' && mutation.addedNodes) {
-        mutation.addedNodes.forEach(node => {
-          if (node === navigator.mediaDevices) {
-            interceptGetUserMedia();
-          }
-        });
-      }
-    }
-  });
-
-  function interceptSpeechRecognition() {
-    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
-      return;
-    }
-
-    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    const SpeechRecognitionWrapper = function(...args) {
-      const recognizer = new OriginalSpeechRecognition(...args);
-      const originalStart = recognizer.start.bind(recognizer);
-
-      recognizer.start = function() {
-        requestMediaPermissions({ audio: true }).then(granted => {
-          if (granted) {
-            originalStart();
-          } else {
-            const errorEvent = new SpeechRecognitionErrorEvent('error');
-            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
-            recognizer.dispatchEvent(errorEvent);
-          }
-        });
-      };
-
-      return recognizer;
-    };
-
-    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
-    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
-
-    if (window.SpeechRecognition) {
-      window.SpeechRecognition = SpeechRecognitionWrapper;
-    }
-    if (window.webkitSpeechRecognition) {
-      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
-    }
-  }
-
-  interceptSpeechRecognition();
-
-  window.addEventListener('message', function(event) {
-    if (event.data) {
-      if (event.data.type === 'resolveMediaPermission') {
-        const { promiseId, granted } = event.data;
-        if (pendingMediaResolvers[promiseId]) {
-          pendingMediaResolvers[promiseId](granted);
-        }
-      }
-    }
-  });
-
-})();</script><script ws-interception-config="{&quot;parentOrigin&quot;:&quot;https://gemini.google.com&quot;,&quot;proxiedDomains&quot;:[]}">(function(){'use strict';var u=typeof Object.defineProperties=="function"?Object.defineProperty:function(b,d,e){if(b==Array.prototype||b==Object.prototype)return b;b[d]=e.value;return b};function v(b){b=["object"==typeof globalThis&&globalThis,b,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var d=0;d<b.length;++d){var e=b[d];if(e&&e.Math==Math)return e}throw Error("Cannot find global object");}var w=v(this);
-function y(b,d){if(d)a:{var e=w;b=b.split(".");for(var h=0;h<b.length-1;h++){var k=b[h];if(!(k in e))break a;e=e[k]}b=b[b.length-1];h=e[b];d=d(h);d!=h&&d!=null&&u(e,b,{configurable:!0,writable:!0,value:d})}}function z(b){function d(h){return b.next(h)}function e(h){return b.throw(h)}return new Promise(function(h,k){function m(n){n.done?h(n.value):Promise.resolve(n.value).then(d,e).then(m,k)}m(b.next())})}y("globalThis",function(b){return b||w});/*
-
- Copyright The Closure Library Authors.
- SPDX-License-Identifier: Apache-2.0
-*/
-function A(b,d){function e(){}e.prototype=d.prototype;b.i=d.prototype;b.prototype=new e;b.prototype.constructor=b;b.g=function(h,k,m){for(var n=Array(arguments.length-2),p=2;p<arguments.length;p++)n[p-2]=arguments[p];return d.prototype[k].apply(h,n)}};function B(b,d,e="*"){function h(a){if(typeof a==="string")return F.encode(a).buffer;if(a instanceof ArrayBuffer)return a.slice(0);if(ArrayBuffer.isView(a))return a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength);throw Error("Invalid data type");}function k(a){a=h(a);var f={type:"send",data:new Uint8Array(a)},g;(g=r)==null||g.postMessage(f,[a])}function m(){if(!r)throw Error("Data port not captured yet.");r.onmessage=a=>{if(a.data.type==="message"){a=new MessageEvent("message",{data:G.decode(a.data.data)});
-let f;(f=c.onmessage)==null||f.call(c,a);c.dispatchEvent(a)}}}function n(){if(!t)throw Error("Control port not captured yet.");t.onmessage=a=>{switch(a.data.type){case "open":l=1;var f=new Event("open"),g;(g=c.onopen)==null||g.call(c,f);c.dispatchEvent(f);q.forEach(H=>{k(H)});q=[];break;case "close":g=a.data;l=3;g=new CloseEvent("close",{code:g.code,reason:g.reason,wasClean:g.wasClean});(f=c.onclose)==null||f.call(c,g);c.dispatchEvent(g);break;case "error":l=3;f=new Event("error");let x;(x=c.onerror)==
-null||x.call(c,f);c.dispatchEvent(f)}}}function p(a){return z(function*(){var f=new MessageChannel;t=f.port1;var g=new MessageChannel;r=g.port1;n();m();window.parent.postMessage({type:"websocket_open",portOrdering:["control","data"],url:b,protocols:a||[],connectionId:I},e,[f.port2,g.port2])}())}var c=Reflect.construct(EventTarget,[],new.target);c.CONNECTING=0;c.OPEN=1;c.CLOSING=2;c.CLOSED=3;c.url=b;c.binaryType="arraybuffer";c.protocol="";c.h="";var l=0,t=null,r=null,q=[],F=new TextEncoder,G=new TextDecoder;
-c.onopen=null;c.onmessage=null;c.onclose=null;c.onerror=null;Object.defineProperty(c,"readyState",{get:()=>l,enumerable:!0,configurable:!0});Object.defineProperty(c,"bufferedAmount",{get:()=>{var a=0;q.forEach(f=>{a+=typeof f==="string"?f.length:f.byteLength});return a},enumerable:!0,configurable:!0});var I=function(){var a;return((a=globalThis.crypto)==null?0:a.randomUUID)?globalThis.crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,f=>{var g=Math.random()*16|0;return(f===
-"x"?g:g&3|8).toString(16)})}();c.send=a=>{if(l===1)a instanceof Blob?a.arrayBuffer().then(f=>{k(f)}):k(a);else if(l===0)if(typeof a==="string")q.push(a);else if(a instanceof ArrayBuffer||ArrayBuffer.isView(a))q.push(h(a));else throw Error("Sending Blob is not supported before the connection is open.");else console.debug("WebSocket send called in CLOSING or CLOSED state; ignored.")};c.close=(a=1E3,f="")=>{if(l!==2&&l!==3){l=2;a={type:"close",code:a,reason:f,wasClean:a===1E3};var g;(g=t)==null||g.postMessage(a)}};
-Promise.resolve().then(()=>p(d));return c}A(B,EventTarget);var C=document.currentScript,D=C==null?void 0:C.getAttribute("ws-interception-config");if(!D)throw Error("WebSocket Interceptor: Missing ws-interception-config attribute in the script tag.");var E=JSON.parse(D);if(!E.parentOrigin||typeof E.parentOrigin!=="string")throw Error("WebSocket Interceptor: Invalid parentOrigin in ws-interception-config");
-(function(b){var d=Object.getOwnPropertyDescriptor(window,"WebSocket");if(!d||d.writable||d.configurable)d=Object.assign(function(e,h){try{let k=(new URL(e)).hostname;if(b.proxiedDomains.some(m=>k===m||k.endsWith(`.${m}`)))return new B(e,h,b.parentOrigin)}catch(k){throw window.parent.postMessage({type:"websocket_blocked",url:e,reason:"blocked_invalid_url"},b.parentOrigin),new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");}window.parent.postMessage({type:"websocket_blocked",
-url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");},{CONNECTING:0,OPEN:1,CLOSING:2,CLOSED:3}),Object.defineProperty(window,"WebSocket",{value:d,writable:!1,configurable:!1})})({proxiedDomains:E.proxiedDomains||[],parentOrigin:E.parentOrigin});}).call(this);
-</script><script>((function(modelInformation) {
-  const originalFetch = window.fetch;
-  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
-  let googleLlmBaseApiUrls = [
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageTransformModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
-  ];
-  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-    );
-  });
-  modelInformation.deprecatedImageModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predict',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predictLongRunning',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-  modelInformation.deprecatedGenerateImageModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-
-  const pendingFetchResolvers = {};
-  let nextPromiseId = 0;
-
-  function handleStringInput(input, optionsArgument) {
-    const actualUrl = input;
-    const fetchCallArgs = [actualUrl, optionsArgument];
-    const effectiveOptions = optionsArgument || {};
-    const bodyForApiKeyCheck = effectiveOptions.body;
-    const bodyForPostMessage = effectiveOptions.body;
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  function handleRequestInput(input, optionsArgument) {
-    const actualUrl = input.url;
-    const fetchCallArgs = [input, optionsArgument];
-    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (optionsArgument) {
-      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
-      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
-      if ('body' in optionsArgument) {
-        bodyForApiKeyCheck = optionsArgument.body;
-        bodyForPostMessage = optionsArgument.body;
-      } else {
-        bodyForApiKeyCheck = undefined;
-        bodyForPostMessage = input.body;
-      }
-    } else {
-      bodyForApiKeyCheck = undefined;
-      bodyForPostMessage = input.body;
-    }
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  window.fetch = function(input, optionsArgument) {
-    let actualUrl;
-    let fetchCallArgs;
-    let effectiveOptions = {};
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (typeof input === 'string') {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
-    } else if (input instanceof Request) {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
-    } else {
-      return originalFetch.apply(window, [input, optionsArgument]);
-    }
-
-    effectiveOptions.method = effectiveOptions.method || 'GET';
-    if (!effectiveOptions.headers) {
-      effectiveOptions.headers = new Headers();
-    }
-
-
-    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
-      let apiKeyIsNull = true;
-
-      const regex = new RegExp("models/([^:]+)");
-      const modelNameMatch = actualUrl.match(regex);
-      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
-
-
-      try {
-        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
-        const apiKeyParam = urlObject.searchParams.get('key');
-        if (apiKeyParam) {
-          apiKeyIsNull = false;
-        }
-      } catch (e) {
-        // Continue checks even if URL parsing fails
-      }
-
-      if (apiKeyIsNull && effectiveOptions.headers) {
-        const h = new Headers(effectiveOptions.headers);
-        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
-        if (apiKeyHeaderValue) {
-          apiKeyIsNull = false;
-          return originalFetch.apply(window, fetchCallArgs);
-        }
-      }
-
-      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
-        try {
-          const bodyData = JSON.parse(bodyForApiKeyCheck);
-          if (bodyData && bodyData.apiKey) {
-            apiKeyIsNull = false;
-            return originalFetch.apply(window, fetchCallArgs);
-          }
-        } catch (e) {
-          // Ignore JSON parsing errors
-        }
-      }
-
-      if(apiKeyIsNull) {
-        const promiseId = nextPromiseId++;
-        const promise = new Promise((resolve) => {
-          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
-            delete pendingFetchResolvers[promiseId];
-            resolve(resolvedResponse);
-          };
-        });
-
-        let serializedBodyForPostMessage;
-        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
-            serializedBodyForPostMessage = bodyForPostMessage;
-        } else if (bodyForPostMessage instanceof ReadableStream) {
-            serializedBodyForPostMessage = null;
-        } else {
-            try {
-                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
-            } catch (e) {
-                serializedBodyForPostMessage = null;
-            }
-        }
-
-        const messageOptions = {
-            method: effectiveOptions.method,
-            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
-            body: serializedBodyForPostMessage
-        };
-
-        window.parent.postMessage({
-          type: 'requestFetch',
-          url: actualUrl,
-          modelName: modelName,
-          options: messageOptions,
-          promiseId: promiseId,
-        }, '*');
-
-        return promise;
-      }
-      return originalFetch.apply(window, fetchCallArgs);
-    }
-    return originalFetch.apply(window, fetchCallArgs);
-  };
-
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'resolveFetch') {
-      const { promiseId, response } = event.data;
-      if (pendingFetchResolvers[promiseId]) {
-        try {
-          const reconstructedResponse = new Response(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: new Headers(response.headers),
-          });
-          pendingFetchResolvers[promiseId](reconstructedResponse);
-        } catch (error) {
-          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
-        }
-      }
-    }
-  });
-
-}))({"textModelName":"gemini-3-flash-preview","imageModelName":"imagen-4.0-generate-001","imageEditModelName":"gemini-3.1-flash-image-preview","imageTransformModelName":"gemini-3-pro-image-preview-11-2025","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash","gemini-2.5-flash","gemini-2.5-flash-preview-04-17","gemini-2.5-flash-preview-05-20","gemini-2.5-flash-preview-09-2025"],"deprecatedImageModelNames":["imagen-3.0-generate-001","imagen-3.0-generate-002"],"deprecatedGenerateImageModelNames":["gemini-2.5-flash-image-preview","gemini-2.5-flash-image"]})</script><script>(function(){'use strict';function a(){window.parent.postMessage({type:"interaction"},"*")}window.addEventListener("click",a,{capture:!0,passive:!0});window.addEventListener("touchstart",a,{capture:!0,passive:!0});window.addEventListener("keydown",a,{capture:!0,passive:!0});}).call(this);
-</script><script>(function() {
-  const originalConsoleLog = console.log;
-  const originalConsoleError = console.error;
-
-    /**
-   * Normalizes an error event or a promise rejection reason into a structured error object.
-   * @param {*} errorEventOrReason The error object or reason.
-   * @return {object} Structured error data { message, name, stack }.
-   */
-  function getErrorObject(errorEventOrReason) {
-    if (errorEventOrReason instanceof Error) {
-      return {
-        message: errorEventOrReason.message,
-        name: errorEventOrReason.name,
-        stack: errorEventOrReason.stack,
-      };
-    }
-    // Fallback for non-Error objects.
-    try {
-      return {
-        message: JSON.stringify(errorEventOrReason),
-        name: 'UnknownErrorType',
-        stack: null,
-      };
-    } catch (e) {
-      return {
-        message: String(errorEventOrReason),
-        name: 'UnknownErrorTypeNonStringifiable',
-        stack: null,
-      };
-    }
-  }
-
-  /**
-   * Converts an array of arguments (from log/error) into a single string.
-   * Handles Error objects specially to include their message and stack.
-   * @param {Array<*>} args - Arguments passed to console methods.
-   * @return {string} A string representation of the arguments.
-   */
-  function stringifyArgs(args) {
-    return args
-      .map((arg) => {
-        if (arg instanceof Error) {
-          const {message, stack} = arg;
-          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
-        }
-        if (typeof arg === 'object' && arg !== null) {
-          try {
-            return JSON.stringify(arg);
-          } catch (error) {
-            return '[Circular Object]';
-          }
-        } else {
-          return String(arg);
-        }
-      })
-      .join(' ');
-  }
-
-  console.log = function(...args) {
-    const logString = stringifyArgs(args);
-    window.parent.postMessage({ type: 'log', message: logString }, '*');
-    originalConsoleLog.apply(console, args);
-  };
-
-  console.error = function(...args) {
-    let errorData;
-    if (args.length > 0 && args[0] instanceof Error) {
-      const err = args[0];
-      // If the first arg is an Error, capture its details.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        ...getErrorObject(err),
-        rawArgsString: stringifyArgs(args.slice(1)),
-        timestamp: new Date().toISOString(),
-      };
-    } else {
-      // If not an Error object, treat all args as a general error message.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        message: stringifyArgs(args),
-        name: 'ConsoleLoggedError',
-        stack: null,
-        timestamp: new Date().toISOString(),
-      };
-    }
-    window.parent.postMessage(errorData, '*');
-    originalConsoleError.apply(console, args);
-  };
-
-  // Listen for global unhandled synchronous errors.
-  window.addEventListener('error', function(event) {
-    const errorDetails = event.error ? getErrorObject(event.error) : {
-      message: event.message,
-      name: 'GlobalError',
-      stack: null,
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-    };
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'global',
-      ...errorDetails,
-      message: errorDetails.message || event.message,
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-  // Listen for unhandled promise rejections (asynchronous errors).
-  window.addEventListener('unhandledrejection', function(event) {
-    const errorDetails = getErrorObject(event.reason);
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'unhandledrejection',
-      ...errorDetails,
-      message: errorDetails.message || 'Unhandled Promise Rejection',
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-})();</script>
+<html lang="vi">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuro-Lingo: Unit 1 Leisure time</title>
+    <title>Neuro-Lingo: Unit 1 Leisure Time</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0A0A12;
             color: white;
             overflow: hidden;
-            /* Cho phép copy text */
         }
 
         /* HỆ THỐNG MÀU SẮC NGỮ PHÁP ÁP DỤNG TRIỆT ĐỂ (!important) */
@@ -606,19 +32,16 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         .grammar-irr-v2 { color: #ef4444 !important; font-weight: 700 !important; }
         .grammar-phrase { color: #cbd5e1 !important; font-weight: 500 !important; }
 
-        /* TỪ CHỈ DẤU HIỆU & CHÚ Ý */
         .highlight-signal-word { 
             color: #2dd4bf !important; 
             font-weight: 700 !important; 
-            background-color: rgba(45, 212, 191, 0.1) !important;
+            background-color: rgba(45, 212, 191, 0.15) !important;
             padding: 2px 4px !important;
             border-radius: 4px !important;
         }
-        .highlight-note { color: #38bdf8 !important; font-weight: 600 !important; }
 
         .text-vi-note { color: #a78bfa; }
 
-        /* HỆ THỐNG ĐÁNH DẤU TRỌNG ÂM MỚI TỐI GIẢN */
         .stress-mark {
             color: inherit !important; 
             font-weight: inherit !important; 
@@ -626,12 +49,8 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             border-bottom: 3px solid #f59e0b !important; 
             padding-bottom: 2px !important;
         }
-        .unstressed {
-            opacity: 0.8;
-            font-weight: inherit;
-        }
+        .unstressed { opacity: 0.8; font-weight: inherit; }
 
-        /* GIA SƯ ẢO - UI BOX */
         .tutor-box {
             background: rgba(15, 15, 30, 0.85);
             backdrop-filter: blur(20px);
@@ -657,10 +76,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             font-size: 1rem;
         }
 
-        /* MÀN BỌC AI TUTOR WORDS */
-        .tutor-text {
-            line-height: 2.4 !important; 
-        }
+        .tutor-text { line-height: 2.4 !important; }
         .tutor-text span[class^="grammar-"], .tutor-text span.highlight-signal-word {
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05)) !important;
             padding: 4px 10px !important;
@@ -677,7 +93,6 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             height: 100vh; width: 100vw; position: absolute; z-index: -1;
         }
 
-        /* KIM CƯƠNG 3D CÂN ĐỐI */
         .diamond-container { width: 90px; height: 75px; filter: drop-shadow(0 0 25px rgba(0, 229, 255, 0.4)); }
         .diamond-3d { width: 100%; height: 100%; animation: float-diamond 4s ease-in-out infinite; }
         @keyframes float-diamond { 0%, 100% { transform: translateY(0) rotateX(10deg); } 50% { transform: translateY(-10px) rotateX(-5deg); } }
@@ -691,18 +106,16 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             border: 1px solid rgba(167, 139, 250, 0.1);
         }
 
-        /* Nút Home CỐ ĐỊNH */
         .home-btn-fixed {
-            position: fixed; top: 2rem; left: 2rem; z-index: 5000;
+            position: fixed; top: 1rem; left: 1.5rem; z-index: 5000;
             color: #4b5563; background: rgba(255, 255, 255, 0.05);
-            width: 52px; height: 52px; border-radius: 16px;
+            width: 48px; height: 48px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .home-btn-fixed:hover { color: #00E5FF; transform: scale(1.1); background: rgba(0, 229, 255, 0.1); border-color: #00E5FF; }
 
-        /* NÚT TIẾP TỤC CHARGING SYSTEM */
         #cortex-btn {
             opacity: 0.1;
             background: rgba(255, 255, 255, 0.02);
@@ -713,27 +126,24 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         .btn-stage-1 { opacity: 0.6 !important; background: #1e3a8a !important; color: #93c5fd !important; border-color: #3b82f6 !important; }
         .btn-stage-2 { opacity: 0.8 !important; background: #701a75 !important; color: #f5d0fe !important; border-color: #d946ef !important; }
         .btn-stage-3-neuron { opacity: 1 !important; background: #00E5FF !important; color: #000 !important; box-shadow: 0 0 30px rgba(0, 229, 255, 0.6) !important; font-weight: 800 !important; }
-        .btn-stage-3-synapse { opacity: 1 !important; background: #FFD700 !important; color: #000 !important; box-shadow: 0 0 30px rgba(255, 215, 0, 0.6) !important; font-weight: 800 !important; }
         
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: rgba(167, 139, 250, 0.2); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: 10px; }
     </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-36{left:9rem}.right-4{right:1rem}.top-4{top:1rem}.top-8{top:2rem}.z-40{z-index:40}.z-\[2000\]{z-index:2000}.z-\[3000\]{z-index:3000}.z-\[5000\]{z-index:5000}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-1{margin-left:0.25rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}.mt-3{margin-top:0.75rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-1\.5{height:0.375rem}.h-10{height:2.5rem}.h-16{height:4rem}.h-32{height:8rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.h-screen{height:100vh}.max-h-\[96vh\]{max-height:96vh}.w-12{width:3rem}.w-16{width:4rem}.w-24{width:6rem}.w-32{width:8rem}.w-5{width:1.25rem}.w-8{width:2rem}.w-full{width:100%}.w-screen{width:100vw}.max-w-2xl{max-width:42rem}.max-w-5xl{max-width:64rem}.max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}.max-w-sm{max-width:24rem}.max-w-xl{max-width:36rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.resize-none{resize:none}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-start{justify-content:flex-start}.justify-center{justify-content:center}.gap-2{gap:0.5rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b-2{border-bottom-width:2px}.border-\[\#00E5FF\]\/20{border-color:rgb(0 229 255 / 0.2)}.border-\[\#00E5FF\]\/30{border-color:rgb(0 229 255 / 0.3)}.border-\[\#FF00FF\]\/30{border-color:rgb(255 0 255 / 0.3)}.border-\[\#FF00FF\]\/50{border-color:rgb(255 0 255 / 0.5)}.border-red-500\/20{border-color:rgb(239 68 68 / 0.2)}.border-teal-500\/30{border-color:rgb(20 184 166 / 0.3)}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.border-white\/5{border-color:rgb(255 255 255 / 0.05)}.bg-\[\#00E5FF\]{--tw-bg-opacity:1;background-color:rgb(0 229 255 / var(--tw-bg-opacity, 1))}.bg-\[\#0A0A12\]{--tw-bg-opacity:1;background-color:rgb(10 10 18 / var(--tw-bg-opacity, 1))}.bg-\[\#1A1A2E\]\/60{background-color:rgb(26 26 46 / 0.6)}.bg-\[\#FF00FF\]{--tw-bg-opacity:1;background-color:rgb(255 0 255 / var(--tw-bg-opacity, 1))}.bg-black\/30{background-color:rgb(0 0 0 / 0.3)}.bg-black\/95{background-color:rgb(0 0 0 / 0.95)}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900\/50{background-color:rgb(17 24 39 / 0.5)}.bg-red-900\/20{background-color:rgb(127 29 29 / 0.2)}.bg-teal-600{--tw-bg-opacity:1;background-color:rgb(13 148 136 / var(--tw-bg-opacity, 1))}.bg-transparent{background-color:transparent}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-yellow-900\/20{background-color:rgb(113 63 18 / 0.2)}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-10{padding-left:2.5rem;padding-right:2.5rem}.px-14{padding-left:3.5rem;padding-right:3.5rem}.px-16{padding-left:4rem;padding-right:4rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-10{padding-bottom:2.5rem}.pb-4{padding-bottom:1rem}.pt-16{padding-top:4rem}.pt-4{padding-top:1rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-5xl{font-size:3rem;line-height:1}.text-\[10px\]{font-size:10px}.text-\[10rem\]{font-size:10rem}.text-\[9px\]{font-size:9px}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-extralight{font-weight:200}.font-light{font-weight:300}.font-medium{font-weight:500}.uppercase{text-transform:uppercase}.leading-\[2\]{line-height:2}.leading-snug{line-height:1.375}.tracking-\[0\.2em\]{letter-spacing:0.2em}.tracking-\[0\.4em\]{letter-spacing:0.4em}.tracking-tighter{letter-spacing:-0.05em}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.text-\[\#00E5FF\]{--tw-text-opacity:1;color:rgb(0 229 255 / var(--tw-text-opacity, 1))}.text-\[\#FF00FF\]{--tw-text-opacity:1;color:rgb(255 0 255 / var(--tw-text-opacity, 1))}.text-\[\#FFD700\]{--tw-text-opacity:1;color:rgb(255 215 0 / var(--tw-text-opacity, 1))}.text-black{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.caret-\[\#00E5FF\]{caret-color:#00E5FF}.opacity-40{opacity:0.4}.opacity-50{opacity:0.5}.opacity-60{opacity:0.6}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-3xl{--tw-backdrop-blur:blur(64px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-500{transition-duration:500ms}.hover\:scale-105:hover{--tw-scale-x:1.05;--tw-scale-y:1.05;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-\[\#00E5FF\]:hover{--tw-bg-opacity:1;background-color:rgb(0 229 255 / var(--tw-bg-opacity, 1))}.hover\:bg-\[\#FF00FF\]:hover{--tw-bg-opacity:1;background-color:rgb(255 0 255 / var(--tw-bg-opacity, 1))}.hover\:bg-teal-700:hover{--tw-bg-opacity:1;background-color:rgb(15 118 110 / var(--tw-bg-opacity, 1))}.hover\:text-black:hover{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.focus\:border-\[\#00E5FF\]:focus{--tw-border-opacity:1;border-color:rgb(0 229 255 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@media (min-width: 768px){.md\:left-40{left:10rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-6xl{font-size:3.75rem;line-height:1}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}.md\:leading-\[2\]{line-height:2}}</style></head>
+</head>
 <body class="h-screen w-screen flex flex-col items-center justify-center relative">
 
     <div class="hypnotic-bg"></div>
 
     <button onclick="goHome()" class="home-btn-fixed" title="Về trang chủ">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
     </button>
     
-    
-
     <!-- MÀN HÌNH CHÍNH -->
     <div id="screen-home" class="flex flex-col items-center justify-center w-full h-full p-4 overflow-y-auto transition-opacity duration-500">
         <div class="mb-4 diamond-container">
@@ -747,26 +157,13 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </svg>
         </div>
         <h1 class="text-4xl md:text-6xl font-extralight mb-1 tracking-tighter text-[#00E5FF] word-glow uppercase">Neuro-Lingo</h1>
-        <p class="text-gray-500 mb-12 text-sm md:text-xl font-light uppercase tracking-widest text-center">UNIT 1: LEISURE TIME</p>
+        <p class="text-gray-500 mb-12 text-sm md:text-xl font-light uppercase tracking-widest text-center">UNIT 1: LEISURE TIME - LỚP 8</p>
 
         <div class="w-full max-w-xl flex flex-col gap-6 text-center">
-            <div class="bg-black/30 p-6 rounded-3xl border border-white/5 shadow-2xl">
-                <p class="text-[#00E5FF] text-[10px] uppercase tracking-[0.4em] mb-4 font-light opacity-60">Luyện Từ (Neuron)</p>
-                <div class="grid grid-cols-3 gap-4">
-                    <button onclick="startMode('neuron', 0)" class="py-5 bg-gray-900/50 border border-[#00E5FF]/20 rounded-2xl font-light text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all">L1 <span class="text-[9px] opacity-50 ml-1">1-20</span></button>
-                    <button onclick="startMode('neuron', 1)" class="py-5 bg-gray-900/50 border border-[#00E5FF]/20 rounded-2xl font-light text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all">L2 <span class="text-[9px] opacity-50 ml-1">21-40</span></button>
-                    <button onclick="startMode('neuron', 2)" class="py-5 bg-gray-900/50 border border-[#00E5FF]/20 rounded-2xl font-light text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all">L3 <span class="text-[9px] opacity-50 ml-1">41-60</span></button>
-                </div>
-            </div>
-            <div class="bg-black/30 p-6 rounded-3xl border border-white/5 shadow-2xl overflow-x-auto">
-                <p class="text-[#FF00FF] text-[10px] uppercase tracking-[0.4em] mb-4 font-light opacity-60">Gõ Câu (Synapse)</p>
-                <div class="flex gap-2 justify-center flex-wrap">
-                    <button onclick="startMode('synapse', 0)" class="w-12 py-4 bg-gray-900/50 border border-white/10 rounded-xl font-light text-[#FF00FF] hover:bg-[#FF00FF] hover:text-white transition-all">L1</button>
-                    <button onclick="startMode('synapse', 1)" class="w-12 py-4 bg-gray-900/50 border border-white/10 rounded-xl font-light text-[#FF00FF] hover:bg-[#FF00FF] hover:text-white transition-all">L2</button>
-                    <button onclick="startMode('synapse', 2)" class="w-12 py-4 bg-gray-900/50 border border-white/10 rounded-xl font-light text-[#FF00FF] hover:bg-[#FF00FF] hover:text-white transition-all">L3</button>
-                    <button onclick="startMode('synapse', 3)" class="w-12 py-4 bg-gray-900/50 border border-white/10 rounded-xl font-light text-[#FF00FF] hover:bg-[#FF00FF] hover:text-white transition-all">L4</button>
-                    <button onclick="startMode('synapse', 4)" class="w-12 py-4 bg-gray-900/50 border border-white/10 rounded-xl font-light text-[#FF00FF] hover:bg-[#FF00FF] hover:text-white transition-all">L5</button>
-                    <button onclick="startMode('synapse', 5)" class="w-12 py-4 bg-gray-900/50 border border-white/10 rounded-xl font-light text-[#FF00FF] hover:bg-[#FF00FF] hover:text-white transition-all">L6</button>
+            <div class="bg-black/30 p-8 rounded-3xl border border-[#00E5FF]/20 shadow-[0_0_50px_rgba(0,229,255,0.1)]">
+                <p class="text-[#00E5FF] text-sm uppercase tracking-[0.4em] mb-6 font-bold opacity-80">Luyện Từ (Neuron)</p>
+                <div id="level-buttons-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
+                    <!-- Buttons will be dynamically generated here -->
                 </div>
             </div>
         </div>
@@ -774,12 +171,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
     <!-- MÀN HÌNH NEURON -->
     <div id="screen-neuron" class="hidden flex-col items-center justify-center w-full h-full p-6 relative mx-auto">
-        <div class="absolute top-8 left-36 md:left-40 flex items-center gap-4 h-10 z-40">
-            <div class="text-[#00E5FF] font-light text-xl" id="neuron-progress"></div>
+        <div class="absolute top-[1.2rem] left-[5.5rem] md:left-[6.5rem] flex flex-wrap items-center gap-2 md:gap-4 z-40 max-w-[calc(100vw-8rem)]">
+            <div class="text-[#00E5FF] font-light text-sm md:text-lg whitespace-nowrap" id="neuron-progress"></div>
             <div class="text-red-500 font-medium text-xs bg-red-900/20 px-2 py-1 rounded border border-red-500/20"><span id="neuron-error-num">0</span> sai</div>
         </div>
-        <div class="absolute top-4 right-4 w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden"><div id="neuron-timer" class="h-full bg-[#FF00FF] timer-bar w-full"></div></div>
-        <div class="flex-1 flex flex-col items-center justify-center w-full px-4">
+        <div class="absolute top-4 right-4 w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden"><div id="neuron-timer" class="h-full bg-[#00E5FF] timer-bar w-full"></div></div>
+        <div class="flex-1 flex flex-col items-center justify-center w-full px-4 mt-8">
             <div class="w-full max-w-5xl text-center">
                 <div id="neuron-word" class="mb-10 text-center uppercase w-full"></div>
                 <div class="w-full max-w-2xl mx-auto">
@@ -793,30 +190,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         </div>
     </div>
 
-    <!-- MÀN HÌNH SYNAPSE -->
-    <div id="screen-synapse" class="hidden flex-col items-center justify-start w-full h-full p-4 pt-16 max-w-6xl relative mx-auto overflow-y-auto">
-        <div class="absolute top-8 left-36 md:left-40 flex items-center gap-4 h-10 z-40">
-            <div class="text-[#FF00FF] font-light text-xl" id="synapse-progress"></div>
-            <div class="text-red-500 font-medium text-xs bg-red-900/20 px-2 py-1 rounded border border-red-500/20"><span id="synapse-error-num">0</span> sai</div>
-        </div>
-        <div class="w-full bg-[#1A1A2E]/60 p-8 rounded-3xl border border-white/5 mb-8 mt-12 shadow-2xl text-center">
-            <p class="text-vi-note text-[9px] uppercase tracking-[0.4em] mb-2 font-black opacity-40">DỊCH CÂU TIẾNG VIỆT</p>
-            <p id="synapse-vi-sen" class="text-2xl md:text-3xl text-white font-light text-center leading-snug"></p>
-        </div>
-        <div class="w-full px-2 text-center">
-            <textarea id="synapse-input" rows="2" class="w-full bg-transparent border-b-2 border-white/5 text-2xl md:text-4xl font-light font-mono tracking-wider text-[#00E5FF] caret-[#00E5FF] focus:outline-none focus:border-[#00E5FF] p-4 resize-none leading-[2] md:leading-[2] pb-10" spellcheck="false" autocomplete="off" placeholder="Bắt đầu gõ..."></textarea>
-            <div class="flex items-center justify-center gap-8 mt-12 pb-10">
-                <p class="text-vi-note text-[10px] font-light uppercase tracking-[0.2em] opacity-50">Gõ xong nhấn ENTER</p>
-                <button onclick="handleSynapseCheck()" class="px-14 py-4 rounded-full border border-[#FF00FF]/30 text-[#FF00FF] font-light text-sm md:text-lg uppercase shadow-2xl hover:bg-[#FF00FF] hover:text-white active:scale-95 transition-all">KIỂM TRA CÂU</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL KẾT QUẢ CORTEX (ĐẨY LÊN TRÊN SÁT VIỀN) -->
-    <div id="modal-cortex" class="hidden fixed inset-0 z-[2000] flex items-start justify-center pt-4 pb-4 px-4 bg-black/95 backdrop-blur-3xl transition-opacity" data-is-success="false">
-        <div class="w-full max-w-7xl flex flex-col items-center text-center max-h-[96vh] overflow-y-auto custom-scrollbar">
-            <div id="cortex-message" class="w-full"></div>
-            <button id="cortex-btn" onclick="closeCortex()" class="w-full max-w-sm py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] mt-3 mb-4 shrink-0 transition-all active:scale-95"></button>
+    <!-- MODAL KẾT QUẢ CORTEX -->
+    <div id="modal-cortex" class="hidden fixed inset-0 z-[2000] flex items-start justify-center pt-8 pb-4 px-4 bg-black/95 backdrop-blur-3xl transition-opacity" data-is-success="false">
+        <div class="w-full max-w-7xl flex flex-col items-center text-center max-h-[95vh] overflow-y-auto custom-scrollbar">
+            <div id="cortex-message" class="w-full flex flex-col items-center"></div>
+            <button id="cortex-btn" onclick="closeCortex()" class="w-full max-w-sm py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] mt-4 mb-4 shrink-0 transition-all active:scale-95"></button>
         </div>
     </div>
 
@@ -835,8 +213,8 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <p class="text-vi-note uppercase tracking-widest text-sm mb-1 font-light underline">CHẶNG HOÀN TẤT</p>
         <h2 id="final-title" class="text-5xl font-extralight text-[#FFD700] mb-4 uppercase"></h2>
         <p class="text-xl text-white mb-6">Độ chính xác: <span id="final-accuracy" class="text-[#00E5FF] font-light"></span></p>
-        <div id="reward-error-section" class="hidden glass-panel p-8 border-[#FF00FF]/50 rounded-xl max-w-sm w-full cursor-pointer hover:scale-105 transition-transform" onclick="startRepractice()">
-            <p class="text-[#FF00FF] text-sm font-bold uppercase mb-2">LỖI CHƯA ĐỒNG BỘ</p>
+        <div id="reward-error-section" class="hidden glass-panel p-8 border-[#00E5FF]/50 rounded-xl max-w-sm w-full cursor-pointer hover:scale-105 transition-transform" onclick="startRepractice()">
+            <p class="text-[#00E5FF] text-sm font-bold uppercase mb-2">LỖI CHƯA ĐỒNG BỘ</p>
             <p class="text-gray-300 mb-4">Còn <span id="reward-error-count" class="text-white font-light text-2xl"></span> lỗi.</p>
             <p class="bg-[#00E5FF] text-black font-bold py-3 rounded-2xl uppercase text-xs">VÀO LUYỆN LẠI</p>
         </div>
@@ -844,431 +222,55 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     </div>
 
     <script>
-        // --- 1. DỮ LIỆU UNIT 1: LEISURE TIME ---
+        // BỘ CÔNG CỤ SVG 
+        const SVG_PLAY_L = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#00E5FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>`;
+        const SVG_TUTOR = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path></svg>`;
+        const SVG_SYN = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>`;
+
+        // --- 1. DỮ LIỆU UNIT 1 LỚP 8: LEISURE TIME ---
         const unit1Raw = [
-            {w: "look for", type: "(phr. v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>look</span> <span class='unstressed'>for</span>", vi: "tìm kiếm", vi_syn: "kiếm tìm", p: "/lʊk fɔːr/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>search</span> for</span>, <span class='grammar-verb-main'><span class='stress-mark'>seek</span></span>",
-             s: "I enjoy looking for information about different hobbies.", vis: "Tôi thích tìm kiếm thông tin về các sở thích khác nhau.",
-             alt_s: ["Looking for information about different hobbies is what I enjoy.", "I like searching for information about different hobbies."],
-             ai_n: "Cụm động từ nhấn trọng âm vào động từ chính /lʊk/ (âm u ngắn). Từ 'for' là giới từ nên đọc nhẹ hơn. Ngữ dụng: Dùng khi tìm kiếm một vật bị mất hoặc tìm kiếm thông tin.",
-             ai_s: "Động từ chỉ sự yêu thích 'enjoy' BẮT BUỘC đi với V-ing (looking)."},
-            
-            {w: "knitting kit", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>knit</span><span class='unstressed'>ting </span><span class='stress-mark'>kit</span>", vi: "bộ dụng cụ đan len", vi_syn: "bộ đồ đan len", p: "/ˈnɪtɪŋ kɪt/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>knit</span>ting <span class='stress-mark'>set</span></span>",
-             s: "My sister loves to use her knitting kit to make scarves.", vis: "Chị gái tôi thích sử dụng bộ dụng cụ đan len của mình để làm khăn choàng.",
-             alt_s: ["My sister loves using her knitting kit to make scarves.", "Making scarves with her knitting kit is what my sister loves."],
-             ai_n: "Danh từ ghép có hai đỉnh trọng âm ở /ˈnɪt/ và /kɪt/. LƯU Ý: Chữ 'k' trong knitting bị câm hoàn toàn. Ngữ dụng: Bộ kim và cuộn len dành cho những người có sở thích thủ công.",
-             ai_s: "Động từ 'love' có thể đi với cả 'to V' (to use) hoặc 'V-ing' (using) mà không thay đổi nghĩa. 'loves' thêm 's' theo chủ ngữ số ít 'My sister'."},
-
-            {w: "be keen on", type: "(phr)", typeClass: "grammar-phrase", w_html: "<span class='unstressed'>be </span><span class='stress-mark'>keen</span> <span class='unstressed'>on</span>", vi: "say mê, thích thú", vi_syn: "rất thích", p: "/bi kiːn ɒn/", 
-             en_syn_html: "<span class='grammar-phrase'>be <span class='stress-mark'>fond</span> of</span>, <span class='grammar-phrase'>be <span class='stress-mark'>cra</span>zy a<span class='stress-mark'>bout</span></span>",
-             s: "My brother is keen on playing computer games.", vis: "Anh trai tôi say mê chơi game trên máy tính.",
-             alt_s: ["Playing computer games is what my brother is keen on.", "My brother is very keen on playing computer games."],
-             ai_n: "Cụm từ mang trọng âm chính ở tính từ /kiːn/. Âm /iː/ kéo dài, căng miệng. Ngữ dụng: Cụm từ chuyên sâu diễn tả sự yêu thích mạnh mẽ, thường dùng trong văn nói Anh-Anh.",
-             ai_s: "Cấu trúc 'be keen on + V-ing'. Ở đây dùng 'playing' sau giới từ 'on'. Động từ to-be 'is' được chia theo chủ ngữ số ít 'My brother'."},
-
-            {w: "DIY activity", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>DIY</span> <span class='unstressed'>ac</span><span class='stress-mark'>ti</span><span class='unstressed'>vity</span>", vi: "hoạt động tự làm", vi_syn: "việc tự chế (DIY)", p: "/ˌdiː.aɪˈwaɪ ækˈtɪvəti/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>craft</span>ing</span>, <span class='grammar-noun'><span class='stress-mark'>hand</span>made <span class='stress-mark'>pro</span>ject</span>",
-             s: "I prefer doing DIY activities to surfing the net.", vis: "Tôi thích làm các hoạt động tự làm hơn là lướt mạng.",
-             alt_s: ["Doing DIY activities is preferable to surfing the net for me.", "I like doing DIY activities more than surfing the net."],
-             ai_n: "DIY là viết tắt của 'Do It Yourself', đọc tách từng chữ cái /ˌdiː.aɪˈwaɪ/. Ngữ dụng: Phong trào tự thiết kế, sửa chữa, làm đồ thủ công thay vì mua sẵn.",
-             ai_s: "Cấu trúc kinh điển 'prefer + V-ing + TO + V-ing' (thích làm việc gì HƠN việc gì). 'doing DIY' được ưu tiên hơn 'surfing the net'."},
-
-            {w: "build dollhouses", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>build</span> <span class='stress-mark'>doll</span><span class='unstressed'>houses</span>", vi: "xây nhà búp bê", vi_syn: "lắp ráp nhà búp bê", p: "/bɪld ˈdɒlhaʊsɪz/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>mak</span>ing <span class='stress-mark'>doll</span>houses</span>",
-             s: "My cousin adores building dollhouses in her free time.", vis: "Em họ tôi yêu thích việc xây nhà búp bê vào thời gian rảnh.",
-             alt_s: ["In her free time, my cousin adores building dollhouses.", "Building dollhouses is what my cousin adores doing in her free time."],
-             ai_n: "Hai đỉnh trọng âm ở /bɪld/ (âm i ngắn, chữ u câm) và /ˈdɒl/. Đuôi -houses đọc là /zɪz/. Ngữ dụng: Sở thích lắp ráp mô hình nhà thu nhỏ cực kỳ tỉ mỉ.",
-             ai_s: "Động từ chỉ sự yêu thích mãnh liệt 'adore' bắt buộc đi kèm V-ing (building). 'adores' chia thêm 's' theo chủ ngữ số ít 'My cousin'."},
-
-            {w: "make paper flowers", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>make</span> <span class='stress-mark'>pa</span><span class='unstressed'>per </span><span class='stress-mark'>flo</span><span class='unstressed'>wers</span>", vi: "làm hoa giấy", vi_syn: "gấp hoa giấy", p: "/meɪk ˈpeɪpər ˈflaʊərz/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>craft</span> <span class='stress-mark'>pa</span>per <span class='stress-mark'>flo</span>wers</span>",
-             s: "We love to make paper flowers to decorate our room.", vis: "Chúng tôi thích làm hoa giấy để trang trí phòng của mình.",
-             alt_s: ["We love making paper flowers to decorate our room.", "To decorate our room, we love to make paper flowers."],
-             ai_n: "Ba đỉnh trọng âm ở /meɪk/ (âm ây), /ˈpeɪ/ (âm ây) và /ˈflaʊ/ (âm ao). Chú ý có chữ s rung /z/ ở cuối từ flowers. Ngữ dụng: Sở thích thủ công khéo tay hay làm.",
-             ai_s: "Động từ 'love' có thể đi với 'to V' (to make) mà vẫn giữ nguyên nghĩa. Mệnh đề 'to decorate...' chỉ mục đích của hành động làm hoa."},
-
-            {w: "leisure time", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>lei</span><span class='unstressed'>sure </span><span class='stress-mark'>time</span>", vi: "thời gian rảnh rỗi", vi_syn: "thời gian thư giãn", p: "/ˈlɛʒər taɪm/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>free</span> <span class='stress-mark'>time</span></span>, <span class='grammar-noun'><span class='stress-mark'>spare</span> <span class='stress-mark'>time</span></span>",
-             s: "What do you enjoy doing in your leisure time?", vis: "Bạn thích làm gì vào thời gian rảnh của mình?",
-             alt_s: ["What do you like doing in your leisure time?", "In your leisure time, what do you enjoy doing?"],
-             ai_n: "Trọng âm ở /ˈlɛʒ/ (âm e ngắn, sờ nặng rung thanh quản) và /taɪm/. Giọng Mỹ thường đọc là /ˈliːʒər/. Ngữ dụng: Cụm từ học thuật, trang trọng thay thế cho 'free time'.",
-             ai_s: "Sau động từ 'enjoy' BẮT BUỘC là V-ing (doing). Đây là câu hỏi với từ để hỏi (What) và trợ động từ (do) đảo lên trước chủ ngữ."},
-
-            {w: "hang out", type: "(phr. v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>hang</span> <span class='stress-mark'>out</span>", vi: "đi chơi, tụ tập", vi_syn: "la cà", p: "/hæŋ aʊt/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>spend</span> <span class='stress-mark'>time</span> to<span class='stress-mark'>ge</span>ther</span>",
-             s: "My friends and I fancy hanging out at the weekend.", vis: "Bạn bè và tôi thích đi chơi vào cuối tuần.",
-             alt_s: ["Hanging out at the weekend is what my friends and I fancy.", "At the weekend, my friends and I fancy hanging out."],
-             ai_n: "Cụm động từ nhấn mạnh cả /hæŋ/ (a bẹt) và /aʊt/. Nối âm: ha-ngout. Ngữ dụng: Từ lóng cực kỳ phổ biến của giới trẻ, chỉ việc tụ tập đi chơi không có mục đích cụ thể.",
-             ai_s: "Động từ 'fancy' (rất thích, đam mê) BẮT BUỘC theo sau bởi V-ing (hanging). Chủ ngữ kép 'My friends and I' (số nhiều) nên 'fancy' giữ nguyên mẫu."},
-
-            {w: "play sport", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>play</span> <span class='stress-mark'>sport</span>", vi: "chơi thể thao", vi_syn: "chơi các môn thể thao", p: "/pleɪ spɔːt/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>do</span> <span class='stress-mark'>sports</span></span>",
-             s: "I don't like playing sports very much; I prefer reading.", vis: "Tôi không thích chơi thể thao lắm; tôi thích đọc sách hơn.",
-             alt_s: ["I dislike playing sports; I prefer reading.", "Playing sports isn't something I like much; I prefer reading."],
-             ai_n: "Hai đỉnh trọng âm /pleɪ/ và /spɔːt/. Ở Anh có thể dùng số ít 'sport', nhưng ở Mỹ thường dùng số nhiều 'sports'. Ngữ dụng: Hoạt động thể chất tiêu chuẩn.",
-             ai_s: "Câu phủ định dùng trợ động từ 'don't'. Sau 'like' dùng V-ing (playing). Vế sau dùng động từ 'prefer' + V-ing (reading) để thể hiện sự ưu tiên."},
-
-            {w: "go to the cinema", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>go</span> <span class='unstressed'>to the </span><span class='stress-mark'>ci</span><span class='unstressed'>nema</span>", vi: "đi xem phim", vi_syn: "ra rạp chiếu phim", p: "/ɡoʊ tə ðə ˈsɪnəmə/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>go</span> to the <span class='stress-mark'>mo</span>vies</span>",
-             s: "Do you like going to the cinema with your friends?", vis: "Bạn có thích đi xem phim với bạn bè không?",
-             alt_s: ["Are you fond of going to the cinema with your friends?", "Do you enjoy going to the cinema with your friends?"],
-             ai_n: "Trọng âm ở động từ /ɡoʊ/ và danh từ /ˈsɪn/ (âm i ngắn). Từ 'to the' lướt cực nhẹ thành /tə-ðə/. Ngữ dụng: Hoạt động giải trí cuối tuần phổ biến, thường dùng ở Anh-Anh.",
-             ai_s: "Câu hỏi Yes/No với động từ 'like'. Theo sau 'like' là danh động từ 'going'. 'the cinema' luôn luôn đi kèm mạo từ 'the'."},
-
-            {w: "go cycling", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>go</span> <span class='stress-mark'>cy</span><span class='unstressed'>cling</span>", vi: "đi xe đạp", vi_syn: "đạp xe", p: "/ɡoʊ ˈsaɪklɪŋ/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>ride</span> a <span class='stress-mark'>bike</span></span>",
-             s: "My dad loves to go cycling in the early morning.", vis: "Bố tôi thích đi xe đạp vào sáng sớm.",
-             alt_s: ["My dad loves going cycling in the early morning.", "In the early morning, my dad loves to go cycling."],
-             ai_n: "Trọng âm ở /ɡoʊ/ và /ˈsaɪ/. Âm c đầu đọc là /s/, âm c sau đọc là /k/. Ngữ dụng: Cấu trúc Go + V-ing chuyên dùng cho các hoạt động di chuyển rèn luyện sức khỏe.",
-             ai_s: "Sau 'loves' có thể dùng 'to V' (to go) mà nghĩa không đổi. Động từ 'loves' thêm 's' do chủ ngữ số ít 'My dad'. Cụm 'in the early morning' là trạng ngữ thời gian."},
-
-            {w: "ride a horse", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>ride</span> <span class='unstressed'>a </span><span class='stress-mark'>horse</span>", vi: "cưỡi ngựa", vi_syn: "cưỡi trên lưng ngựa", p: "/raɪd ə hɔːs/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>go</span> <span class='stress-mark'>horse</span>back <span class='stress-mark'>ri</span>ding</span>",
-             s: "I have never tried riding a horse, but I'd love to try.", vis: "Tôi chưa bao giờ thử cưỡi ngựa, nhưng tôi rất muốn thử.",
-             alt_s: ["Riding a horse is something I've never tried, but I'd love to.", "I'd love to try riding a horse, although I never have."],
-             ai_n: "Trọng âm ở /raɪd/ (kết thúc bằng d bật nhẹ) và /hɔːs/ (o dài cuộn lưỡi, xát s). Ngữ dụng: Hoạt động thể thao quý tộc hoặc dã ngoại.",
-             ai_s: "Sau động từ 'tried' (thử làm gì) ta dùng V-ing (riding). Cụm 'I'd love to' (= I would love to) BẮT BUỘC đi với động từ nguyên mẫu (try)."},
-
-            {w: "comedy", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>co</span><span class='unstressed'>medy</span>", vi: "phim hài", vi_syn: "hài kịch", p: "/ˈkɒmədi/", 
-             en_syn_html: "<span class='grammar-noun'>fun<span class='stress-mark'>ny</span> <span class='stress-mark'>mo</span>vie</span>",
-             s: "My family enjoys watching a comedy together.", vis: "Gia đình tôi thích xem một bộ phim hài cùng nhau.",
-             alt_s: ["Watching a comedy together is what my family enjoys.", "My family likes watching a comedy together."],
-             ai_n: "Trọng âm ở âm đầu /ˈkɒm/ (âm o ngắn mở to miệng). Ngữ dụng: Thể loại phim ảnh mang lại tiếng cười, giúp xả stress tuyệt vời.",
-             ai_s: "Động từ 'enjoys' chia thêm 's' theo chủ ngữ tập hợp 'My family' (số ít). 'enjoy' luôn đi cùng V-ing (watching)."},
-
-            {w: "do DIY", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>do</span> <span class='stress-mark'>DIY</span>", vi: "làm đồ tự chế", vi_syn: "tự làm đồ thủ công", p: "/duː ˌdiː.aɪˈwaɪ/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>make</span> <span class='stress-mark'>hand</span>made <span class='stress-mark'>things</span></span>",
-             s: "My father detests doing DIY because he thinks it's messy.", vis: "Bố tôi ghét làm đồ tự chế vì ông nghĩ nó bừa bộn.",
-             alt_s: ["Because he thinks it's messy, my father detests doing DIY.", "My father hates doing DIY because he finds it messy."],
-             ai_n: "Từ DIY là viết tắt của 'Do It Yourself', đọc tách từng chữ cái /ˌdiː.aɪˈwaɪ/. Trọng âm rơi vào cả 'do' và 'Y'. Ngữ dụng: Sở thích tự chế tác, sửa chữa tại nhà.",
-             ai_s: "Động từ chỉ sự ghét bỏ mãnh liệt 'detest' BẮT BUỘC đi với V-ing (doing). 'detests' thêm 's' theo chủ ngữ số ít 'My father'."},
-
-            {w: "do puzzles", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>do</span> <span class='stress-mark'>puz</span><span class='unstressed'>zles</span>", vi: "chơi giải đố", vi_syn: "xếp hình, giải câu đố", p: "/duː ˈpʌzəlz/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>solve</span> <span class='stress-mark'>puz</span>zles</span>",
-             s: "My grandpa is fond of doing puzzles in the evening.", vis: "Ông tôi rất thích chơi giải đố vào buổi tối.",
-             alt_s: ["Doing puzzles in the evening is what my grandpa is fond of.", "My grandpa really likes doing puzzles in the evening."],
-             ai_n: "Hai đỉnh trọng âm /duː/ và /ˈpʌz/ (âm á). Chữ z bật rung cổ họng rõ ràng. Ngữ dụng: Các trò chơi rèn luyện trí não như xếp hình (jigsaw), ô chữ (crossword).",
-             ai_s: "Cấu trúc 'be fond of + V-ing' (rất thích làm gì). Vì có giới từ 'of' nên động từ 'do' phải chuyển thành 'doing'."},
-
-            {w: "surf the net", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>surf</span> <span class='unstressed'>the </span><span class='stress-mark'>net</span>", vi: "lướt mạng", vi_syn: "lướt internet", p: "/sɜːrf ðə nɛt/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>browse</span> the <span class='stress-mark'>web</span></span>",
-             s: "I prefer reading books to surfing the net.", vis: "Tôi thích đọc sách hơn là lướt mạng.",
-             alt_s: ["I like reading books more than surfing the net.", "Reading books is preferable to surfing the net for me."],
-             ai_n: "Trọng âm ở /sɜːrf/ (âm ơ dài cong lưỡi) và /nɛt/. 'the' đọc lướt thành /ðə/. Ngữ dụng: Sở thích kỹ thuật số phổ biến nhất hiện nay.",
-             ai_s: "Cấu trúc so sánh sự yêu thích: 'prefer + V-ing + TO + V-ing' (thích làm việc gì HƠN việc gì). 'reading' được thích hơn 'surfing'."},
-
-            {w: "message friends", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>mes</span><span class='unstressed'>sage </span><span class='stress-mark'>friends</span>", vi: "nhắn tin cho bạn bè", vi_syn: "chat với bạn bè", p: "/ˈmɛsɪdʒ frɛndz/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>text</span> <span class='stress-mark'>friends</span></span>, <span class='grammar-verb-main'><span class='stress-mark'>chat</span> with <span class='stress-mark'>friends</span></span>",
-             s: "She spends hours messaging her friends.", vis: "Cô ấy dành hàng giờ để nhắn tin cho bạn bè.",
-             alt_s: ["Messaging her friends takes up hours of her time.", "She spends a lot of time messaging her friends."],
-             ai_n: "Trọng âm ở /ˈmɛs/ và /frɛndz/. Chú ý âm /dʒ/ bật nặng ở cuối từ message và âm /z/ rung ở friends. Ngữ dụng: Hoạt động giao tiếp xã hội ảo.",
-             ai_s: "Cấu trúc kinh điển 'spend time + V-ing' (dành thời gian làm gì). Động từ 'spend' thêm 's' theo chủ ngữ 'She', đi kèm V-ing 'messaging'."},
-
-            {w: "a mental exercise", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='unstressed'>a </span><span class='stress-mark'>men</span><span class='unstressed'>tal </span><span class='stress-mark'>ex</span><span class='unstressed'>ercise</span>", vi: "một bài tập trí óc", vi_syn: "bài rèn luyện tư duy", p: "/ə ˈmɛntl ˈɛksərsaɪz/", 
-             en_syn_html: "<span class='grammar-noun'>a <span class='stress-mark'>brain</span> <span class='stress-mark'>train</span>ing</span>",
-             s: "Doing crosswords is a mental exercise that I enjoy doing.", vis: "Chơi ô chữ là một bài tập trí óc mà tôi thích làm.",
-             alt_s: ["I enjoy doing crosswords because it is a mental exercise.", "A mental exercise that I enjoy is doing crosswords."],
-             ai_n: "Trọng âm chính ở /ˈmɛn/ và /ˈɛk/. Từ 'mental' mang nghĩa thuộc về trí não. Ngữ dụng: Các hoạt động giải trí giúp phát triển nơ-ron thần kinh.",
-             ai_s: "Danh động từ 'Doing crosswords' làm chủ ngữ số ít -> to-be 'is'. Mệnh đề quan hệ 'that I enjoy doing' dùng V-ing 'doing' theo sau động từ 'enjoy'."},
-
-            {w: "save money", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>save</span> <span class='stress-mark'>mo</span><span class='unstressed'>ney</span>", vi: "tiết kiệm tiền", vi_syn: "để dành tiền", p: "/seɪv ˈmʌni/", 
-             en_syn_html: "<span class='grammar-verb-main'>cut <span class='stress-mark'>costs</span></span>, <span class='grammar-verb-main'>be eco<span class='stress-mark'>no</span>mical</span>",
-             s: "Making your own things helps you to save money.", vis: "Tự làm đồ của riêng bạn giúp bạn tiết kiệm tiền.",
-             alt_s: ["You can save money by making your own things.", "To save money, making your own things helps."],
-             ai_n: "Trọng âm ở /seɪv/ (âm ây kéo dài, v rung) và /ˈmʌn/ (âm á). Ngữ dụng: Lợi ích kinh tế thiết thực của các sở thích DIY.",
-             ai_s: "Cấu trúc 'help + O + (to) V'. Có thể dùng 'help you save' hoặc 'help you to save' đều chính xác. 'Making' đóng vai trò chủ ngữ số ít nên 'helps' có 's'."},
-
-            {w: "creativity", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='unstressed'>crea</span><span class='stress-mark'>ti</span><span class='unstressed'>vity</span>", vi: "sự sáng tạo", vi_syn: "óc sáng tạo", p: "/ˌkriːeɪˈtɪvəti/", 
-             en_syn_html: "<span class='grammar-noun'>i<span class='stress-mark'>ma</span>gination</span>, <span class='grammar-noun'>in<span class='stress-mark'>ven</span>tiveness</span>",
-             s: "I love painting because it improves my creativity.", vis: "Tôi thích vẽ vì nó cải thiện sự sáng tạo của tôi.",
-             alt_s: ["Because it improves my creativity, I love painting.", "Painting is something I love because it improves my creativity."],
-             ai_n: "Danh từ có 5 âm tiết, trọng âm chính rơi vào /ˈtɪ/ (âm i ngắn). Hậu tố '-ity' luôn làm trọng âm lùi về âm tiết ngay trước nó. Ngữ dụng: Kỹ năng mềm cực kỳ quan trọng do các sở thích nghệ thuật mang lại.",
-             ai_s: "Động từ 'love' đi kèm V-ing 'painting'. Ở mệnh đề sau 'because', động từ 'improves' thêm 's' theo chủ ngữ số ít 'it' (thay thế cho painting)."},
-
-            {w: "improve", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='unstressed'>im</span><span class='stress-mark'>prove</span>", vi: "cải thiện", vi_syn: "làm tốt hơn, nâng cao", p: "/ɪmˈpruːv/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>bet</span>ter</span>, <span class='grammar-verb-main'>en<span class='stress-mark'>hance</span></span>",
-             s: "I enjoy learning English because I want to improve my speaking skills.", vis: "Tôi thích học tiếng Anh vì tôi muốn cải thiện kỹ năng nói của mình.",
-             alt_s: ["Because I want to improve my speaking skills, I enjoy learning English.", "I want to improve my speaking skills, so I enjoy learning English."],
-             ai_n: "Trọng âm nhấn vào âm tiết thứ hai /ˈpruːv/ (âm u dài chu môi, v rung cuối). Ngữ dụng: Mục tiêu của mọi hoạt động rèn luyện và học tập.",
-             ai_s: "Sử dụng đồng thời 2 cấu trúc: 'enjoy + V-ing' (enjoy learning) và 'want + to V' (want to improve)."},
-
-            {w: "physical health", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>phy</span><span class='unstressed'>sical </span><span class='stress-mark'>health</span>", vi: "sức khỏe thể chất", vi_syn: "thể lực", p: "/ˈfɪzɪkl hɛlθ/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>bo</span>dily <span class='stress-mark'>fit</span>ness</span>",
-             s: "Playing sports is good for your physical health.", vis: "Chơi thể thao tốt cho sức khỏe thể chất của bạn.",
-             alt_s: ["Your physical health benefits from playing sports.", "It is good for your physical health to play sports."],
-             ai_n: "Trọng âm ở /ˈfɪz/ (âm ph) và /hɛlθ/ (thò lưỡi thổi hơi /θ/). Ngữ dụng: Cụm từ chuyên môn đi đôi với 'mental health' (sức khỏe tinh thần).",
-             ai_s: "Chủ ngữ danh động từ 'Playing sports' là số ít -> to-be chia 'is'. Cấu trúc 'be good for' (tốt cho cái gì)."},
-
-            {w: "make friends", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>make</span> <span class='stress-mark'>friends</span>", vi: "kết bạn", vi_syn: "làm quen, giao lưu", p: "/meɪk frɛndz/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>so</span>cialize</span>, <span class='grammar-verb-main'><span class='stress-mark'>meet</span> <span class='stress-mark'>peo</span>ple</span>",
-             s: "Joining a club is a good way to make friends.", vis: "Tham gia một câu lạc bộ là một cách tốt để kết bạn.",
-             alt_s: ["To make friends, joining a club is a good way.", "A good way to make friends is joining a club."],
-             ai_n: "Hai đỉnh trọng âm /meɪk/ và /frɛndz/. Lưu ý 'friends' luôn ở số nhiều vì kết bạn cần ít nhất 2 người. Ngữ dụng: Lợi ích xã hội to lớn của việc có hobbies.",
-             ai_s: "Danh động từ 'Joining' đứng đầu câu làm chủ ngữ. Động từ nguyên thể có to 'to make' bổ nghĩa mục đích cho cụm 'a good way' (một cách tốt để làm gì)."},
-
-            {w: "keep in touch", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>keep</span> <span class='unstressed'>in </span><span class='stress-mark'>touch</span>", vi: "giữ liên lạc", vi_syn: "duy trì kết nối", p: "/kiːp ɪn tʌtʃ/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>stay</span> in <span class='stress-mark'>con</span>tact</span>",
-             s: "I love messaging friends to keep in touch with them.", vis: "Tôi thích nhắn tin cho bạn bè để giữ liên lạc với họ.",
-             alt_s: ["To keep in touch with them, I love messaging friends.", "Messaging friends is how I love to keep in touch with them."],
-             ai_n: "Trọng âm ở /kiːp/ (âm i dài) và /tʌtʃ/ (âm á, bật ch). Nối âm: kee-pin. Ngữ dụng: Hoạt động duy trì các mối quan hệ xã hội thông qua mạng internet.",
-             ai_s: "Động từ chỉ sự yêu thích 'love' theo sau bởi V-ing 'messaging'. 'to keep in touch' (động từ nguyên thể có to) dùng để chỉ mục đích của hành động nhắn tin."},
-
-            {w: "relaxed", type: "(adj)", typeClass: "grammar-adjective", w_html: "<span class='unstressed'>re</span><span class='stress-mark'>laxed</span>", vi: "thư giãn, thoải mái", vi_syn: "dễ chịu", p: "/rɪˈlækst/", 
-             en_syn_html: "<span class='grammar-adjective'><span class='stress-mark'>calm</span></span>, <span class='grammar-adjective'><span class='stress-mark'>chill</span></span>",
-             s: "I feel relaxed when I listen to my favorite music.", vis: "Tôi cảm thấy thư giãn khi nghe bản nhạc yêu thích của mình.",
-             alt_s: ["When I listen to my favorite music, I feel relaxed.", "Listening to my favorite music makes me feel relaxed."],
-             ai_n: "Trọng âm nhấn vào âm thứ hai /ˈlæks/. Đuôi -ed đọc là /t/ vì âm trước nó là âm vô thanh /k/ và /s/. Ngữ dụng: Tính từ mô tả trạng thái cảm xúc tĩnh lặng, hết lo âu.",
-             ai_s: "Động từ chỉ giác quan 'feel' (cảm thấy) luôn đi kèm với Tính từ (relaxed), KHÔNG đi kèm trạng từ. 'when' nối hai mệnh đề cùng ở Hiện tại đơn."},
-
-            {w: "computer skill", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='unstressed'>com</span><span class='stress-mark'>pu</span><span class='unstressed'>ter </span><span class='stress-mark'>skill</span>", vi: "kỹ năng máy tính", vi_syn: "trình độ tin học", p: "/kəmˈpjuːtər skɪl/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>I</span>T a<span class='stress-mark'>bi</span>lity</span>",
-             s: "Surfing the net helps improve my computer skills.", vis: "Lướt mạng giúp cải thiện kỹ năng máy tính của tôi.",
-             alt_s: ["My computer skills are improved by surfing the net.", "Surfing the net is helpful to improve my computer skills."],
-             ai_n: "Trọng âm ở /ˈpjuː/ (âm iu) và /skɪl/. Ngữ dụng: Kỹ năng thiết yếu của thế kỷ 21, thường được trau dồi qua các sở thích kỹ thuật số.",
-             ai_s: "Danh động từ 'Surfing' làm chủ ngữ số ít -> 'helps' thêm 's'. Cấu trúc 'help + V(bare)' cho phép động từ 'improve' đứng ngay sau 'helps' mà không cần 'to'."},
-
-            {w: "learn something about IT", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>learn</span> <span class='stress-mark'>some</span><span class='unstressed'>thing a</span><span class='stress-mark'>bout</span> <span class='stress-mark'>I</span><span class='stress-mark'>T</span>", vi: "học điều gì đó về CNTT", vi_syn: "tìm hiểu tin học", p: "/lɜːn ˈsʌmθɪŋ əˈbaʊt ˌaɪˈtiː/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>stu</span>dy infor<span class='stress-mark'>ma</span>tion tech<span class='stress-mark'>no</span>logy</span>",
-             s: "I fancy learning something about IT.", vis: "Tôi thích học điều gì đó về Công nghệ thông tin.",
-             alt_s: ["Learning something about IT is what I fancy.", "I really enjoy learning something about IT."],
-             ai_n: "Cụm dài với nhiều trọng âm: /lɜːn/, /ˈsʌm/ và ˌaɪˈtiː (nhấn vào chữ T). Chữ T đọc là /tiː/. Ngữ dụng: IT = Information Technology (Công nghệ thông tin).",
-             ai_s: "Động từ 'fancy' (= like/enjoy) mang nghĩa thích thú làm gì đó, BẮT BUỘC theo sau bởi danh động từ V-ing (learning)."},
-
-            {w: "be crazy about", type: "(phr)", typeClass: "grammar-phrase", w_html: "<span class='unstressed'>be </span><span class='stress-mark'>cra</span><span class='unstressed'>zy a</span><span class='stress-mark'>bout</span>", vi: "phát cuồng vì", vi_syn: "cực kỳ đam mê", p: "/bi ˈkreɪzi əˈbaʊt/", 
-             en_syn_html: "<span class='grammar-phrase'>be <span class='stress-mark'>mad</span> a<span class='stress-mark'>bout</span></span>, <span class='grammar-phrase'>be ob<span class='stress-mark'>sessed</span> with</span>",
-             s: "My younger brother is crazy about playing video games.", vis: "Em trai tôi phát cuồng vì chơi game.",
-             alt_s: ["Playing video games is what my younger brother is crazy about.", "My younger brother has a crazy passion for playing video games."],
-             ai_n: "Trọng âm nhấn vào tính từ /ˈkreɪ/ (âm ây) và giới từ /ˈbaʊt/ (âm ao). Ngữ dụng: Dùng để miêu tả mức độ yêu thích cao nhất, đôi khi mang sắc thái tiêu cực vì quá đam mê.",
-             ai_s: "Cấu trúc to-be + Tính từ + Giới từ. Theo sau giới từ 'about' bắt buộc là Danh từ hoặc Danh động từ V-ing (playing). 'is' chia theo chủ ngữ số ít 'brother'."},
-
-            {w: "be fond of", type: "(phr)", typeClass: "grammar-phrase", w_html: "<span class='unstressed'>be </span><span class='stress-mark'>fond</span> <span class='unstressed'>of</span>", vi: "rất thích", vi_syn: "yêu mến", p: "/bi fɒnd əv/", 
-             en_syn_html: "<span class='grammar-phrase'>be <span class='stress-mark'>keen</span> on</span>, <span class='grammar-phrase'><span class='stress-mark'>real</span>ly <span class='stress-mark'>like</span></span>",
-             s: "She is fond of collecting dolls.", vis: "Cô ấy rất thích sưu tập búp bê.",
-             alt_s: ["Collecting dolls is what she is fond of.", "She is really fond of collecting dolls."],
-             ai_n: "Trọng âm rơi vào tính từ /fɒnd/ (âm o ngắn mở to miệng). Giới từ 'of' lướt thành /əv/ và nối âm: fon-dəv. Ngữ dụng: Từ chỉ sự yêu thích nhẹ nhàng, gắn bó lâu dài.",
-             ai_s: "Cấu trúc tương tự: to-be + fond + of + V-ing. 'collecting' là danh động từ. 'is' chia theo chủ ngữ 'She'."},
-
-            {w: "be interested in", type: "(phr)", typeClass: "grammar-phrase", w_html: "<span class='unstressed'>be </span><span class='stress-mark'>in</span><span class='unstressed'>terested </span><span class='stress-mark'>in</span>", vi: "quan tâm, hứng thú", vi_syn: "thích thú, say mê", p: "/bi ˈɪntrəstɪd ɪn/", 
-             en_syn_html: "<span class='grammar-phrase'>be <span class='stress-mark'>fas</span>cinated by</span>, <span class='grammar-phrase'>be <span class='stress-mark'>in</span>to</span>",
-             s: "Are you interested in learning to play a musical instrument?", vis: "Bạn có hứng thú với việc học chơi một loại nhạc cụ không?",
-             alt_s: ["Is learning to play a musical instrument something you are interested in?", "Do you have an interest in learning to play a musical instrument?"],
-             ai_n: "Cụm tính từ mang trọng âm ở /ˈɪn/ (đọc 3 âm tiết in-trəs-tɪd thay vì 4 âm). Khi đọc nhanh, chữ 'in' cuối nối âm. Ngữ dụng: Cách diễn đạt trình độ cao thay cho từ 'like' hay 'love'.",
-             ai_s: "Câu hỏi đảo động từ to-be 'Are' lên đầu. Theo sau giới từ 'in' là V-ing 'learning'. Cụm 'learn to play' chỉ việc học kỹ năng mới."},
-
-            {w: "be not into", type: "(phr)", typeClass: "grammar-phrase", w_html: "<span class='unstressed'>be </span><span class='stress-mark'>not</span> <span class='stress-mark'>in</span><span class='unstressed'>to</span>", vi: "không hứng thú", vi_syn: "không thích", p: "/bi nɒt ˈɪntuː/", 
-             en_syn_html: "<span class='grammar-phrase'><span class='stress-mark'>dis</span>like</span>, <span class='grammar-phrase'>be <span class='stress-mark'>not</span> a <span class='stress-mark'>fan</span> of</span>",
-             s: "I'm not into watching action films; I prefer comedies.", vis: "Tôi không hứng thú xem phim hành động; tôi thích phim hài hơn.",
-             alt_s: ["Watching action films is not something I'm into; I prefer comedies.", "I don't like watching action films; I prefer comedies."],
-             ai_n: "Hai đỉnh trọng âm /nɒt/ và /ˈɪn/. Ngữ dụng: Cụm từ lóng rất phổ biến (be into something = rất thích cái gì). Thêm 'not' để phủ định nhẹ nhàng thay vì dùng 'hate'.",
-             ai_s: "Cấu trúc to-be + into + V-ing. 'watching' được dùng sau giới từ 'into'. Vế sau dùng động từ 'prefer' để chỉ sở thích thay thế."},
-
-            {w: "take photo", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>take</span> <span class='stress-mark'>pho</span><span class='unstressed'>to</span>", vi: "chụp ảnh", vi_syn: "bấm máy, nhiếp ảnh", p: "/teɪk ˈfoʊtoʊ/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>cap</span>ture an <span class='stress-mark'>i</span>mage</span>, <span class='grammar-verb-main'><span class='stress-mark'>snap</span> a <span class='stress-mark'>pic</span>ture</span>",
-             s: "My dad loves to take photos of our family.", vis: "Bố tôi thích chụp ảnh gia đình chúng tôi.",
-             alt_s: ["Taking photos of our family is what my dad loves.", "My dad enjoys taking photos of our family."],
-             ai_n: "Hai đỉnh trọng âm /teɪk/ và /ˈfoʊ/. Âm 'ph' đọc là /f/. Chú ý âm t ở giữa photo đọc là flap T /d/ ở Mỹ. Ngữ dụng: Sở thích nghệ thuật hình ảnh.",
-             ai_s: "Động từ 'loves' (chia 's' theo số ít) theo sau bởi 'to V' (to take). 'photos' luôn đếm được số nhiều khi nói về việc đi chụp ảnh chung chung."},
-
-            {w: "go to museum", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>go</span> <span class='unstressed'>to mu</span><span class='stress-mark'>se</span><span class='unstressed'>um</span>", vi: "đi đến viện bảo tàng", vi_syn: "thăm bảo tàng", p: "/ɡoʊ tə mjuˈziːəm/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>vi</span>sit a mu<span class='stress-mark'>se</span>um</span>",
-             s: "I detest going to museums because it's boring.", vis: "Tôi ghét đi bảo tàng vì nó nhàm chán.",
-             alt_s: ["Because it's boring, I detest going to museums.", "Going to museums is detested by me because it's boring."],
-             ai_n: "Trọng âm ở /ɡoʊ/ và /ˈziː/. Từ to đọc lướt thành /tə/. Ngữ dụng: Hoạt động khám phá nghệ thuật, lịch sử, khoa học.",
-             ai_s: "Động từ 'detest' (ghét cay ghét đắng) BẮT BUỘC theo sau bởi V-ing (going). 'museums' dùng dạng số nhiều để chỉ hành động đi bảo tàng nói chung."},
-
-            {w: "see new exhibit", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>see</span> <span class='stress-mark'>new</span> <span class='unstressed'>ex</span><span class='stress-mark'>hi</span><span class='unstressed'>bit</span>", vi: "xem triển lãm mới", vi_syn: "chiêm ngưỡng hiện vật mới", p: "/siː njuː ɪɡˈzɪbɪt/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>view</span> <span class='stress-mark'>new</span> dis<span class='stress-mark'>play</span></span>",
-             s: "We enjoy seeing new exhibits at the art gallery.", vis: "Chúng tôi thích xem các triển lãm mới tại phòng trưng bày nghệ thuật.",
-             alt_s: ["Seeing new exhibits at the art gallery is what we enjoy.", "We like seeing new exhibits at the art gallery."],
-             ai_n: "Ba đỉnh trọng âm ở /siː/, /njuː/ và /ˈzɪb/. Chú ý âm h trong exhibit bị CÂM, x đọc là /ɡz/ -> /ɪɡˈzɪbɪt/. Ngữ dụng: Việc quan sát các bộ sưu tập hoặc tác phẩm nghệ thuật mới.",
-             ai_s: "Động từ 'enjoy' BẮT BUỘC đi với V-ing (seeing). Giới từ 'at' dùng trước địa điểm công cộng cụ thể 'the art gallery'."},
-
-            {w: "go out", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>go</span> <span class='stress-mark'>out</span>", vi: "đi ra ngoài, đi chơi", vi_syn: "đi la cà", p: "/ɡoʊ aʊt/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>leave</span> the <span class='stress-mark'>house</span></span>, <span class='grammar-verb-main'><span class='stress-mark'>hang</span> <span class='stress-mark'>out</span></span>",
-             s: "My parents don't like going out too late.", vis: "Bố mẹ tôi không thích đi chơi quá khuya.",
-             alt_s: ["Going out too late is not something my parents like.", "My parents dislike going out too late."],
-             ai_n: "Hai đỉnh trọng âm /ɡoʊ/ và /aʊt/. Nối âm: go-wout. Ngữ dụng: Cụm từ phổ thông nhất để chỉ việc ra khỏi nhà với mục đích giải trí, tiệc tùng.",
-             ai_s: "Câu phủ định dùng 'don't' do chủ ngữ số nhiều 'My parents'. Động từ 'like' + V-ing (going). 'too late' là cụm trạng từ chỉ mức độ thái quá."},
-
-            {w: "chef", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>chef</span>", vi: "đầu bếp", vi_syn: "bếp trưởng", p: "/ʃɛf/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>cook</span></span>",
-             s: "My dream is to become a famous chef.", vis: "Ước mơ của tôi là trở thành một đầu bếp nổi tiếng.",
-             alt_s: ["To become a famous chef is my dream.", "Becoming a famous chef is my dream."],
-             ai_n: "Từ đơn âm tiết. Cực kỳ lưu ý: chữ 'ch' ở đây KHÔNG phải là /tʃ/ (ch) mà là âm vay mượn tiếng Pháp /ʃ/ (sờ nặng). Đọc giống như 'shef'. Ngữ dụng: Đầu bếp chuyên nghiệp trong nhà hàng lớn.",
-             ai_s: "Cấu trúc To be + to V (is to become) diễn tả mục đích, kế hoạch hoặc giấc mơ. Mạo từ 'a' đi trước danh từ đếm được số ít 'chef'."},
-
-            {w: "pumpkin soup", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>pump</span><span class='unstressed'>kin </span><span class='stress-mark'>soup</span>", vi: "súp bí ngô", vi_syn: "canh bí đỏ", p: "/ˈpʌmpkɪn suːp/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>squash</span> <span class='stress-mark'>soup</span></span>",
-             s: "I hate eating pumpkin soup.", vis: "Tôi ghét ăn súp bí ngô.",
-             alt_s: ["Eating pumpkin soup is what I hate.", "I detest eating pumpkin soup."],
-             ai_n: "Hai đỉnh trọng âm ở /ˈpʌmp/ và /suːp/. Chữ p thứ 2 đọc rất nhẹ. Âm u trong soup kéo dài. Ngữ dụng: Món ăn Âu truyền thống, liên quan đến sở thích nấu nướng (cooking).",
-             ai_s: "Động từ chỉ sự ghét 'hate' đi kèm với V-ing (eating). 'pumpkin soup' là danh từ không đếm được nên không có mạo từ."},
-
-            {w: "watch the cartoon", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>watch</span> <span class='unstressed'>the car</span><span class='stress-mark'>toon</span>", vi: "xem phim hoạt hình", vi_syn: "coi hoạt hình", p: "/wɒtʃ ðə kɑːrˈtuːn/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>view</span> an ani<span class='stress-mark'>ma</span>tion</span>",
-             s: "My little sister loves watching cartoons all day.", vis: "Em gái nhỏ của tôi thích xem phim hoạt hình cả ngày.",
-             alt_s: ["Watching cartoons all day is what my little sister loves.", "My little sister adores watching cartoons all day."],
-             ai_n: "Trọng âm ở /wɒtʃ/ (bật âm ch) và /ˈtuːn/ (âm u dài). Từ cartoon trọng âm rơi vào âm tiết thứ hai. Ngữ dụng: Sở thích giải trí phổ biến của trẻ em.",
-             ai_s: "Động từ 'loves' thêm 's' theo chủ ngữ số ít 'My little sister'. 'watching' là V-ing đi sau love. 'cartoons' ở dạng số nhiều đếm được."},
-
-            {w: "enjoy", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='unstressed'>en</span><span class='stress-mark'>joy</span>", vi: "thích", vi_syn: "tận hưởng, thích thú", p: "/ɪnˈdʒɔɪ/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>like</span></span>, <span class='grammar-verb-main'><span class='stress-mark'>love</span></span>, <span class='grammar-verb-main'><span class='stress-mark'>fan</span>cy</span>",
-             s: "I enjoy reading books in my free time.", vis: "Tôi thích đọc sách vào thời gian rảnh.",
-             alt_s: ["Reading books in my free time is what I enjoy.", "In my free time, I enjoy reading books."],
-             ai_n: "Trọng âm rơi vào âm tiết thứ hai /ˈdʒɔɪ/. Bật môi dày âm /dʒ/ và kết thúc bằng âm kép /ɔɪ/ (oi). Ngữ dụng: Động từ then chốt nhất trong Unit 1 để miêu tả sở thích.",
-             ai_s: "Quy tắc vàng: 'enjoy' CHỈ ĐI VỚI V-ing (reading), TUYỆT ĐỐI không đi với 'to V' (sai: enjoy to read). 'books' ở dạng số nhiều chung chung."},
-
-            {w: "detest", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='unstressed'>de</span><span class='stress-mark'>test</span>", vi: "ghét cay ghét đắng", vi_syn: "căm ghét", p: "/dɪˈtɛst/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>hate</span></span>, <span class='grammar-verb-main'><span class='stress-mark'>loathe</span></span>, <span class='grammar-verb-main'>de<span class='stress-mark'>spise</span></span>",
-             s: "I detest doing homework on weekends.", vis: "Tôi ghét cay ghét đắng việc làm bài tập về nhà vào cuối tuần.",
-             alt_s: ["Doing homework on weekends is what I detest.", "I hate doing homework on weekends."],
-             ai_n: "Trọng âm nhấn mạnh vào âm thứ hai /ˈtɛst/. Cụm phụ âm /st/ ở cuối phải xát rõ. Ngữ dụng: Động từ mang sắc thái tiêu cực mạnh nhất, mạnh hơn cả 'hate'.",
-             ai_s: "Tương tự 'enjoy', động từ 'detest' BẮT BUỘC chỉ đi với V-ing (doing). 'on weekends' (có s) chỉ sự lặp lại vào mọi dịp cuối tuần."},
-
-            {w: "cruel", type: "(adj)", typeClass: "grammar-adjective", w_html: "<span class='stress-mark'>cru</span><span class='unstressed'>el</span>", vi: "độc ác, tàn nhẫn", vi_syn: "hung ác", p: "/ˈkruːəl/", 
-             en_syn_html: "<span class='grammar-adjective'><span class='stress-mark'>mean</span></span>, <span class='grammar-adjective'><span class='stress-mark'>vi</span>cious</span>",
-             s: "It is cruel to harm animals.", vis: "Thật tàn nhẫn khi làm hại động vật.",
-             alt_s: ["Harming animals is cruel.", "To harm animals is cruel."],
-             ai_n: "Trọng âm ở âm đầu /ˈkruː/ (u kéo dài). Âm /əl/ lướt nhẹ với lưỡi uốn lên. Ngữ dụng: Tính từ phê phán các hành vi vô đạo đức, bạo lực.",
-             ai_s: "Cấu trúc chủ ngữ giả 'It is + Adjective + to V' (Thật là... khi làm việc gì). Ở đây là 'to harm' (làm hại)."},
-
-            {w: "harm animals", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>harm</span> <span class='stress-mark'>a</span><span class='unstressed'>nimals</span>", vi: "làm hại động vật", vi_syn: "ngược đãi động vật", p: "/hɑːrm ˈænɪməlz/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>hurt</span> <span class='stress-mark'>a</span>nimals</span>, <span class='grammar-verb-main'>a<span class='stress-mark'>buse</span> <span class='stress-mark'>a</span>nimals</span>",
-             s: "We detest harming animals.", vis: "Chúng tôi ghét việc làm hại động vật.",
-             alt_s: ["Harming animals is what we detest.", "We hate harming animals."],
-             ai_n: "Hai đỉnh trọng âm /hɑːrm/ (a dài cuộn lưỡi) và /ˈæn/ (a bẹt). Chú ý âm /z/ ở cuối animals. Ngữ dụng: Hành động lên án trong chủ đề sở thích và lối sống.",
-             ai_s: "Động từ 'detest' lại xuất hiện, theo sau bắt buộc là V-ing 'harming'. 'animals' đóng vai trò tân ngữ số nhiều (nói chung)."},
-
-            {w: "hurt", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>hurt</span>", vi: "làm đau", vi_syn: "làm tổn thương", p: "/hɜːrt/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>harm</span></span>, <span class='grammar-verb-main'><span class='stress-mark'>in</span>jure</span>",
-             s: "You should not hurt your friends' feelings.", vis: "Bạn không nên làm tổn thương cảm xúc của bạn bè.",
-             alt_s: ["Hurting your friends' feelings is something you should not do.", "It is wrong to hurt your friends' feelings."],
-             ai_n: "Từ đơn âm tiết. Âm ơ dài /ɜːr/ cuộn lưỡi kết hợp bật âm /t/ dứt khoát. Ngữ dụng: Làm đau về thể xác hoặc tổn thương về mặt tinh thần (feelings).",
-             ai_s: "Động từ khuyết thiếu 'should not' đi với động từ nguyên mẫu 'hurt'. Sở hữu cách 'friends'' (có dấu phẩy sau s) vì 'friends' đã là số nhiều."},
-
-            {w: "invitation", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='unstressed'>invi</span><span class='stress-mark'>ta</span><span class='unstressed'>tion</span>", vi: "lời mời", vi_syn: "giấy mời", p: "/ˌɪnvɪˈteɪʃən/", 
-             en_syn_html: "<span class='grammar-noun'>re<span class='stress-mark'>quest</span> to at<span class='stress-mark'>tend</span></span>",
-             s: "Thank you for the invitation to your party.", vis: "Cảm ơn vì lời mời đến bữa tiệc của bạn.",
-             alt_s: ["I appreciate the invitation to your party.", "Thanks for inviting me to your party."],
-             ai_n: "Trọng âm chính ở âm tiết thứ 3 /ˈteɪ/ (âm ây). Đuôi -tion khiến trọng âm lùi về trước. Ngữ dụng: Dùng trong giao tiếp xã hội khi tổ chức/tham gia sự kiện.",
-             ai_s: "Cấu trúc 'Thank you FOR + Noun/V-ing'. Mạo từ 'the' xác định lời mời này là một lời mời cụ thể mà người nghe vừa gửi."},
-
-            {w: "accept", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='unstressed'>ac</span><span class='stress-mark'>cept</span>", vi: "chấp nhận", vi_syn: "đồng ý, nhận lời", p: "/əkˈsɛpt/", 
-             en_syn_html: "<span class='grammar-verb-main'>a<span class='stress-mark'>gree</span> to</span>, <span class='grammar-verb-main'><span class='stress-mark'>take</span></span>",
-             s: "I'm happy to accept your invitation.", vis: "Tôi rất vui khi chấp nhận lời mời của bạn.",
-             alt_s: ["I am glad to accept your invitation.", "Accepting your invitation makes me happy."],
-             ai_n: "Trọng âm ở âm tiết thứ hai /ˈsɛpt/. Âm đầu đọc lướt là schwa /ə/. Hai chữ c đọc là /ks/ -> /əkˈsɛpt/. Ngữ dụng: Động từ phản hồi tích cực trước lời mời hoặc đề nghị.",
-             ai_s: "Cấu trúc 'To be + Adjective + to V' (rất vui khi ĐƯỢC làm gì). Động từ 'accept' ở dạng nguyên mẫu có to."},
-
-            {w: "judo club", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>ju</span><span class='unstressed'>do </span><span class='stress-mark'>club</span>", vi: "câu lạc bộ judo", vi_syn: "võ đường judo", p: "/ˈdʒuːdoʊ klʌb/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>mar</span>tial <span class='stress-mark'>arts</span> <span class='stress-mark'>club</span></span>",
-             s: "My brother enjoys going to the judo club.", vis: "Anh trai tôi thích đến câu lạc bộ judo.",
-             alt_s: ["Going to the judo club is what my brother enjoys.", "My brother is fond of going to the judo club."],
-             ai_n: "Hai đỉnh trọng âm /ˈdʒuː/ và /klʌb/. Âm dʒ bật môi dày. Ngữ dụng: Nơi rèn luyện võ thuật thể thao Nhật Bản, rất phổ biến cho học sinh.",
-             ai_s: "Động từ 'enjoys' BẮT BUỘC theo sau bởi V-ing (going). Cụm địa điểm 'the judo club' dùng mạo từ 'the' vì đây là câu lạc bộ cụ thể người anh trai tham gia."},
-
-            {w: "home-made", type: "(adj)", typeClass: "grammar-adjective", w_html: "<span class='stress-mark'>home</span><span class='unstressed'>-</span><span class='stress-mark'>made</span>", vi: "nhà làm", vi_syn: "tự làm, thủ công", p: "/ˌhoʊmˈmeɪd/", 
-             en_syn_html: "<span class='grammar-adjective'><span class='stress-mark'>hand</span>made</span>",
-             s: "I prefer eating home-made food.", vis: "Tôi thích ăn đồ ăn nhà làm hơn.",
-             alt_s: ["Eating home-made food is what I prefer.", "I like eating home-made food more than fast food."],
-             ai_n: "Tính từ ghép có hai trọng âm ngang nhau /hoʊm/ và /meɪd/. Ngữ dụng: Miêu tả đồ ăn hoặc vật dụng được làm thủ công tại nhà thay vì mua từ nhà máy.",
-             ai_s: "Động từ 'prefer' (thích hơn) có thể đi với 'to V' hoặc 'V-ing'. Ở đây dùng V-ing 'eating'. 'home-made' là tính từ bổ nghĩa cho danh từ không đếm được 'food'."},
-
-            {w: "invite", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='unstressed'>in</span><span class='stress-mark'>vite</span>", vi: "mời", vi_syn: "rủ rên", p: "/ɪnˈvaɪt/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>ask</span> <span class='stress-mark'>o</span>ver</span>",
-             s: "I want to invite you to my birthday party.", vis: "Tôi muốn mời bạn đến bữa tiệc sinh nhật của tôi.",
-             alt_s: ["I would like to invite you to my birthday party.", "Inviting you to my birthday party is what I want."],
-             ai_n: "Trọng âm rơi vào âm tiết thứ hai /ˈvaɪt/ (âm a-i, t bật). Ngữ dụng: Hành động lịch sự mở lời đề nghị ai đó tham gia sự kiện.",
-             ai_s: "Cấu trúc 'want + to V' (muốn làm gì). 'Invite someone TO somewhere' (mời ai đó TỚI đâu)."},
-
-            {w: "paper folding", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>pa</span><span class='unstressed'>per </span><span class='stress-mark'>fol</span><span class='unstressed'>ding</span>", vi: "gấp giấy", vi_syn: "xếp giấy, origami", p: "/ˈpeɪpər ˈfoʊldɪŋ/", 
-             en_syn_html: "<span class='grammar-noun'>o<span class='stress-mark'>ri</span>gami</span>",
-             s: "Paper folding, or origami, is a creative hobby.", vis: "Gấp giấy, hay origami, là một sở thích sáng tạo.",
-             alt_s: ["Origami, or paper folding, is considered a creative hobby.", "A creative hobby is paper folding, also known as origami."],
-             ai_n: "Danh động từ ghép với trọng âm ở /ˈpeɪ/ và /ˈfoʊl/. Âm o trong fold là âm đôi /oʊ/. Ngữ dụng: Nghệ thuật gấp giấy Nhật Bản, đòi hỏi sự kiên nhẫn cao.",
-             ai_s: "Danh động từ 'Paper folding' làm chủ ngữ số ít -> to-be 'is'. Mệnh đề phụ ', or origami,' được kẹp giữa hai dấu phẩy để giải thích thêm tên gọi khác."},
-
-            {w: "famous", type: "(adj)", typeClass: "grammar-adjective", w_html: "<span class='stress-mark'>fa</span><span class='unstressed'>mous</span>", vi: "nổi tiếng", vi_syn: "lừng danh", p: "/ˈfeɪməs/", 
-             en_syn_html: "<span class='grammar-adjective'>well-<span class='stress-mark'>known</span></span>, <span class='grammar-adjective'><span class='stress-mark'>po</span>pular</span>",
-             s: "She wants to be a famous singer.", vis: "Cô ấy muốn trở thành một ca sĩ nổi tiếng.",
-             alt_s: ["Becoming a famous singer is what she wants.", "To be a famous singer is her dream."],
-             ai_n: "Trọng âm ở âm đầu /ˈfeɪ/ (âm ây). Đuôi -ous đọc lướt thành schwa /əs/. Ngữ dụng: Dùng để miêu tả người/vật được đông đảo công chúng biết đến.",
-             ai_s: "Cấu trúc 'wants to be' (muốn trở thành). 'famous' đứng trước danh từ đếm được 'singer' để bổ nghĩa, đi kèm mạo từ 'a'."},
-
-            {w: "snowboard", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>snow</span><span class='unstressed'>board</span>", vi: "trượt tuyết bằng ván", vi_syn: "lướt ván tuyết", p: "/ˈsnoʊbɔːrd/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>go</span> snow<span class='stress-mark'>boar</span>ding</span>",
-             s: "My friend likes to snowboard in the winter.", vis: "Bạn tôi thích trượt tuyết bằng ván vào mùa đông.",
-             alt_s: ["In the winter, my friend likes to snowboard.", "My friend enjoys snowboarding in the winter."],
-             ai_n: "Danh từ kiêm động từ ghép. Trọng âm ở âm đầu /ˈsnoʊ/. Âm /bɔːrd/ cong lưỡi. Ngữ dụng: Môn thể thao mùa đông cảm giác mạnh (khác với ski - trượt bằng 2 thanh dài).",
-             ai_s: "Động từ 'likes' chia 's' theo chủ ngữ số ít. 'like' có thể đi với 'to V' (to snowboard) hoặc 'V-ing' (snowboarding)."},
-
-            {w: "balance", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>ba</span><span class='unstressed'>lance</span>", vi: "giữ thăng bằng", vi_syn: "cân bằng", p: "/ˈbæləns/", 
-             en_syn_html: "<span class='grammar-verb-main'>e<span class='stress-mark'>qua</span>lize</span>, <span class='grammar-verb-main'><span class='stress-mark'>stea</span>dy</span>",
-             s: "You need to balance work and leisure time.", vis: "Bạn cần cân bằng giữa công việc và thời gian giải trí.",
-             alt_s: ["Balancing work and leisure time is what you need.", "It is necessary for you to balance work and leisure time."],
-             ai_n: "Trọng âm ở âm bẹt đầu tiên /ˈbæl/. Âm tiết thứ hai lướt nhẹ /əns/ với âm s xát cuối. Ngữ dụng: Động từ chỉ hành động phân bổ thời gian hợp lý hoặc giữ tư thế vật lý không bị ngã.",
-             ai_s: "Cấu trúc 'need to V' (cần phải làm gì). 'balance' đi thẳng với 2 tân ngữ 'work' và 'leisure time' nối bằng liên từ 'and'."},
-
-            {w: "muscle", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>mus</span><span class='unstressed'>cle</span>", vi: "cơ bắp", vi_syn: "bắp thịt", p: "/ˈmʌsəl/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>brawn</span></span>",
-             s: "Playing sports helps develop your muscles.", vis: "Chơi thể thao giúp phát triển cơ bắp của bạn.",
-             alt_s: ["Your muscles are developed by playing sports.", "Developing your muscles is helped by playing sports."],
-             ai_n: "LỖI PHÁT ÂM PHỔ BIẾN: Chữ 'c' trong từ này BỊ CÂM HOÀN TOÀN. Đọc là /ˈmʌ-səl/ chứ không phải /mʌs-kəl/. Ngữ dụng: Từ khóa sinh học liên quan trực tiếp đến ích lợi của thể thao.",
-             ai_s: "Danh động từ 'Playing sports' làm chủ ngữ số ít -> 'helps' thêm 's'. Cấu trúc 'help + V(bare)' (help develop). 'muscles' ở dạng số nhiều."},
-
-            {w: "strength", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>strength</span>", vi: "sức mạnh", vi_syn: "thể lực, độ khỏe", p: "/strɛŋθ/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>po</span>wer</span>, <span class='grammar-noun'><span class='stress-mark'>for</span>ce</span>",
-             s: "Doing judo improves your physical strength.", vis: "Tập judo giúp cải thiện sức mạnh thể chất của bạn.",
-             alt_s: ["Your physical strength is improved by doing judo.", "Improving your physical strength is a benefit of doing judo."],
-             ai_n: "Một từ rất khó đọc! Chứa cụm 3 phụ âm /str/, âm mũi /ŋ/ và âm thò lưỡi /θ/ ở cuối. Phải phát âm đủ các thành phần. Ngữ dụng: Lợi ích cốt lõi của các môn võ thuật và nâng tạ.",
-             ai_s: "Chủ ngữ danh động từ 'Doing judo' -> động từ 'improves' thêm 's'. Tính từ 'physical' bổ nghĩa cho danh từ trừu tượng 'strength'."},
-
-            {w: "reduce stress", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='unstressed'>re</span><span class='stress-mark'>duce</span> <span class='stress-mark'>stress</span>", vi: "giảm căng thẳng", vi_syn: "giải tỏa áp lực", p: "/rɪˈdjuːs strɛs/", 
-             en_syn_html: "<span class='grammar-verb-main'>re<span class='stress-mark'>lieve</span> <span class='stress-mark'>ten</span>sion</span>",
-             s: "Listening to music helps to reduce stress.", vis: "Nghe nhạc giúp giảm căng thẳng.",
-             alt_s: ["Stress is reduced by listening to music.", "To reduce stress, listening to music helps."],
-             ai_n: "Trọng âm rơi vào /ˈdjuːs/ và /strɛs/. Hai từ này đứng cạnh nhau tạo thành cụm 3 phụ âm s-s-tr liên tiếp rất cần kiểm soát hơi. Ngữ dụng: Lý do lớn nhất để con người tìm đến các sở thích giải trí.",
-             ai_s: "Danh động từ 'Listening to music' làm chủ ngữ số ít -> động từ 'helps' thêm 's'. 'to reduce stress' (to V) chỉ mục đích."},
-
-            {w: "be good for", type: "(phr)", typeClass: "grammar-phrase", w_html: "<span class='unstressed'>be </span><span class='stress-mark'>good</span> <span class='unstressed'>for</span>", vi: "tốt cho", vi_syn: "có lợi cho", p: "/bi ɡʊd fɔːr/", 
-             en_syn_html: "<span class='grammar-phrase'>be <span class='stress-mark'>be</span>ne<span class='stress-mark'>fi</span>cial to</span>",
-             s: "Exercising is good for your health.", vis: "Tập thể dục thì tốt cho sức khỏe của bạn.",
-             alt_s: ["Your health benefits from exercising.", "It is good for your health to exercise."],
-             ai_n: "Cụm tính từ mang trọng âm ở /ɡʊd/ (u ngắn). Ngữ dụng: Cách diễn đạt phổ thông và tự nhiên nhất để nói về lợi ích của một thói quen.",
-             ai_s: "Danh động từ 'Exercising' làm chủ ngữ số ít -> to-be 'is'. Cấu trúc 'To be + Adjective + for + Noun' (Tốt cho cái gì)."},
-
-            {w: "bracelet", type: "(n)", typeClass: "grammar-noun", w_html: "<span class='stress-mark'>brace</span><span class='unstressed'>let</span>", vi: "vòng tay", vi_syn: "chuỗi hạt đeo tay", p: "/ˈbreɪslɪt/", 
-             en_syn_html: "<span class='grammar-noun'><span class='stress-mark'>wrist</span>band</span>",
-             s: "I like making bracelets for my friends.", vis: "Tôi thích làm vòng tay cho bạn bè.",
-             alt_s: ["Making bracelets for my friends is what I like.", "I enjoy making bracelets for my friends."],
-             ai_n: "Trọng âm ở âm đầu /ˈbreɪs/. Cữ c đọc là âm s /s/. Âm tiết thứ 2 đọc lướt là /lɪt/. Ngữ dụng: Đồ trang sức thủ công tự làm (DIY), rất được giới trẻ ưa chuộng.",
-             ai_s: "Động từ chỉ sở thích 'like' đi kèm với V-ing 'making'. 'bracelets' ở dạng số nhiều. Giới từ 'for' chỉ đối tượng nhận (cho ai đó)."},
-
-            {w: "patient", type: "(adj)", typeClass: "grammar-adjective", w_html: "<span class='stress-mark'>pa</span><span class='unstressed'>tient</span>", vi: "kiên nhẫn", vi_syn: "nhẫn nại, kiên trì", p: "/ˈpeɪʃnt/", 
-             en_syn_html: "<span class='grammar-adjective'>per<span class='stress-mark'>se</span>vering</span>, <span class='grammar-adjective'><span class='stress-mark'>to</span>lerant</span>",
-             s: "You need to be patient to learn knitting.", vis: "Bạn cần phải kiên nhẫn để học đan len.",
-             alt_s: ["Learning knitting requires you to be patient.", "To learn knitting, you need to be patient."],
-             ai_n: "Trọng âm ở ngay âm đầu /ˈpeɪ/. Chữ 't' ở giữa biến thành âm xát /ʃ/ (sờ nặng). Ngữ dụng: Phẩm chất tính cách bắt buộc phải có cho các môn như câu cá, sưu tập, xếp hình.",
-             ai_s: "Tính từ 'patient' bắt buộc phải đứng sau động từ to-be (to be patient). 'to learn knitting' (to V) chỉ mục đích của sự kiên nhẫn này."},
-
-            {w: "do judo", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>do</span> <span class='stress-mark'>ju</span><span class='unstressed'>do</span>", vi: "tập võ judo", vi_syn: "luyện judo", p: "/duː ˈdʒuːdoʊ/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>prac</span>tice <span class='stress-mark'>ju</span>do</span>",
-             s: "I prefer doing judo to playing football.", vis: "Tôi thích tập judo hơn là chơi bóng đá.",
-             alt_s: ["I like doing judo more than playing football.", "Doing judo is preferable to playing football for me."],
-             ai_n: "Hai trọng âm ở /duː/ và /ˈdʒuː/. Chú ý âm /dʒ/ bật môi dày. Ngữ dụng: Các môn võ thuật (judo, karate, taekwondo) BẮT BUỘC kết hợp với động từ 'do', không bao giờ dùng 'play'.",
-             ai_s: "Cấu trúc ưu tiên: 'prefer + V-ing + TO + V-ing'. Ở đây 'doing judo' (tập judo) được thích hơn 'playing football' (chơi bóng đá)."},
-
-            {w: "make models", type: "(v)", typeClass: "grammar-verb-main", w_html: "<span class='stress-mark'>make</span> <span class='stress-mark'>mo</span><span class='unstressed'>dels</span>", vi: "làm mô hình", vi_syn: "lắp ráp mô hình", p: "/meɪk ˈmɒdəlz/", 
-             en_syn_html: "<span class='grammar-verb-main'><span class='stress-mark'>build</span> <span class='stress-mark'>mo</span>dels</span>",
-             s: "He is keen on making models of aeroplanes.", vis: "Cậu ấy say mê việc làm mô hình máy bay.",
-             alt_s: ["Making models of aeroplanes is what he is keen on.", "He is very keen on making aeroplane models."],
-             ai_n: "Hai đỉnh trọng âm /meɪk/ (âm ây) và /ˈmɒd/ (âm o ngắn). Âm đuôi của model là syllabic L kèm s /dlz/. Ngữ dụng: Sở thích lắp ráp thủ công từ các chi tiết nhỏ.",
-             ai_s: "Cấu trúc 'be keen on + V-ing'. Sau giới từ 'on' động từ 'make' chuyển thành 'making'. Chủ ngữ số ít 'He' đi với to-be 'is'."}
+            {w:"leisure", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>lei</span><span class='unstressed'>sure</span>", vi:"thời gian rảnh rỗi", vi_syn:"lúc thư nhàn", p:"/ˈleʒə(r)/", en_syn_html:"<span class='grammar-noun'><span class='stress-mark'>free</span> <span class='stress-mark'>time</span></span>", ai_n:"Trọng âm rơi vào âm tiết đầu tiên /ˈleʒ/. Âm s đọc là /ʒ/ (như 'gi' rung)."},
+            {w:"leisure time", type:"(n phr)", typeClass:"grammar-phrase", w_html:"<span class='stress-mark'>lei</span><span class='unstressed'>sure </span><span class='stress-mark'>time</span>", vi:"thời gian giải trí", vi_syn:"thời gian rảnh", p:"/ˈleʒə(r) taɪm/", en_syn_html:"<span class='grammar-phrase'><span class='stress-mark'>spare</span> <span class='stress-mark'>time</span></span>", ai_n:"Cụm danh từ ghép. Nhấn mạnh vào cả 'leisure' và 'time'."},
+            {w:"leisure activity", type:"(n phr)", typeClass:"grammar-phrase", w_html:"<span class='stress-mark'>lei</span><span class='unstressed'>sure ac</span><span class='stress-mark'>ti</span><span class='unstressed'>vity</span>", vi:"hoạt động giải trí", p:"/ˈleʒə(r) ækˈtɪvəti/", ai_n:"Từ 'activity' có trọng âm rơi vào âm tiết thứ hai /tɪ/ do hậu tố -ity."},
+            {w:"knit", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>knit</span>", vi:"đan", vi_syn:"đan len", p:"/nɪt/", ai_n:"Chữ 'k' bị câm (silent k). Đọc bắt đầu từ chữ 'n'."},
+            {w:"knitting kit", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>knit</span><span class='unstressed'>ting </span><span class='stress-mark'>kit</span>", vi:"bộ dụng cụ để đan", p:"/ˈnɪtɪŋ kɪt/", ai_n:"Hai từ đều có âm /ɪ/ ngắn. Trọng âm nhấn vào cả hai chữ."},
+            {w:"spend", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>spend</span>", vi:"dành (thời gian), tiêu", vi_syn:"trải qua", p:"/spend/", ai_n:"Động từ thường đi với cấu trúc 'spend time/money ON something' hoặc 'spend time V-ing'."},
+            {w:"spend time on your own", type:"(v phr)", typeClass:"grammar-phrase", w_html:"<span class='stress-mark'>spend</span> <span class='stress-mark'>time</span> <span class='unstressed'>on your</span> <span class='stress-mark'>own</span>", vi:"dành thời gian cho bản thân", p:"/spend taɪm ɒn jɔːr əʊn/", ai_n:"Cụm từ diễn tả việc ở một mình, tận hưởng không gian riêng. 'On one's own' = by oneself."},
+            {w:"DIY", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='unstressed'>D-I-</span><span class='stress-mark'>Y</span>", vi:"tự tay làm", p:"/ˌdiː aɪ ˈwaɪ/", en_syn_html:"<span class='grammar-noun'><span class='stress-mark'>do</span>-it-your<span class='stress-mark'>self</span></span>", ai_n:"Viết tắt của 'Do It Yourself'. Trọng âm chính rơi vào chữ cái cuối cùng (Y)."},
+            {w:"puzzle", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>puz</span><span class='unstressed'>zle</span>", vi:"trò chơi ô chữ", vi_syn:"câu đố", p:"/ˈpʌzl/", ai_n:"Trọng âm ở âm đầu tiên /ˈpʌz/. Âm 'u' đọc là /ʌ/ (âm á)."},
+            {w:"do puzzle", type:"(v phr)", typeClass:"grammar-phrase", w_html:"<span class='stress-mark'>do</span> <span class='stress-mark'>puz</span><span class='unstressed'>zle</span>", vi:"giải ô chữ", vi_syn:"chơi xếp hình", p:"/duː ˈpʌzl/", ai_n:"Sử dụng động từ 'do' với puzzle (thường dùng số nhiều: do puzzles)."},
+            {w:"surf", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>surf</span>", vi:"lướt, truy cập", p:"/sɜːf/", ai_n:"Âm /ɜː/ dài, cong r. Cuối từ có âm xát /f/."},
+            {w:"surf the net", type:"(v phr)", typeClass:"grammar-phrase", w_html:"<span class='stress-mark'>surf</span> <span class='unstressed'>the </span><span class='stress-mark'>net</span>", vi:"lướt net", vi_syn:"truy cập mạng", p:"/sɜːf ðə net/", ai_n:"Cụm từ rất phổ biến chỉ hành động sử dụng Internet."},
+            {w:"message", type:"(v/n)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>mes</span><span class='unstressed'>sage</span>", vi:"gửi tin nhắn", vi_syn:"tin nhắn", p:"/ˈmesɪdʒ/", ai_n:"Trọng âm nhấn vào /ˈmes/. Âm đuôi là /dʒ/ (chờ bật nặng). Trong bài này dùng như động từ."},
+            {w:"message friends", type:"(v phr)", typeClass:"grammar-phrase", w_html:"<span class='stress-mark'>mes</span><span class='unstressed'>sage </span><span class='stress-mark'>friends</span>", vi:"nhắn tin cho bạn bè", p:"/ˈmesɪdʒ frendz/", ai_n:"Động từ 'message' có thể đi trực tiếp với tân ngữ chỉ người."},
+            {w:"cooking", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>cook</span><span class='unstressed'>ing</span>", vi:"nấu ăn", vi_syn:"việc nấu nướng", p:"/ˈkʊkɪŋ/", ai_n:"Đuôi -ing biến động từ 'cook' thành danh từ chỉ hoạt động. Âm /ʊ/ ngắn."},
+            {w:"keen", type:"(adj)", typeClass:"grammar-adjective", w_html:"<span class='stress-mark'>keen</span>", vi:"say mê, ham thích", p:"/kiːn/", en_syn_html:"<span class='grammar-adjective'>ea<span class='stress-mark'>ger</span></span>", ai_n:"Tính từ luôn đi với giới từ ON: 'keen on + V-ing/Noun' (đam mê làm gì)."},
+            {w:"fond", type:"(adj)", typeClass:"grammar-adjective", w_html:"<span class='stress-mark'>fond</span>", vi:"mến, thích", p:"/fɒnd/", ai_n:"Tính từ luôn đi với giới từ OF: 'fond of + V-ing/Noun'."},
+            {w:"interested", type:"(adj)", typeClass:"grammar-adjective", w_html:"<span class='stress-mark'>in</span><span class='unstressed'>terested</span>", vi:"quan tâm, thích thú", p:"/ˈɪntrəstɪd/", ai_n:"Tính từ luôn đi với giới từ IN: 'interested in + V-ing/Noun'. Trọng âm rơi vào đầu."},
+            {w:"crazy", type:"(adj)", typeClass:"grammar-adjective", w_html:"<span class='stress-mark'>cra</span><span class='unstressed'>zy</span>", vi:"quá say mê, rất thích", p:"/ˈkreɪzi/", ai_n:"Tính từ luôn đi với giới từ ABOUT: 'crazy about + V-ing/Noun'."},
+            {w:"like", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>like</span>", vi:"thích", p:"/laɪk/", ai_n:"Động từ chỉ sở thích. Có thể đi với to V hoặc V-ing (like doing sth)."},
+            {w:"love", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>love</span>", vi:"yêu thích", p:"/lʌv/", ai_n:"Động từ chỉ sở thích mức độ cao. Thường đi với V-ing trong Anh-Anh."},
+            {w:"enjoy", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='unstressed'>en</span><span class='stress-mark'>joy</span>", vi:"thưởng thức, thích thú", p:"/ɪnˈdʒɔɪ/", ai_n:"Trọng âm rơi vào /dʒɔɪ/ (âm thứ 2). BẮT BUỘC đi với V-ing (enjoy doing sth)."},
+            {w:"fancy", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>fan</span><span class='unstressed'>cy</span>", vi:"mến, thích", p:"/ˈfænsi/", ai_n:"Từ đồng nghĩa với 'like' (thường dùng trong văn nói Anh-Anh). BẮT BUỘC đi với V-ing."},
+            {w:"prefer", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='unstressed'>pre</span><span class='stress-mark'>fer</span>", vi:"thích hơn", p:"/prɪˈfɜː(r)/", ai_n:"Trọng âm rơi vào /fɜː/ (âm thứ 2). Cấu trúc: 'prefer V-ing TO V-ing'."},
+            {w:"hate", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>hate</span>", vi:"ghét, không thích", p:"/heɪt/", ai_n:"Động từ chỉ sự không thích mạnh mẽ. Âm /eɪ/ (ây)."},
+            {w:"detest", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='unstressed'>de</span><span class='stress-mark'>test</span>", vi:"ghét, căm ghét", p:"/dɪˈtest/", en_syn_html:"<span class='grammar-verb-main'><span class='stress-mark'>loathe</span></span>", ai_n:"Trọng âm rơi vào /test/. Mức độ ghét cao hơn 'hate'. BẮT BUỘC đi với V-ing."},
+            {w:"dislike", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='unstressed'>dis</span><span class='stress-mark'>like</span>", vi:"không thích, ghét", p:"/dɪsˈlaɪk/", ai_n:"Tiền tố 'dis-' mang nghĩa phủ định. Trọng âm nhấn vào /laɪk/."},
+            {w:"home-made", type:"(adj)", typeClass:"grammar-adjective", w_html:"<span class='stress-mark'>home</span><span class='unstressed'>-</span><span class='stress-mark'>made</span>", vi:"tự làm", vi_syn:"làm tại nhà", p:"/ˌhəʊm ˈmeɪd/", ai_n:"Tính từ ghép. Cả hai từ đều có trọng âm."},
+            {w:"origami", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='unstressed'>o</span><span class='unstressed'>ri</span><span class='stress-mark'>ga</span><span class='unstressed'>mi</span>", vi:"nghệ thuật gấp giấy", vi_syn:"gấp giấy Nhật Bản", p:"/ˌɒrɪˈɡɑːmi/", ai_n:"Từ vay mượn từ tiếng Nhật. Trọng âm chính ở /ɡɑː/ (a dài)."},
+            {w:"fold", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='stress-mark'>fold</span>", vi:"gấp, gập", p:"/fəʊld/", ai_n:"Âm /əʊ/ (âu) đi với phụ âm kép ld ở cuối."},
+            {w:"paper folding", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>pa</span><span class='unstressed'>per </span><span class='stress-mark'>fol</span><span class='unstressed'>ding</span>", vi:"gấp giấy", p:"/ˈpeɪpə(r) ˈfəʊldɪŋ/", ai_n:"Danh từ ghép tạo từ danh từ 'paper' và danh động từ 'folding'."},
+            {w:"relax", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='unstressed'>re</span><span class='stress-mark'>lax</span>", vi:"thư giãn", p:"/rɪˈlæks/", ai_n:"Trọng âm rơi vào /læks/ (a bẹt, có âm k-s ở cuối)."},
+            {w:"snowboarding", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>snow</span><span class='unstressed'>boarding</span>", vi:"trượt tuyết bằng ván", p:"/ˈsnəʊbɔːdɪŋ/", ai_n:"Danh từ ghép từ 'snow' (tuyết) và 'board' (ván). Trọng âm nhấn vào 'snow'."},
+            {w:"resort", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='unstressed'>re</span><span class='stress-mark'>sort</span>", vi:"khu nghỉ dưỡng", p:"/rɪˈzɔːt/", ai_n:"Trọng âm rơi vào /zɔːt/ (âm o dài). Chữ s đọc là /z/."},
+            {w:"improve", type:"(v)", typeClass:"grammar-verb-main", w_html:"<span class='unstressed'>im</span><span class='stress-mark'>prove</span>", vi:"cải thiện", p:"/ɪmˈpruːv/", ai_n:"Trọng âm rơi vào /pruːv/ (u dài, v rung)."},
+            {w:"balance", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>ba</span><span class='unstressed'>lance</span>", vi:"sự cân bằng", p:"/ˈbæləns/", ai_n:"Trọng âm rơi vào /ˈbæl/ (a bẹt). Đuôi -ce đọc là /s/ lướt."},
+            {w:"muscle", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>mus</span><span class='unstressed'>cle</span>", vi:"cơ bắp", p:"/ˈmʌsl/", ai_n:"Chữ 'c' trong từ này bị câm (silent c). Đọc là /ˈmʌsl/."},
+            {w:"muscle strength", type:"(n)", typeClass:"grammar-noun", w_html:"<span class='stress-mark'>mus</span><span class='unstressed'>cle </span><span class='stress-mark'>strength</span>", vi:"sức mạnh cơ bắp", p:"/ˈmʌsl streŋkθ/", ai_n:"Danh từ ghép. 'strength' kết thúc bằng âm xát răng vô thanh /θ/ (th thổi)."}
         ];
 
         // 2. STATE & UTILITIES
-        let currentMode = ''; let currentLevel = 0; let activeData = []; let currentIndex = 0;
+        let currentMode = 'neuron'; let currentLevel = 0; let activeData = []; let currentIndex = 0;
         let wrongItemsData = []; let currentPool = []; let firstTryCount = 0;
         let isRepracticing = false; let currentItemFailed = false; 
         let timerInterval; let timeLeft = 10; let brighteningInterval;
@@ -1282,31 +284,16 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         function clean(str) { return str ? str.trim().replace(/\s+/g, ' ') : ""; }
         function playAudio(txt) { if(!txt) return; if(synth.speaking) synth.cancel(); let u = new SpeechSynthesisUtterance(txt); u.lang='en-US'; u.rate=0.85; synth.speak(u); }
 
-        // BỘ LỌC TÔ MÀU NGỮ PHÁP TỰ ĐỘNG & TRIỆT ĐỂ (TRÁNH LỖI TIẾNG VIỆT)
-        function highlightGrammar(text, isMixed = false) {
+        // BỘ LỌC TÔ MÀU NGỮ PHÁP TỰ ĐỘNG (Cho AI Tutor)
+        function highlightGrammar(text) {
             if (!text) return "";
-            
             const getRegex = (words) => new RegExp(`(^|[^\\p{L}])(${words})(?=[^\\p{L}]|$)(?![^<]*>)`, 'giu');
 
-            // 1. Dấu hiệu nhận biết
-            const signals = "tomorrow|next summer|next month|next week|in the future|yesterday|every|always|often|usually|sometimes|rarely|never|right now|these days|at the moment|last year|last weekend|last night|twice a week|every day|every morning|every afternoon|every Sunday|all day|on weekends";
-            text = text.replace(getRegex(signals), "$1<span class='highlight-signal-word'>$2</span>");
-
-            // 2. Phân loại từ
-            let modals = "will|won't|can|could|should|would|might|must";
-            if (!isMixed) modals += "|may"; 
-
-            let bes = "is|are|was|were|been|being";
-            if (!isMixed) bes += "|am|be"; 
-
-            let preps = "on|at|for|with|about|without|under|over|by|before|after|from|around|through|inside|behind|into";
-            if (!isMixed) preps += "|in|to"; 
-
-            let deters = "the|my|your|his|her|our|their|its|mine|yours|theirs|ours|any|some|many|all|each|every|another|this|that|these|those";
-            if (!isMixed) deters += "|a|an"; 
-
-            let conjs = "and|but|or|because|when|if|although|that";
-            if (!isMixed) conjs += "|so"; 
+            let modals = "will|won't|can|can't|could|should|shouldn't|would|must|may";
+            let bes = "is|are|was|were|been|being|am|be";
+            let preps = "on|at|for|with|about|without|under|over|by|from|around|through|inside|behind|into|onto|during|via|opposite|towards|down|out|away|up|off|in|to";
+            let deters = "the|my|your|his|her|our|their|its|mine|yours|theirs|ours|any|some|many|all|each|another|this|that|these|those|more|less|a|an";
+            let conjs = "and|but|or|because|if|whether|although|that|than|so|for|therefore|otherwise|how|what|why|where|which|who|so";
 
             text = text.replace(getRegex(modals), "$1<span class='grammar-verb-modal'>$2</span>");
             text = text.replace(getRegex(bes), "$1<span class='grammar-verb-be'>$2</span>");
@@ -1314,88 +301,10 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             text = text.replace(getRegex(deters), "$1<span class='grammar-determiner'>$2</span>");
             text = text.replace(getRegex(conjs), "$1<span class='grammar-conjunction'>$2</span>");
 
-            // 3. Trợ động từ
             const doDoes = "do|does|don't|doesn't|did|didn't";
             text = text.replace(getRegex(doDoes), "$1<span class='grammar-verb-aux'>$2</span>");
 
-            // 4. Xử lý hậu tố động từ/danh từ (chỉ áp dụng cho văn bản 100% tiếng Anh) - Cập nhật cho Unit 1
-            if (!isMixed) {
-                const ingVerbs = "look|knit|play|do|build|mak|hang|go|cycl|rid|surf|messag|sav|improv|learn|watch|eat|read|harm|fold|snowboard|balanc|reduc|exercis|see|us";
-                text = text.replace(new RegExp(`\\b(${ingVerbs})(ing)\\b(?![^<]*>)`, 'gi'), "<span class='grammar-verb-main'>$1</span><span class='grammar-verb-suffix'>$2</span>");
-                
-                // Các động từ ED
-                const edVerbs = "improv|relax|interest|accept|invit|us|lov|ador|prefer|fanci|hat";
-                text = text.replace(new RegExp(`\\b(${edVerbs})(ed)\\b(?![^<]*>)`, 'gi'), "<span class='grammar-verb-main'>$1</span><span class='grammar-verb-suffix'>$2</span>");
-
-                const irrV2 = "had|spent|saw|took|met|went|slept|cried|did|wore|wrote|read|got|built|shone|grew|sang|ran|became|bought|ate|felt|flew|made|thought|won|taught|forgot|rode|came|gave|knew|understood|stared";
-                text = text.replace(new RegExp(`\\b(${irrV2})\\b(?![^<]*>)`, 'gi'), "<span class='grammar-irr-v2'>$&</span>");
-
-                // Thêm hậu tố S/ES của Hiện tại đơn
-                const verbS = "love|adore|prefer|enjoy|fancy|detest|hate|like|spend|help|make|improve|want|take";
-                text = text.replace(new RegExp(`\\b(${verbS})(s)\\b(?![^<]*>)`, 'gi'), "<span class='grammar-verb-main'>$1</span><span class='grammar-verb-suffix'>$2</span>");
-
-                const verbES = "go|do|watch|discuss|catch";
-                text = text.replace(new RegExp(`\\b(${verbES})(es)\\b(?![^<]*>)`, 'gi'), "<span class='grammar-verb-main'>$1</span><span class='grammar-verb-suffix'>$2</span>");
-
-                const nounS = "dollhouse|flower|friend|sport|game|skill|photo|museum|exhibit|parent|cartoon|animal|feeling|bracelet|model|kit";
-                text = text.replace(new RegExp(`\\b(${nounS})(s)\\b(?![^<]*>)`, 'gi'), "<span class='grammar-noun'>$1</span><span class='grammar-verb-suffix'>$2</span>");
-            }
-
             return text;
-        }
-
-        // THUẬT TOÁN TÌM LỖI SAI (DIFF)
-        function getSentenceDiffHTML(typed, correct) {
-            if (!typed) return `<span class="text-red-500">(Bạn chưa gõ gì cả)</span>`;
-            const typedWords = typed.trim().split(/\s+/).filter(w => w);
-            const correctWords = correct.trim().split(/\s+/).filter(w => w);
-            
-            let dp = Array(typedWords.length + 1).fill(null).map(() => Array(correctWords.length + 1).fill(0));
-            for (let i = 1; i <= typedWords.length; i++) {
-                for (let j = 1; j <= correctWords.length; j++) {
-                    if (typedWords[i-1].toLowerCase().replace(/[.,!?]/g, '') === correctWords[j-1].toLowerCase().replace(/[.,!?]/g, '')) {
-                        dp[i][j] = dp[i-1][j-1] + 1;
-                    } else {
-                        dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
-                    }
-                }
-            }
-            
-            let i = typedWords.length, j = correctWords.length;
-            let diff = [];
-            while (i > 0 || j > 0) {
-                if (i > 0 && j > 0 && typedWords[i-1].toLowerCase().replace(/[.,!?]/g, '') === correctWords[j-1].toLowerCase().replace(/[.,!?]/g, '')) {
-                    diff.unshift({ type: 'equal', value: correctWords[j-1] });
-                    i--; j--;
-                } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
-                    diff.unshift({ type: 'insert', value: correctWords[j-1] });
-                    j--;
-                } else if (i > 0 && (j === 0 || dp[i][j-1] < dp[i-1][j])) {
-                    diff.unshift({ type: 'delete', value: typedWords[i-1] });
-                    i--;
-                }
-            }
-            
-            let html = '';
-            diff.forEach(part => {
-                if (part.type === 'equal') {
-                    html += `<span class="text-gray-300">${part.value}</span> `;
-                } else if (part.type === 'delete') {
-                    html += `<span class="text-red-500 line-through decoration-red-500/50">${part.value}</span> `;
-                } else if (part.type === 'insert') {
-                    html += `<span class="text-[#0ea5e9] bg-[#0ea5e9]/20 px-1.5 py-0.5 rounded-md font-bold shadow-sm border border-[#0ea5e9]/30">${part.value}</span> `;
-                }
-            });
-            return html.trim();
-        }
-
-        function isSentenceMatch(typed, original, alternatives) {
-            let cleanTyped = clean(typed).toLowerCase().replace(/[.,!?]/g, '');
-            let valid = [clean(original).toLowerCase().replace(/[.,!?]/g, '')];
-            if (alternatives) {
-                alternatives.forEach(alt => valid.push(clean(alt).toLowerCase().replace(/[.,!?]/g, '')));
-            }
-            return valid.includes(cleanTyped);
         }
 
         function markError(item) {
@@ -1408,28 +317,47 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
         // 3. UI MANAGEMENT
         function hideAll() {
-            ['screen-home', 'screen-neuron', 'screen-synapse', 'screen-reward', 'modal-cortex', 'modal-milestone'].forEach(id => {
+            ['screen-home', 'screen-neuron', 'screen-reward', 'modal-cortex', 'modal-milestone'].forEach(id => {
                 const el = document.getElementById(id); if(el) el.classList.add('hidden');
             });
         }
         function goHome() { clearInterval(timerInterval); clearInterval(brighteningInterval); hideAll(); document.getElementById('screen-home').classList.remove('hidden'); }
-        function updateErrorUI() { 
-            document.getElementById('neuron-error-num').innerText = wrongItemsData.length;
-            document.getElementById('synapse-error-num').innerText = wrongItemsData.length;
-        }
+        function updateErrorUI() { document.getElementById('neuron-error-num').innerText = wrongItemsData.length; }
 
         function updateProgressUI() {
             let nProg = document.getElementById('neuron-progress');
-            let sProg = document.getElementById('synapse-progress');
             if (isRepracticing) {
-                let requiredStreak = currentMode === 'neuron' ? 3 : 2;
-                nProg.innerText = `Luyện lại: Còn ${currentPool.length} từ (Yêu cầu đúng ${requiredStreak} lần)`;
-                sProg.innerText = `Luyện lại: Còn ${currentPool.length} câu (Yêu cầu đúng ${requiredStreak} lần)`;
-                nProg.classList.add('text-[#FFD700]'); sProg.classList.add('text-[#FFD700]');
+                let requiredStreak = 3;
+                nProg.innerText = `Luyện lại: ${requiredStreak} lần`;
+                nProg.classList.add('text-[#FFD700]');
             } else {
                 nProg.innerText = `L${currentLevel + 1} - ${currentIndex + 1}/${activeData.length}`;
-                sProg.innerText = `L${currentLevel + 1} - ${currentIndex + 1}/${activeData.length}`;
-                nProg.classList.remove('text-[#FFD700]'); sProg.classList.remove('text-[#FFD700]');
+                nProg.classList.remove('text-[#FFD700]');
+            }
+        }
+
+        function renderLevelButtons() {
+            const container = document.getElementById('level-buttons-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const totalWords = unit1Raw.length;
+            const wordsPerStage = 20;
+            const totalStages = Math.ceil(totalWords / wordsPerStage);
+            
+            if (totalStages === 1) {
+                container.className = "flex justify-center";
+            } else {
+                container.className = "grid grid-cols-2 gap-6 place-items-center";
+            }
+
+            for (let i = 0; i < totalStages; i++) {
+                const start = i * wordsPerStage + 1;
+                const end = Math.min((i + 1) * wordsPerStage, totalWords);
+                const btn = document.createElement('button');
+                btn.className = "w-full md:w-auto min-w-[200px] py-6 px-8 bg-gray-900/50 border border-[#00E5FF]/30 rounded-2xl font-medium text-lg text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black hover:scale-105 hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] transition-all";
+                btn.onclick = () => startMode('neuron', i);
+                btn.innerHTML = `L${i + 1} <br><span class="text-xs opacity-60 font-light block mt-1 tracking-widest">TỪ ${start}-${end}</span>`;
+                container.appendChild(btn);
             }
         }
 
@@ -1437,52 +365,29 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             if(window.speechSynthesis) window.speechSynthesis.cancel();
             currentMode = mode; currentLevel = levelIdx; isRepracticing = false; wrongItemsData = [];
             
-            // Chia chặng cho 60 từ (L1: 1-20, L2: 21-40, L3: 41-60)
-            let start = 0; let end = 10;
-            if (mode === 'neuron') {
-                if(levelIdx === 0) { start = 0; end = 20; }
-                else if(levelIdx === 1) { start = 20; end = 40; }
-                else { start = 40; end = unit1Raw.length; }
-            } else {
-                // Synapse chia thành 6 chặng, mỗi chặng 10 câu
-                start = levelIdx * 10; end = Math.min(start + 10, unit1Raw.length);
-            }
+            // Chia chặng mỗi chặng 20 từ
+            let start = levelIdx * 20;
+            let end = Math.min(start + 20, unit1Raw.length);
             
-            // Xử lý dữ liệu và highlight grammar một cách triệt để
+            // Xử lý dữ liệu
             activeData = unit1Raw.slice(start, end).map(d => {
-                let regexTarget = new RegExp(`\\b(${d.w})\\b`, 'gi');
                 let targetHTML = `<span class='${d.typeClass}'>${d.w_html}</span>`;
 
-                // Câu chuẩn & đồng nghĩa TA 100% tiếng Anh -> Không Mixed
-                let sHTML = d.s.replace(regexTarget, targetHTML);
-                sHTML = highlightGrammar(sHTML, false);
-
-                let en_syn_html = d.en_syn_html ? highlightGrammar(d.en_syn_html, false) : undefined;
-                let alt_s_html = (d.alt_s || []).map(alt => {
-                    let altHTML = alt.replace(regexTarget, targetHTML);
-                    return highlightGrammar(altHTML, false);
-                });
-
-                // AI Tutor: Để tránh việc highlightGrammar bọc thêm lớp làm vỡ w_html 
                 const maskToken = "___TGT_MASK___";
                 const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 const safeTarget = escapeRegExp(d.w);
                 
-                let aiN_Masked = d.ai_n.replace(new RegExp(`\\b${safeTarget}\\b`, 'gi'), maskToken);
-                let aiN_Highlighted = highlightGrammar(aiN_Masked, true);
+                let aiN_Masked = (d.ai_n || "").replace(new RegExp(`\\b${safeTarget}\\b`, 'gi'), maskToken);
+                let aiN_Highlighted = highlightGrammar(aiN_Masked);
                 let aiN_HTML = aiN_Highlighted.replace(new RegExp(maskToken, 'g'), targetHTML);
 
-                let aiS_Masked = d.ai_s.replace(new RegExp(`\\b${safeTarget}\\b`, 'gi'), maskToken);
-                let aiS_Highlighted = highlightGrammar(aiS_Masked, true);
-                let aiS_HTML = aiS_Highlighted.replace(new RegExp(maskToken, 'g'), targetHTML);
-
-                return { ...d, s_html: sHTML, ai_n_html: aiN_HTML, ai_s_html: aiS_HTML, alt_s_html: alt_s_html, en_syn_html: en_syn_html };
+                return { ...d, ai_n_html: aiN_HTML };
             });
 
             currentPool = activeData.map(i => ({ item: i, streak: 0 }));
             currentIndex = 0; firstTryCount = 0; updateErrorUI(); hideAll();
-            if(mode === 'neuron') { document.getElementById('screen-neuron').classList.remove('hidden'); loadNeuron(); }
-            else { document.getElementById('screen-synapse').classList.remove('hidden'); loadSynapse(); }
+            document.getElementById('screen-neuron').classList.remove('hidden'); 
+            loadNeuron();
         }
 
         function showCortex(html, isSuccess = false) {
@@ -1493,13 +398,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
             clearInterval(brighteningInterval);
             btn.style.opacity = "0.1";
-            btn.className = "w-full max-w-sm py-4 rounded-2xl font-black uppercase tracking-[0.4em] mt-3 mb-4 shrink-0 transition-all active:scale-95";
+            btn.className = "w-full max-w-sm py-4 rounded-2xl font-black uppercase tracking-[0.4em] mt-4 mb-4 shrink-0 transition-all active:scale-95";
             btn.innerText = isRepracticing ? "TÁI KẾT NỐI" : "TIẾP TỤC";
 
-            playAudio(currentMode === 'neuron' ? item.w : item.s);
+            playAudio(item.w);
 
-            let totalWait = currentMode === 'neuron' ? 5000 : 8000;
-            let stepInterval = currentMode === 'neuron' ? 1600 : 2600;
+            let stepInterval = 1600;
 
             setTimeout(() => {
                 let stage = 0;
@@ -1509,7 +413,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                     else if (stage === 2) { btn.classList.remove('btn-stage-1'); btn.classList.add('btn-stage-2'); }
                     else if (stage === 3) {
                         btn.classList.remove('btn-stage-2');
-                        btn.classList.add(currentMode === 'neuron' ? 'btn-stage-3-neuron' : 'btn-stage-3-synapse');
+                        btn.classList.add('btn-stage-3-neuron');
                         clearInterval(brighteningInterval);
                     }
                 }, stepInterval);
@@ -1539,7 +443,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
         function advanceLogic() {
             if (isRepracticing) {
-                let requiredStreak = currentMode === 'neuron' ? 3 : 2;
+                let requiredStreak = 3;
                 if (currentPool[currentIndex].streak >= requiredStreak) {
                     currentPool.splice(currentIndex, 1);
                 } else {
@@ -1550,7 +454,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             } else {
                 currentIndex++; if (currentIndex >= activeData.length) { showReward(); return; }
             }
-            if (currentMode === 'neuron') loadNeuron(); else loadSynapse();
+            loadNeuron();
         }
         
         function closeMilestone() { 
@@ -1564,7 +468,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             clearInterval(timerInterval);
             const item = getCurrentItem(); currentItemFailed = false;
             updateProgressUI();
-            document.getElementById('neuron-word').innerHTML = `<span class="text-gray-100 tracking-wide text-4xl md:text-5xl font-medium leading-tight">${item.vi}</span>`;
+            document.getElementById('neuron-word').innerHTML = `<span class="text-gray-100 tracking-wide text-4xl md:text-5xl font-medium px-4 leading-tight">${item.vi}</span>`;
             document.getElementById('neuron-input').value = ''; document.getElementById('neuron-input').focus();
             timeLeft = 10; document.getElementById('neuron-timer').style.width = '100%';
             timerInterval = setInterval(() => { timeLeft -= 0.1; document.getElementById('neuron-timer').style.width = `${timeLeft * 10}%`; if (timeLeft <= 0) { clearInterval(timerInterval); markError(item); handleNeuronFail(true); } }, 100);
@@ -1577,34 +481,36 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             if (typed === item.w.toLowerCase()) {
                 if (isRepracticing) currentPool[currentIndex].streak++;
                 showCortex(`
-                    <div class="text-[10px] text-[#4ade80] uppercase font-black tracking-widest text-center border-b border-[#4ade80]/20 pb-2 mb-4 w-full">✅ CHÍNH XÁC</div>
-                    <div class="bg-black/40 p-5 md:p-8 rounded-[2rem] border border-[#4ade80]/20 w-full shadow-2xl text-center">
-                        <div class="flex items-center justify-center gap-4 md:gap-6 mt-1 mb-2">
-                            <span class="${item.typeClass} text-5xl md:text-7xl tracking-tighter">${item.w_html}</span>
-                            <button onclick="playAudio('${item.w.replace(/'/g, "\\'")}')" class="p-3 opacity-80 hover:opacity-100 bg-[#00E5FF]/10 rounded-full transition-transform hover:scale-110 shadow-lg border border-[#00E5FF]/30 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#00E5FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
-                            </button>
+                    <div class="max-w-2xl w-full">
+                        <div class="text-[10px] text-[#4ade80] uppercase font-black tracking-widest text-center border-b border-[#4ade80]/20 pb-2 mb-4 w-full">✅ CHÍNH XÁC</div>
+                        <div class="bg-black/40 p-5 md:p-8 rounded-[2rem] border border-[#4ade80]/20 w-full shadow-2xl text-center">
+                            <div class="flex items-center justify-center gap-4 md:gap-6 mt-1 mb-2">
+                                <span class="${item.typeClass} text-5xl md:text-7xl tracking-tighter">${item.w_html}</span>
+                                <button onclick="playAudio('${item.w.replace(/'/g, "\\'")}')" class="p-3 opacity-80 hover:opacity-100 bg-[#00E5FF]/10 rounded-full transition-transform hover:scale-110 shadow-lg border border-[#00E5FF]/30 flex-shrink-0">
+                                    ${SVG_PLAY_L}
+                                </button>
+                            </div>
+                            
+                            <div class="mt-3 italic text-2xl md:text-3xl font-mono flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                                <span class="${item.typeClass} font-bold">${item.type}</span>
+                                <span class="text-[#FF00FF]">${item.p}</span>
+                                <span class="text-gray-500 hidden md:inline-block">—</span>
+                                <span class="text-white font-medium not-italic">${item.vi}</span>
+                                ${item.vi_syn ? `<span class="text-gray-400 text-lg not-italic">(${item.vi_syn})</span>` : ''}
+                            </div>
+                            
+                            ${item.en_syn_html ? `
+                            <div class="mt-5 border-t border-white/10 pt-4 flex flex-col items-center">
+                                <p class="text-[11px] text-gray-400 uppercase opacity-80 mb-2 font-bold tracking-widest flex items-center gap-2">
+                                    ${SVG_SYN} Từ đồng nghĩa
+                                </p>
+                                <div class="text-xl md:text-2xl tracking-wide">${item.en_syn_html}</div>
+                            </div>` : ''}
                         </div>
-                        
-                        <div class="mt-3 italic text-2xl md:text-3xl font-mono flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-                            <span class="${item.typeClass} font-bold">${item.type}</span>
-                            <span class="text-[#FF00FF]">${item.p}</span>
-                            <span class="text-gray-500 hidden md:inline-block">—</span>
-                            <span class="text-white font-medium not-italic">${item.vi}</span>
-                            ${item.vi_syn ? `<span class="text-gray-400 text-lg not-italic">(${item.vi_syn})</span>` : ''}
+                        <div class="tutor-box w-full mt-3 p-4 md:p-5">
+                            <div class="tutor-title mb-1">${SVG_TUTOR} AI TUTOR: NGỮ ÂM & NGỮ DỤNG</div>
+                            <div class="tutor-text text-lg md:text-xl text-gray-200 leading-relaxed">${item.ai_n_html}</div>
                         </div>
-
-                        ${item.en_syn_html ? `
-                        <div class="mt-5 border-t border-white/10 pt-4 flex flex-col items-center">
-                            <p class="text-[11px] text-gray-400 uppercase opacity-80 mb-2 font-bold tracking-widest flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg> Từ đồng nghĩa
-                            </p>
-                            <div class="text-xl md:text-2xl tracking-wide">${item.en_syn_html}</div>
-                        </div>` : ''}
-                    </div>
-                    <div class="tutor-box w-full mt-3 p-4 md:p-5">
-                        <div class="tutor-title mb-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path></svg> AI TUTOR: NGỮ ÂM & NGỮ DỤNG</div>
-                        <div class="tutor-text text-lg md:text-xl text-gray-200 leading-relaxed">${item.ai_n_html}</div>
                     </div>`, true);
             } else { markError(item); handleNeuronFail(false, typed); }
         }
@@ -1613,118 +519,40 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             const item = getCurrentItem();
             if (isRepracticing) currentPool[currentIndex].streak = 0; 
             showCortex(`
-                    <div class="text-sm text-red-500 font-bold uppercase tracking-widest bg-red-900/20 inline-block px-4 py-1.5 rounded-full border border-red-500/30 mb-3">
-                        ${isT ? "⏳ Hết giờ" : "❌ Chưa đúng"}
-                    </div>
-                    ${!isT ? `<div class="mb-3 text-gray-400 text-base md:text-lg">Bạn đã gõ: <span class="text-red-400 line-through font-mono ml-2 text-2xl md:text-3xl font-medium">${typed || "(trống)"}</span></div>` : ""}
-                    <div class="bg-black/40 p-5 md:p-8 rounded-[2rem] border border-white/10 w-full shadow-2xl text-center">
-                        <div class="flex items-center justify-center gap-4 md:gap-6 mt-1 mb-2">
-                            <span class="${item.typeClass} text-5xl md:text-7xl tracking-tighter">${item.w_html}</span>
-                            <button onclick="playAudio('${item.w.replace(/'/g, "\\'")}')" class="p-3 opacity-80 hover:opacity-100 bg-[#00E5FF]/10 rounded-full transition-transform hover:scale-110 shadow-lg border border-[#00E5FF]/30 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#00E5FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
-                            </button>
+                    <div class="max-w-2xl w-full">
+                        <div class="text-sm text-red-500 font-bold uppercase tracking-widest bg-red-900/20 inline-block px-4 py-1.5 rounded-full border border-red-500/30 mb-3">
+                            ${isT ? "⏳ Hết giờ" : "❌ Chưa đúng"}
                         </div>
-                        
-                        <div class="mt-3 italic text-2xl md:text-3xl font-mono flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-                            <span class="${item.typeClass} font-bold">${item.type}</span>
-                            <span class="text-[#FF00FF]">${item.p}</span>
-                            <span class="text-gray-500 hidden md:inline-block">—</span>
-                            <span class="text-white font-medium not-italic">${item.vi}</span>
-                            ${item.vi_syn ? `<span class="text-gray-400 text-lg not-italic">(${item.vi_syn})</span>` : ''}
+                        ${!isT ? `<div class="mb-3 text-gray-400 text-base md:text-lg">Bạn đã gõ: <span class="text-red-400 line-through font-mono ml-2 text-2xl md:text-3xl font-medium">${typed || "(trống)"}</span></div>` : ""}
+                        <div class="bg-black/40 p-5 md:p-8 rounded-[2rem] border border-white/10 w-full shadow-2xl text-center">
+                            <div class="flex items-center justify-center gap-4 md:gap-6 mt-1 mb-2">
+                                <span class="${item.typeClass} text-5xl md:text-7xl tracking-tighter">${item.w_html}</span>
+                                <button onclick="playAudio('${item.w.replace(/'/g, "\\'")}')" class="p-3 opacity-80 hover:opacity-100 bg-[#00E5FF]/10 rounded-full transition-transform hover:scale-110 shadow-lg border border-[#00E5FF]/30 flex-shrink-0">
+                                    ${SVG_PLAY_L}
+                                </button>
+                            </div>
+                            
+                            <div class="mt-3 italic text-2xl md:text-3xl font-mono flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                                <span class="${item.typeClass} font-bold">${item.type}</span>
+                                <span class="text-[#FF00FF]">${item.p}</span>
+                                <span class="text-gray-500 hidden md:inline-block">—</span>
+                                <span class="text-white font-medium not-italic">${item.vi}</span>
+                                ${item.vi_syn ? `<span class="text-gray-400 text-lg not-italic">(${item.vi_syn})</span>` : ''}
+                            </div>
+                            
+                            ${item.en_syn_html ? `
+                            <div class="mt-5 border-t border-white/10 pt-4 flex flex-col items-center">
+                                <p class="text-[11px] text-gray-400 uppercase opacity-80 mb-2 font-bold tracking-widest flex items-center gap-2">
+                                    ${SVG_SYN} Từ đồng nghĩa
+                                </p>
+                                <div class="text-xl md:text-2xl tracking-wide">${item.en_syn_html}</div>
+                            </div>` : ''}
                         </div>
-
-                        ${item.en_syn_html ? `
-                        <div class="mt-5 border-t border-white/10 pt-4 flex flex-col items-center">
-                            <p class="text-[11px] text-gray-400 uppercase opacity-80 mb-2 font-bold tracking-widest flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg> Từ đồng nghĩa
-                            </p>
-                            <div class="text-xl md:text-2xl tracking-wide">${item.en_syn_html}</div>
-                        </div>` : ''}
-                    </div>
-                    <div class="tutor-box w-full mt-3 p-4 md:p-5">
-                        <div class="tutor-title mb-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg> AI TUTOR: NGỮ ÂM & NGỮ DỤNG</div>
-                        <div class="tutor-text text-lg md:text-xl text-gray-200 leading-relaxed">${item.ai_n_html}</div>
+                        <div class="tutor-box w-full mt-3 p-4 md:p-5">
+                            <div class="tutor-title mb-1">${SVG_TUTOR} AI TUTOR: NGỮ ÂM & NGỮ DỤNG</div>
+                            <div class="tutor-text text-lg md:text-xl text-gray-200 leading-relaxed">${item.ai_n_html}</div>
+                        </div>
                     </div>`, false);
-        }
-
-        // --- SYNAPSE LOGIC ---
-        function loadSynapse() {
-            const item = getCurrentItem(); currentItemFailed = false;
-            updateProgressUI();
-            document.getElementById('synapse-vi-sen').innerText = item.vis;
-            document.getElementById('synapse-input').value = ''; document.getElementById('synapse-input').focus();
-        }
-        
-        function handleSynapseCheck() {
-            if(window.speechSynthesis) window.speechSynthesis.cancel();
-            const item = getCurrentItem(); 
-            const typed = clean(document.getElementById('synapse-input').value);
-            if(!typed) { vibrate(50); return; }
-            
-            const isC = isSentenceMatch(typed, item.s, item.alt_s);
-            
-            let altSentencesHTML = '';
-            if (item.alt_s_html && item.alt_s_html.length > 0) {
-                altSentencesHTML = `
-                <div class="mt-4 border-t border-white/10 pt-3 text-left">
-                    <p class="text-[11px] text-[#FFD700] uppercase opacity-90 mb-2 font-bold tracking-widest flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg> Các câu đúng khác được chấp nhận:
-                    </p>
-                    <ul class="space-y-2">
-                        ${item.alt_s_html.map(alt => `
-                            <li class="flex items-start gap-3">
-                                <span class="text-[#FFD700] mt-1">✓</span>
-                                <span class="text-lg md:text-xl tracking-wide leading-relaxed text-gray-200">${alt}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>`;
-            }
-
-            if (isC) {
-                if (isRepracticing) currentPool[currentIndex].streak++;
-                showCortex(`
-                    <div class="text-sm text-[#4ade80] font-bold uppercase tracking-widest bg-[#4ade80]/10 inline-block px-4 py-1.5 rounded-full border border-[#4ade80]/30 mb-3">🎉 Chính xác</div>
-                    <div class="bg-black/40 p-5 md:p-6 rounded-[2rem] border border-[#4ade80]/20 w-full shadow-2xl text-left mb-3">
-                        <p class="text-[11px] text-[#4ade80] uppercase opacity-80 mb-2 font-bold tracking-widest flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> Câu chuẩn (Khuyến nghị):</p>
-                        <div class="flex items-start justify-between gap-4 mb-2">
-                            <div class="text-xl md:text-3xl tracking-wide leading-snug text-white flex-1">${item.s_html}</div>
-                            <button onclick="playAudio('${item.s.replace(/'/g, "\\'")}')" class="p-2 md:p-3 opacity-80 hover:opacity-100 bg-[#4ade80]/10 rounded-full transition-transform hover:scale-110 shadow-lg border border-[#4ade80]/30 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8 text-[#4ade80]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
-                            </button>
-                        </div>
-                        ${altSentencesHTML}
-                    </div>
-                    <div class="tutor-box w-full mt-0 p-4 md:p-5">
-                        <div class="tutor-title mb-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path></svg> AI TUTOR: PHÂN TÍCH CẤU TRÚC</div>
-                        <div class="tutor-text text-lg md:text-xl text-gray-200 leading-relaxed">${item.ai_s_html}</div>
-                    </div>`, true);
-            } else {
-                markError(item);
-                if (isRepracticing) currentPool[currentIndex].streak = 0; 
-                const diffHTML = getSentenceDiffHTML(typed, item.s);
-                
-                showCortex(`
-                    <div class="text-sm text-red-500 font-bold uppercase tracking-widest bg-red-900/20 inline-block px-4 py-1.5 rounded-full border border-red-500/30 mb-3">❌ Chưa đúng</div>
-                    <div class="bg-[#1A1A2E]/80 p-4 md:p-5 rounded-3xl mb-3 w-full text-left border border-red-500/20 shadow-inner">
-                        <div class="text-xs text-[#00E5FF] uppercase font-bold mb-2 opacity-80 tracking-widest flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Phân tích lỗi sai:</div>
-                        <div class="text-xl md:text-3xl font-medium tracking-wide leading-relaxed bg-black/60 p-4 rounded-xl border border-red-500/30 flex flex-wrap gap-x-1 gap-y-1 shadow-inner">${diffHTML}</div>
-                    </div>
-                    <div class="bg-black/40 p-5 md:p-6 rounded-[2rem] border border-[#00E5FF]/20 w-full shadow-2xl text-left mb-3">
-                        <p class="text-[11px] text-[#00E5FF] uppercase opacity-80 mb-2 font-bold tracking-widest flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> Đáp án đúng chuẩn:</p>
-                        <div class="flex items-start justify-between gap-4 mb-2">
-                            <div class="text-xl md:text-3xl tracking-wide leading-snug text-white flex-1">${item.s_html}</div>
-                            <button onclick="playAudio('${item.s.replace(/'/g, "\\'")}')" class="p-2 md:p-3 opacity-80 hover:opacity-100 bg-[#00E5FF]/10 rounded-full transition-transform hover:scale-110 shadow-lg border border-[#00E5FF]/30 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8 text-[#00E5FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
-                            </button>
-                        </div>
-                        ${altSentencesHTML}
-                    </div>
-                    <div class="tutor-box w-full mt-0 p-4 md:p-5">
-                        <div class="tutor-title mb-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"></path></svg> AI TUTOR: PHÂN TÍCH CẤU TRÚC</div>
-                        <div class="tutor-text text-lg md:text-xl text-gray-200 leading-relaxed">${item.ai_s_html}</div>
-                    </div>`, false);
-            }
         }
 
         function showReward() {
@@ -1737,22 +565,13 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             vibrate(100);
         }
 
-        function startRepractice() { isRepracticing = true; currentPool = [...wrongItemsData]; currentIndex = 0; hideAll(); if (currentMode === 'neuron') { document.getElementById('screen-neuron').classList.remove('hidden'); loadNeuron(); } else { document.getElementById('screen-synapse').classList.remove('hidden'); loadSynapse(); } }
-
-        function exportApp() {
-            const clone = document.documentElement.cloneNode(true);
-            const exportBtns = clone.querySelectorAll('.export-btn-ui');
-            exportBtns.forEach(btn => btn.remove()); // Xóa nút Export trong file đích
-            
-            const blob = new Blob(["<!DOCTYPE html>\n" + clone.outerHTML], { type: "text/html;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); 
-            a.href = url; 
-            a.download = "Neuro_Lingo_Unit1_Grade8.html";
-            document.body.appendChild(a); 
-            a.click(); 
-            document.body.removeChild(a); 
-            URL.revokeObjectURL(url);
+        function startRepractice() { 
+            isRepracticing = true; 
+            currentPool = [...wrongItemsData]; 
+            currentIndex = 0; 
+            hideAll(); 
+            document.getElementById('screen-neuron').classList.remove('hidden'); 
+            loadNeuron(); 
         }
 
         document.addEventListener('keydown', (e) => {
@@ -1761,13 +580,14 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                 const modal = document.getElementById('modal-cortex');
                 const milestone = document.getElementById('modal-milestone');
                 const neuron = !document.getElementById('screen-neuron').classList.contains('hidden');
-                const synapse = !document.getElementById('screen-synapse').classList.contains('hidden');
                 if (modal && !modal.classList.contains('hidden')) { e.preventDefault(); closeCortex(); }
                 else if (milestone && !milestone.classList.contains('hidden')) { e.preventDefault(); closeMilestone(); }
                 else if (neuron) { e.preventDefault(); handleNeuronCheck(); }
-                else if (synapse) { e.preventDefault(); handleSynapseCheck(); }
             }
         });
-    </script>
 
-</body></html>
+        // Initialize level buttons on load
+        window.onload = renderLevelButtons;
+    </script>
+</body>
+</html>
