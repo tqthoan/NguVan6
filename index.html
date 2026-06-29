@@ -62,30 +62,38 @@
         @keyframes float-aurora { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(5vw, 5vh) scale(1.1); } }
 
         /* APP HEADER */
-        .app-header { position: absolute; top: 25px; left: 30px; text-align: left; z-index: 10; opacity: 0.25; transition: opacity 0.3s; }
+        .app-header { position: absolute; top: 28px; left: 30px; text-align: left; z-index: 10; opacity: 0.25; transition: opacity 0.3s; }
         .app-header:hover { opacity: 0.8; }
-        .app-title { font-size: 14px; font-weight: 700; color: white; letter-spacing: 4px; text-transform: uppercase; margin: 0; font-family: 'JetBrains Mono', monospace; }
+        .app-title { font-size: 14px; font-weight: 700; color: white; letter-spacing: 4px; text-transform: uppercase; margin: 0; font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; }
 
-        /* CARD COUNTER (Top Right of Card) */
+        /* TOP RIGHT CONTROLS (Audio & Counter) */
+        .top-right-controls {
+            position: absolute; top: 20px; right: 30px; display: flex; align-items: center; gap: 15px; z-index: 100;
+        }
+
+        /* CARD COUNTER (Moved out of card) */
         .card-counter {
-            position: absolute; top: 25px; right: 25px; width: 36px; height: 36px;
-            border-radius: 50%; background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.3);
+            width: 36px; height: 36px;
+            border-radius: 50%; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;
             font-size: 11px; font-family: 'JetBrains Mono', monospace;
             display: flex; align-items: center; justify-content: center; letter-spacing: 0.5px;
         }
 
-        /* FLASHCARD CONTAINER */
-        .flashcard-wrapper { width: 95%; max-width: 900px; perspective: 1500px; z-index: 10; min-height: 520px; display: flex; }
+        /* FLASHCARD CONTAINER - KHÓA CHẶT CHIỀU CAO TỔNG THỂ */
+        .flashcard-wrapper { 
+            width: 95%; max-width: 900px; perspective: 1500px; z-index: 10; 
+            height: calc(100vh - 140px); /* Giữ chiều cao cố định để không đẩy nút xuống dưới */
+            min-height: 520px; display: flex; 
+        }
         .flashcard {
             position: relative; width: 100%; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
             background: var(--bg-panel); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
-            padding: 40px 50px; display: flex; flex-direction: column; box-sizing: border-box; flex: 1;
+            padding: 30px 40px; display: flex; flex-direction: column; box-sizing: border-box; flex: 1;
+            overflow: hidden; /* CẤM TUYỆT ĐỐI THANH CUỘN Ở THẺ TỔNG */
         }
-        .flashcard.animating-out { opacity: 0; transform: translateY(-30px) scale(0.95); }
-        .flashcard.animating-in { opacity: 0; transform: translateY(30px) scale(0.95); }
 
         /* TYPOGRAPHY (Màu ngữ pháp) */
         .g-pre-neg { color: var(--c-pre-neg); font-weight: 900; text-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
@@ -112,12 +120,13 @@
         
         .badge-type { font-size: 14px; padding: 3px 10px; border-radius: 6px; font-weight: 900; text-transform: uppercase; border: 2px solid; margin-left: 12px; vertical-align: middle; font-family: 'JetBrains Mono', monospace; }
 
-        /* ROOT INFO SECTION (Chuyển thành Nút bấm) */
+        /* ROOT INFO SECTION (Đóng băng không cho co rút) */
         .card-header-btn {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 25px; border-radius: 16px; cursor: pointer; transition: all 0.3s;
-            display: flex; justify-content: center; align-items: center; margin-bottom: 25px;
+            padding: 12px 25px; border-radius: 16px; cursor: pointer; transition: all 0.3s;
+            display: flex; justify-content: center; align-items: center; margin-bottom: 20px;
             width: fit-content; margin-left: auto; margin-right: auto;
+            flex-shrink: 0; /* Khóa cứng kích thước */
         }
         .card-header-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
         .card-header-btn.active {
@@ -132,8 +141,21 @@
         .example-en { font-size: 22px; line-height: 1.5; color: #f8fafc; }
         .example-vi { font-size: 18px; color: #94a3b8; font-style: italic; margin-top: 8px; }
 
-        /* VARIANT NAVIGATOR */
-        .variant-list { display: flex; flex-direction: column; align-items: flex-start; width: fit-content; margin: 0 auto 30px auto; gap: 12px; }
+        /* VARIANT NAVIGATOR - KHU VỰC DUY NHẤT CÓ THANH CUỘN TỰ ĐỘNG */
+        .variant-list { 
+            display: flex; flex-direction: column; align-items: flex-start; width: 100%; max-width: 600px;
+            margin: 0 auto 20px auto; gap: 10px; 
+            padding-right: 10px;
+            flex: 1 1 auto; /* Tự động phình to/co rút lấp đầy khoảng trống ở giữa */
+            min-height: 0; /* Bắt buộc để Flexbox tính toán scroll đúng */
+            overflow-y: auto; /* THANH CUỘN CHỈ XUẤT HIỆN Ở ĐÂY NẾU DANH SÁCH QUÁ DÀI */
+        }
+        
+        /* Tùy chỉnh thanh cuộn cho danh sách biến thể */
+        .variant-list::-webkit-scrollbar { width: 4px; }
+        .variant-list::-webkit-scrollbar-track { background: transparent; }
+        .variant-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
         .variant-btn {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8;
             padding: 12px 24px; border-radius: 12px; cursor: pointer; transition: all 0.3s; font-family: 'JetBrains Mono', monospace; font-size: 18px; /* Tăng 20% (từ 15px lên 18px) */
@@ -173,25 +195,33 @@
         }
         .card-bottom:hover { animation: box-glow 1.5s infinite alternate ease-in-out; }
 
-        /* VARIANT DETAILS SECTION */
-        .variant-details { text-align: center; transition: opacity 0.3s, transform 0.3s; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        /* VARIANT DETAILS SECTION (Đóng băng không cho co rút) */
+        .variant-details { 
+            text-align: center; transition: opacity 0.3s, transform 0.3s; 
+            display: flex; flex-direction: column; justify-content: flex-end; 
+            flex-shrink: 0; /* Khóa cứng phần dưới cùng */
+        }
         .variant-details.fading { opacity: 0; transform: translateY(10px); }
-        .word-meaning { font-size: 20px; color: #cbd5e1; margin-bottom: 20px; font-weight: 500;}
+        .word-meaning { font-size: 20px; color: #cbd5e1; font-weight: 500; font-style: italic;}
         
         .card-bottom {
-            background: rgba(0, 0, 0, 0.2); border: 1px solid var(--box-color, var(--active-color)); padding: 25px 30px; border-radius: 16px;
+            background: rgba(0, 0, 0, 0.2); border: 1px solid var(--box-color, var(--active-color)); padding: 20px 25px; border-radius: 16px;
             text-align: left; transition: border-color 0.4s, box-shadow 0.4s;
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* CONTROLS */
-        .controls { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 35px; z-index: 10; }
-        .btn-nav, .btn-jump { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px); }
-        .btn-nav { width: 56px; height: 56px; font-size: 24px; }
-        .btn-jump { width: 56px; height: 56px; font-size: 24px; font-family: 'JetBrains Mono', monospace; font-weight: 500; color: #94a3b8; border-color: rgba(255,255,255,0.2); }
+        /* CONTROLS - THU NHỎ, TINH TẾ, VIỀN MỎNG */
+        .controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; z-index: 10; }
+        .btn-nav, .btn-jump { 
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); /* Viền cực mỏng */
+            color: rgba(255,255,255,0.6); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; 
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px); 
+        }
+        .btn-nav { width: 42px; height: 42px; font-size: 18px; }
+        .btn-jump { width: 42px; height: 42px; font-size: 18px; font-family: 'JetBrains Mono', monospace; font-weight: 400; }
         
-        .btn-nav:hover:not(:disabled) { background: rgba(255,255,255,0.15); transform: scale(1.1); }
-        .btn-jump:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); color: white; border-color: white;}
+        .btn-nav:hover:not(:disabled) { background: rgba(255,255,255,0.1); transform: scale(1.1); color: white; border-color: rgba(255,255,255,0.3);}
+        .btn-jump:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); color: white; border-color: rgba(255,255,255,0.3);}
         .btn-nav:disabled { opacity: 0.2; cursor: not-allowed; }
 
         .btn-play-sm { 
@@ -206,7 +236,7 @@
 
         /* ================= AUDIO SETTINGS & MINI SPEAKER ================= */
         .audio-settings {
-            position: absolute; top: 25px; right: 30px; display: flex; gap: 8px; z-index: 100; opacity: 0.25; transition: opacity 0.3s;
+            display: flex; gap: 8px; opacity: 0.25; transition: opacity 0.3s;
         }
         .audio-settings:hover { opacity: 0.9; }
         .audio-settings select {
@@ -219,36 +249,54 @@
         }
         .mini-speaker:hover { opacity: 1; filter: grayscale(0%); transform: scale(1.2); }
 
-        /* KEYBOARD HINT */
-        .hint { position: fixed; bottom: 20px; color: #64748b; font-size: 13px; font-family: 'JetBrains Mono', monospace; text-align: center;}
-        .key-btn { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: white; margin: 0 3px;}
+        /* FULLSCREEN BUTTON */
+        .btn-fullscreen {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #94a3b8;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 100;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .btn-fullscreen:hover { background: rgba(255,255,255,0.15); color: white; transform: scale(1.1); }
 
         /* ================= MOBILE OPTIMIZATION ================= */
         @media (max-width: 768px) {
             /* Tối ưu góc trên và setting */
-            .app-header { position: absolute; top: 8px; left: 12px; text-align: left; margin: 0; opacity: 0.6; z-index: 100; }
+            .app-header { top: 15px; left: 12px; opacity: 0.6; }
             .app-title { font-size: 12px; letter-spacing: 2px; }
-            .audio-settings { top: 8px; right: 8px; gap: 5px; z-index: 100; opacity: 0.8; }
+            
+            .top-right-controls { top: 8px; right: 12px; gap: 8px; }
+            .audio-settings { opacity: 0.8; }
             .audio-settings select { max-width: 80px; font-size: 10px; padding: 4px 6px; }
+            .card-counter { width: 30px; height: 30px; font-size: 10px; }
             
             /* Tối ưu không gian thẻ để vừa 1 màn hình */
-            .flashcard-wrapper { min-height: auto; margin-top: 25px; align-items: center; }
-            .flashcard { padding: 35px 15px 20px 15px; }
-            
-            /* Góc phải của thẻ (Counter) */
-            .card-counter { top: 12px; right: 12px; width: 30px; height: 30px; font-size: 10px; }
+            .flashcard-wrapper { height: calc(100vh - 80px); margin-top: 20px; align-items: center;}
+            .flashcard { padding: 25px 15px 15px 15px; }
             
             /* Tối ưu lề và các thẻ biến thể */
-            .card-header-btn { padding: 12px 15px; margin-bottom: 15px; width: 100%; box-sizing: border-box;}
+            .card-header-btn { padding: 10px 15px; margin-bottom: 12px; width: 100%; box-sizing: border-box;}
             .base-word-info { font-size: 18px; }
             .root-meaning-text { font-size: 14px; }
             
-            .variant-list { margin-bottom: 15px; gap: 8px; width: 100%;}
+            .variant-list { margin-bottom: 12px; gap: 8px; width: 100%; }
             .variant-btn { padding: 8px 12px; font-size: 14px; gap: 6px; } 
             
-            /* Từ vựng khổng lồ & Nghĩa nhắm mục tiêu */
-            .w-box.massive { font-size: 22px; padding: 6px 14px; margin-bottom: 12px; }
-            .word-meaning { font-size: 15px; margin-bottom: 15px; }
+            /* Từ vựng khổng lồ & Nghĩa nhắm mục tiêu cùng dòng */
+            .w-box.massive { font-size: 20px; padding: 4px 12px; margin-bottom: 0; }
+            .word-meaning { font-size: 14px; margin-bottom: 0; }
             
             /* Khung ví dụ & Size chữ ví dụ cho di động */
             .card-bottom { padding: 12px 15px; }
@@ -256,12 +304,12 @@
             .example-vi { font-size: 13px; margin-top: 4px; }
             
             /* Nút điều khiển bên trong và bên ngoài thẻ */
-            .btn-play-sm { width: 34px; height: 34px; font-size: 14px; }
+            .btn-play-sm { width: 32px; height: 32px; font-size: 14px; }
             
-            .controls { margin-top: 20px; gap: 15px; }
-            .btn-nav, .btn-jump { width: 44px; height: 44px; font-size: 20px;}
+            .controls { margin-top: 15px; gap: 15px; }
+            .btn-nav, .btn-jump { width: 38px; height: 38px; font-size: 16px;}
             
-            .hint { display: none; }
+            .btn-fullscreen { width: 36px; height: 36px; font-size: 16px; bottom: 15px; right: 15px; }
         }
     </style>
 </head>
@@ -277,21 +325,22 @@
         <div class="app-title">NEURO-MATRIX</div>
     </div>
 
-    <!-- AUDIO SETTINGS (Top Right) -->
-    <div class="audio-settings">
-        <select id="voiceSelect" title="Giọng đọc"></select>
-        <select id="rateSelect" title="Tốc độ">
-            <option value="0.6">0.6x</option>
-            <option value="0.85" selected>0.85x</option>
-            <option value="1.0">1.0x</option>
-            <option value="1.2">1.2x</option>
-        </select>
+    <!-- TOP RIGHT CONTROLS -->
+    <div class="top-right-controls">
+        <div class="audio-settings">
+            <select id="voiceSelect" title="Giọng đọc"></select>
+            <select id="rateSelect" title="Tốc độ">
+                <option value="0.6">0.6x</option>
+                <option value="0.85" selected>0.85x</option>
+                <option value="1.0">1.0x</option>
+                <option value="1.2">1.2x</option>
+            </select>
+        </div>
+        <div class="card-counter" id="cardCounter">1/5</div>
     </div>
 
     <div class="flashcard-wrapper">
         <div class="flashcard" id="flashcard">
-            <!-- Card Counter -->
-            <div class="card-counter" id="cardCounter">1/5</div>
             
             <!-- Root Word Header as Button -->
             <div class="card-header-btn" id="rootWordHeader" onclick="renderVariant(-1)">
@@ -307,14 +356,12 @@
 
             <!-- Variant Details (Main Content) -->
             <div class="variant-details" id="variantDetails">
-                <div style="margin-bottom: 20px;">
-                    <!-- Đưa Nút Loa lên cạnh Từ vựng to và Nhãn từ loại -->
-                    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 15px; gap: 15px;">
-                        <div class="w-box massive" id="targetWordBox" style="margin-bottom: 0;"></div>
-                        <span class="badge-type" id="targetTypeBadge" style="margin-left: 0;"></span>
-                        <span class="mini-speaker" onclick="playCurrentWordAudio(event)" style="font-size: 26px; padding: 5px; margin-top: -5px;" title="Nghe phát âm từ này">🔊</span>
-                    </div>
-                    <div class="word-meaning" id="targetMeaning"></div>
+                <!-- Gộp Tên, Loại từ, Nghĩa và Loa trên cùng một dòng -->
+                <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 20px; gap: 10px;">
+                    <div class="w-box massive" id="targetWordBox" style="margin-bottom: 0;"></div>
+                    <span class="badge-type" id="targetTypeBadge" style="margin-left: 0;"></span>
+                    <span class="word-meaning" id="targetMeaning"></span>
+                    <span class="mini-speaker" onclick="playCurrentWordAudio(event)" style="font-size: 24px; cursor: pointer; margin-left: 2px;" title="Nghe phát âm từ này">🔊</span>
                 </div>
                 <div class="card-bottom" id="exampleBox">
                     <!-- Ví dụ được chèn từ JS với nút loa -->
@@ -329,372 +376,993 @@
         <button class="btn-nav" id="btnNext" onclick="nextCard()">→</button>
     </div>
 
-    <div class="hint">
-        <span class="key-btn">⬅️</span> <span class="key-btn">➡️</span> Đổi Từ Gốc &nbsp; • &nbsp; 
-        <span class="key-btn">⬆️</span> <span class="key-btn">⬇️</span> Đổi Loại Từ &nbsp; • &nbsp; 
-        <span class="key-btn">Space</span> Nghe Audio
-    </div>
+    <!-- Thay thế thẻ Hướng dẫn bằng nút Fullscreen -->
+    <button class="btn-fullscreen" onclick="toggleFullScreen()" title="Toàn màn hình">⛶</button>
 
     <script>
-        // ================= DATABASE: PROTOCOL ALPHA (30 TỪ UN- KÈM VÍ DỤ GỐC) =================
+        // ================= DATABASE: PROTOCOL BETA (HẬU TỐ ĐA HÌNH - 20 TỪ ĐẦU) =================
         const flashcards = [
             {
-                baseWord: "precede", baseMeaning: "Đi trước, xảy ra trước", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Dark clouds usually <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">precede</span></span> a heavy storm.`,
-                baseExVi: `Những đám mây đen thường <span class="t-verb">xuất hiện trước</span> một cơn bão lớn.`,
-                baseAudio: "Dark clouds usually precede a heavy storm.",
+                baseWord: "create", baseMeaning: "Tạo ra, sáng tạo", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `We need to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">create</span></span> a detailed plan before starting.`,
+                baseExVi: `Chúng ta cần <span class="t-verb">tạo ra</span> một kế hoạch chi tiết trước khi bắt đầu.`,
+                baseAudio: "We need to create a detailed plan before starting.",
                 variants: [
                     {
-                        wordText: "precedent", label: "precedent (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">preced</span><span class="suf-n">ent</span>`,
-                        meaning: "Tiền lệ",
-                        exEn: `The ruling set a dangerous <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">preced</span><span class="suf-n">ent</span></span> for future cases.`,
-                        exVi: `Phán quyết đã tạo ra một <span class="t-noun">tiền lệ</span> nguy hiểm cho các vụ án tương lai.`,
-                        audio: "The ruling set a dangerous precedent for future cases."
+                        wordText: "creative", label: "creative (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">creat</span><span class="suf-adj">ive</span>`,
+                        meaning: "Sáng tạo",
+                        exEn: `She is a highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">creat</span><span class="suf-adj">ive</span></span> designer with unique ideas.`,
+                        exVi: `Cô ấy là một nhà thiết kế rất <span class="t-adj">sáng tạo</span> với những ý tưởng độc đáo.`,
+                        audio: "She is a highly creative designer with unique ideas."
                     },
                     {
-                        wordText: "unprecedented", label: "unprecedented (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">precedent</span><span class="suf-adj">ed</span>`,
-                        meaning: "Chưa từng có tiền lệ",
-                        exEn: `The scale of the economic recession was entirely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">precedent</span><span class="suf-adj">ed</span></span>.`,
-                        exVi: `Quy mô của cuộc suy thoái kinh tế là hoàn toàn <span class="t-adj">chưa từng có tiền lệ</span>.`,
-                        audio: "The scale of the economic recession was entirely unprecedented."
+                        wordText: "creatively", label: "creatively (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">creat</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách sáng tạo",
+                        exEn: `The space was <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">creat</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> decorated with recycled materials.`,
+                        exVi: `Không gian được trang trí <span class="t-adv">một cách sáng tạo</span> bằng vật liệu tái chế.`,
+                        audio: "The space was creatively decorated with recycled materials."
+                    },
+                    {
+                        wordText: "creativity", label: "creativity (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">creat</span><span class="suf-adj">iv</span><span class="suf-n">ity</span>`,
+                        meaning: "Sự sáng tạo, óc sáng tạo",
+                        exEn: `This puzzle game is designed to stimulate your child's <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">creat</span><span class="suf-adj">iv</span><span class="suf-n">ity</span></span>.`,
+                        exVi: `Trò chơi xếp hình này được thiết kế để kích thích <span class="t-noun">óc sáng tạo</span> của trẻ.`,
+                        audio: "This puzzle game is designed to stimulate your child's creativity."
+                    },
+                    {
+                        wordText: "creation", label: "creation (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">creat</span><span class="suf-n">ion</span>`,
+                        meaning: "Sự tạo ra, tác phẩm",
+                        exEn: `The <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">creat</span><span class="suf-n">ion</span></span> of the internet revolutionized global communication.`,
+                        exVi: `<span class="t-noun">Sự ra đời (tạo ra)</span> của internet đã cách mạng hóa giao tiếp toàn cầu.`,
+                        audio: "The creation of the internet revolutionized global communication."
+                    },
+                    {
+                        wordText: "creator", label: "creator (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">creat</span><span class="suf-n">or</span>`,
+                        meaning: "Người sáng tạo, tác giả",
+                        exEn: `He is the original <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">creat</span><span class="suf-n">or</span></span> of this famous comic book series.`,
+                        exVi: `Ông là <span class="t-noun">tác giả (người tạo ra)</span> ban đầu của loạt truyện tranh nổi tiếng này.`,
+                        audio: "He is the original creator of this famous comic book series."
                     }
                 ]
             },
             {
-                baseWord: "predict", baseMeaning: "Dự đoán", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `It is difficult to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">predict</span></span> what the stock market will do next.`,
-                baseExVi: `Rất khó để <span class="t-verb">dự đoán</span> thị trường chứng khoán sẽ ra sao tiếp theo.`,
-                baseAudio: "It is difficult to predict what the stock market will do next.",
+                baseWord: "move", baseMeaning: "Di chuyển, chuyển động", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Could you please <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">move</span></span> your car a little bit forward?`,
+                baseExVi: `Bạn có thể vui lòng <span class="t-verb">di chuyển</span> xe của mình lên phía trước một chút không?`,
+                baseAudio: "Could you please move your car a little bit forward?",
                 variants: [
                     {
-                        wordText: "predictable", label: "predictable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">predict</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể đoán trước",
-                        exEn: `The ending of the movie was highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">predict</span><span class="suf-adj">able</span></span>.`,
-                        exVi: `Cái kết của bộ phim rất <span class="t-adj">dễ đoán</span>.`,
-                        audio: "The ending of the movie was highly predictable."
+                        wordText: "movement", label: "movement (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">move</span><span class="suf-n">ment</span>`,
+                        meaning: "Sự chuyển động, phong trào",
+                        exEn: `The camera detects the slightest <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">move</span><span class="suf-n">ment</span></span> in the room.`,
+                        exVi: `Camera phát hiện ra <span class="t-noun">sự chuyển động</span> nhỏ nhất trong phòng.`,
+                        audio: "The camera detects the slightest movement in the room."
                     },
                     {
-                        wordText: "unpredictable", label: "unpredictable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">predict</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể đoán trước",
-                        exEn: `The weather in this region is notoriously <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">predict</span><span class="suf-adj">able</span></span>.`,
-                        exVi: `Thời tiết ở khu vực này nổi tiếng là <span class="t-adj">không thể đoán trước</span>.`,
-                        audio: "The weather in this region is notoriously unpredictable."
+                        wordText: "movable", label: "movable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">mov</span><span class="suf-adj">able</span>`,
+                        meaning: "Có thể di chuyển được",
+                        exEn: `The festival is a <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">mov</span><span class="suf-adj">able</span></span> feast, held on different dates each year.`,
+                        exVi: `Lễ hội là một ngày lễ <span class="t-adj">có thể xê dịch</span>, được tổ chức vào các ngày khác nhau mỗi năm.`,
+                        audio: "The festival is a movable feast, held on different dates each year."
+                    },
+                    {
+                        wordText: "immovable", label: "immovable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">im</span><span class="root-v">mov</span><span class="suf-adj">able</span>`,
+                        meaning: "Bất động, cố định, kiên định",
+                        exEn: `His stance on the political issue remained completely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">im</span><span class="root-v">mov</span><span class="suf-adj">able</span></span>.`,
+                        exVi: `Lập trường của ông về vấn đề chính trị vẫn hoàn toàn <span class="t-adj">kiên định (bất động)</span>.`,
+                        audio: "His stance on the political issue remained completely immovable."
+                    },
+                    {
+                        wordText: "moving", label: "moving (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">mov</span><span class="suf-adj">ing</span>`,
+                        meaning: "Cảm động (gây xúc động) / Đang di chuyển",
+                        exEn: `The documentary told a deeply <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">mov</span><span class="suf-adj">ing</span></span> story about orphans.`,
+                        exVi: `Bộ phim tài liệu kể một câu chuyện vô cùng <span class="t-adj">cảm động</span> về những đứa trẻ mồ côi.`,
+                        audio: "The documentary told a deeply moving story about orphans."
+                    },
+                    {
+                        wordText: "moved", label: "moved (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">mov</span><span class="suf-adj">ed</span>`,
+                        meaning: "Cảm động (trạng thái con người)",
+                        exEn: `I was deeply <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">mov</span><span class="suf-adj">ed</span></span> by the community's generous support.`,
+                        exVi: `Tôi vô cùng <span class="t-adj">xúc động</span> trước sự ủng hộ hào phóng của cộng đồng.`,
+                        audio: "I was deeply moved by the community's generous support."
                     }
                 ]
             },
             {
-                baseWord: "avoid", baseMeaning: "Né tránh", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `You should <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">avoid</span></span> eating too much fast food for your health.`,
-                baseExVi: `Bạn nên <span class="t-verb">tránh</span> ăn quá nhiều thức ăn nhanh vì sức khỏe của mình.`,
-                baseAudio: "You should avoid eating too much fast food for your health.",
+                baseWord: "act", baseMeaning: "Hành động, đóng vai", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `We must <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">act</span></span> quickly to prevent further environmental damage.`,
+                baseExVi: `Chúng ta phải <span class="t-verb">hành động</span> nhanh chóng để ngăn chặn thiệt hại môi trường thêm.`,
+                baseAudio: "We must act quickly to prevent further environmental damage.",
                 variants: [
                     {
-                        wordText: "avoidable", label: "avoidable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">avoid</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể tránh được",
-                        exEn: `Many accidents are entirely <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">avoid</span><span class="suf-adj">able</span></span> with proper care.`,
-                        exVi: `Nhiều vụ tai nạn hoàn toàn <span class="t-adj">có thể tránh được</span> nếu cẩn thận.`,
-                        audio: "Many accidents are entirely avoidable with proper care."
+                        wordText: "active", label: "active (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">act</span><span class="suf-adj">ive</span>`,
+                        meaning: "Năng động, tích cực",
+                        exEn: `Grandpa is 80 years old but still maintains a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">act</span><span class="suf-adj">ive</span></span> lifestyle.`,
+                        exVi: `Ông nội đã 80 tuổi nhưng vẫn duy trì lối sống rất <span class="t-adj">năng động</span>.`,
+                        audio: "Grandpa is 80 years old but still maintains a very active lifestyle."
                     },
                     {
-                        wordText: "unavoidable", label: "unavoidable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">avoid</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể tránh khỏi",
-                        exEn: `The delay in the project was <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">avoid</span><span class="suf-adj">able</span></span> due to bad weather.`,
-                        exVi: `Sự chậm trễ trong dự án là <span class="t-adj">không thể tránh khỏi</span> do thời tiết xấu.`,
-                        audio: "The delay in the project was unavoidable due to bad weather."
+                        wordText: "actively", label: "actively (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">act</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách tích cực, chủ động",
+                        exEn: `The government is <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">act</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> seeking solutions to the housing crisis.`,
+                        exVi: `Chính phủ đang <span class="t-adv">tích cực (chủ động)</span> tìm kiếm các giải pháp cho cuộc khủng hoảng nhà ở.`,
+                        audio: "The government is actively seeking solutions to the housing crisis."
+                    },
+                    {
+                        wordText: "activity", label: "activity (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ity</span>`,
+                        meaning: "Hoạt động",
+                        exEn: `Reading is a great indoor <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ity</span></span> for rainy days.`,
+                        exVi: `Đọc sách là một <span class="t-noun">hoạt động</span> trong nhà tuyệt vời cho những ngày mưa.`,
+                        audio: "Reading is a great indoor activity for rainy days."
+                    },
+                    {
+                        wordText: "activate", label: "activate (V)", type: "V", color: "var(--c-verb)",
+                        html: `<span class="root-v">act</span><span class="suf-v">ivate</span>`,
+                        meaning: "Kích hoạt",
+                        exEn: `You need to enter the code to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">act</span><span class="suf-v">ivate</span></span> your new credit card.`,
+                        exVi: `Bạn cần nhập mã để <span class="t-verb">kích hoạt</span> thẻ tín dụng mới của mình.`,
+                        audio: "You need to enter the code to activate your new credit card."
+                    },
+                    {
+                        wordText: "activation", label: "activation (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">act</span><span class="suf-v">ivat</span><span class="suf-n">ion</span>`,
+                        meaning: "Sự kích hoạt",
+                        exEn: `The alarm <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-v">ivat</span><span class="suf-n">ion</span></span> was triggered by a stray cat.`,
+                        exVi: `<span class="t-noun">Sự kích hoạt</span> chuông báo động đã bị kích hoạt bởi một con mèo hoang.`,
+                        audio: "The alarm activation was triggered by a stray cat."
+                    },
+                    {
+                        wordText: "activist", label: "activist (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ist</span>`,
+                        meaning: "Nhà hoạt động",
+                        exEn: `The environmental <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ist</span></span> organized a protest against plastic waste.`,
+                        exVi: `<span class="t-noun">Nhà hoạt động</span> môi trường đã tổ chức một cuộc biểu tình chống rác thải nhựa.`,
+                        audio: "The environmental activist organized a protest against plastic waste."
+                    },
+                    {
+                        wordText: "activism", label: "activism (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ism</span>`,
+                        meaning: "Chủ nghĩa hoạt động",
+                        exEn: `Her lifelong dedication to social <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ism</span></span> is truly inspiring.`,
+                        exVi: `Sự cống hiến cả đời của cô cho <span class="t-noun">phong trào hoạt động</span> xã hội thực sự truyền cảm hứng.`,
+                        audio: "Her lifelong dedication to social activism is truly inspiring."
+                    },
+                    {
+                        wordText: "inactive", label: "inactive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">in</span><span class="root-v">act</span><span class="suf-adj">ive</span>`,
+                        meaning: "Không hoạt động, thụ động",
+                        exEn: `The volcano has remained <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">in</span><span class="root-v">act</span><span class="suf-adj">ive</span></span> for over three centuries.`,
+                        exVi: `Núi lửa vẫn <span class="t-adj">không hoạt động</span> trong hơn ba thế kỷ qua.`,
+                        audio: "The volcano has remained inactive for over three centuries."
                     }
                 ]
             },
             {
-                baseWord: "deny", baseMeaning: "Phủ nhận", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `He cannot <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">deny</span></span> his involvement in the financial scandal.`,
-                baseExVi: `Ông ta không thể <span class="t-verb">phủ nhận</span> sự dính líu của mình vào vụ bê bối tài chính.`,
-                baseAudio: "He cannot deny his involvement in the financial scandal.",
+                baseWord: "manage", baseMeaning: "Quản lý, xoay xở", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `How do you <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">manage</span></span> to stay so calm under intense pressure?`,
+                baseExVi: `Làm thế nào bạn <span class="t-verb">xoay xở (quản lý)</span> để giữ bình tĩnh dưới áp lực cường độ cao?`,
+                baseAudio: "How do you manage to stay so calm under intense pressure?",
                 variants: [
                     {
-                        wordText: "undeniable", label: "undeniable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">deni</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể chối cãi",
-                        exEn: `It is an <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">deni</span><span class="suf-adj">able</span></span> fact that climate change is happening.`,
-                        exVi: `Một sự thật <span class="t-adj">không thể chối cãi</span> là biến đổi khí hậu đang diễn ra.`,
-                        audio: "It is an undeniable fact that climate change is happening."
+                        wordText: "management", label: "management (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">manage</span><span class="suf-n">ment</span>`,
+                        meaning: "Sự quản lý, ban quản trị",
+                        exEn: `Effective time <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">manage</span><span class="suf-n">ment</span></span> is crucial for academic success.`,
+                        exVi: `<span class="t-noun">Sự quản lý</span> thời gian hiệu quả là cốt lõi cho thành công học thuật.`,
+                        audio: "Effective time management is crucial for academic success."
                     },
                     {
-                        wordText: "undeniably", label: "undeniably (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">deni</span><span class="suf-adj">ab</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách hiển nhiên, không thể bàn cãi",
-                        exEn: `She is <span class="w-box" style="border-color: var(--c-adv);"><span class="g-pre-neg">un</span><span class="root-v">deni</span><span class="suf-adj">ab</span><span class="suf-adv">ly</span></span> the most talented student in the class.`,
-                        exVi: `Cô ấy <span class="t-adv">hiển nhiên</span> là học sinh tài năng nhất lớp.`,
-                        audio: "She is undeniably the most talented student in the class."
+                        wordText: "manageable", label: "manageable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">manage</span><span class="suf-adj">able</span>`,
+                        meaning: "Có thể quản lý được, vừa sức",
+                        exEn: `Divide the complex project into smaller, <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">manage</span><span class="suf-adj">able</span></span> tasks.`,
+                        exVi: `Hãy chia dự án phức tạp thành những nhiệm vụ nhỏ hơn, <span class="t-adj">vừa sức (có thể quản lý)</span>.`,
+                        audio: "Divide the complex project into smaller, manageable tasks."
+                    },
+                    {
+                        wordText: "unmanageable", label: "unmanageable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">manage</span><span class="suf-adj">able</span>`,
+                        meaning: "Không thể quản lý, khó bảo",
+                        exEn: `The toddler's behavior became totally <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">manage</span><span class="suf-adj">able</span></span> in the supermarket.`,
+                        exVi: `Hành vi của đứa trẻ mới biết đi trở nên hoàn toàn <span class="t-adj">khó bảo (không thể quản lý)</span> trong siêu thị.`,
+                        audio: "The toddler's behavior became totally unmanageable in the supermarket."
+                    },
+                    {
+                        wordText: "manager", label: "manager (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">manag</span><span class="suf-n">er</span>`,
+                        meaning: "Người quản lý, giám đốc",
+                        exEn: `The store <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">manag</span><span class="suf-n">er</span></span> apologized for the terrible customer service.`,
+                        exVi: `<span class="t-noun">Quản lý</span> cửa hàng đã xin lỗi về dịch vụ khách hàng tồi tệ.`,
+                        audio: "The store manager apologized for the terrible customer service."
+                    },
+                    {
+                        wordText: "managerial", label: "managerial (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">manager</span><span class="suf-adj">ial</span>`,
+                        meaning: "Thuộc về cấp quản lý",
+                        exEn: `She is applying for a <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">manager</span><span class="suf-adj">ial</span></span> position in the marketing department.`,
+                        exVi: `Cô ấy đang ứng tuyển vào một vị trí <span class="t-adj">thuộc cấp quản lý</span> trong bộ phận marketing.`,
+                        audio: "She is applying for a managerial position in the marketing department."
                     }
                 ]
             },
             {
-                baseWord: "recognize", baseMeaning: "Nhận ra, công nhận", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `I almost didn't <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">recognize</span></span> her with that new haircut.`,
-                baseExVi: `Tôi gần như không <span class="t-verb">nhận ra</span> cô ấy với kiểu tóc mới đó.`,
-                baseAudio: "I almost didn't recognize her with that new haircut.",
+                baseWord: "employ", baseMeaning: "Thuê mướn, sử dụng", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `The factory will <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">employ</span></span> over 500 local workers next year.`,
+                baseExVi: `Nhà máy sẽ <span class="t-verb">thuê</span> hơn 500 công nhân địa phương vào năm tới.`,
+                baseAudio: "The factory will employ over 500 local workers next year.",
                 variants: [
                     {
-                        wordText: "recognizable", label: "recognizable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">recogniz</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể nhận ra",
-                        exEn: `The Eiffel Tower is easily <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">recogniz</span><span class="suf-adj">able</span></span> from a distance.`,
-                        exVi: `Tháp Eiffel rất dễ <span class="t-adj">nhận ra</span> từ khoảng cách xa.`,
-                        audio: "The Eiffel Tower is easily recognizable from a distance."
+                        wordText: "employment", label: "employment (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">employ</span><span class="suf-n">ment</span>`,
+                        meaning: "Việc làm, sự thuê mướn",
+                        exEn: `The new policies aim to boost full <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">employ</span><span class="suf-n">ment</span></span> in the region.`,
+                        exVi: `Các chính sách mới nhằm mục đích thúc đẩy <span class="t-noun">việc làm</span> toàn diện trong khu vực.`,
+                        audio: "The new policies aim to boost full employment in the region."
                     },
                     {
-                        wordText: "unrecognizable", label: "unrecognizable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">recogniz</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể nhận ra",
-                        exEn: `After the surgery, his face was completely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">recogniz</span><span class="suf-adj">able</span></span>.`,
-                        exVi: `Sau ca phẫu thuật, khuôn mặt anh ấy hoàn toàn <span class="t-adj">không thể nhận ra</span>.`,
-                        audio: "After the surgery, his face was completely unrecognizable."
+                        wordText: "unemployment", label: "unemployment (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-n">ment</span>`,
+                        meaning: "Tình trạng thất nghiệp",
+                        exEn: `High <span class="w-box" style="border-color: var(--c-noun);"><span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-n">ment</span></span> rates are a major concern for the economy.`,
+                        exVi: `Tỷ lệ <span class="t-noun">thất nghiệp</span> cao là một mối lo ngại lớn cho nền kinh tế.`,
+                        audio: "High unemployment rates are a major concern for the economy."
+                    },
+                    {
+                        wordText: "employer", label: "employer (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">employ</span><span class="suf-n">er</span>`,
+                        meaning: "Nhà tuyển dụng, ông chủ",
+                        exEn: `They are a fair <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">employ</span><span class="suf-n">er</span></span> who treats their staff very well.`,
+                        exVi: `Họ là một <span class="t-noun">nhà tuyển dụng</span> công bằng, đối xử rất tốt với nhân viên.`,
+                        audio: "They are a fair employer who treats their staff very well."
+                    },
+                    {
+                        wordText: "employee", label: "employee (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">employ</span><span class="suf-n">ee</span>`,
+                        meaning: "Nhân viên, người làm công",
+                        exEn: `Every <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">employ</span><span class="suf-n">ee</span></span> must attend the safety training session.`,
+                        exVi: `Mọi <span class="t-noun">nhân viên</span> đều phải tham dự buổi đào tạo an toàn.`,
+                        audio: "Every employee must attend the safety training session."
+                    },
+                    {
+                        wordText: "employable", label: "employable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">employ</span><span class="suf-adj">able</span>`,
+                        meaning: "Có đủ kỹ năng để được thuê",
+                        exEn: `Having strong computer skills makes you much more <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">employ</span><span class="suf-adj">able</span></span>.`,
+                        exVi: `Có kỹ năng máy tính tốt giúp bạn <span class="t-adj">dễ được tuyển dụng hơn</span> rất nhiều.`,
+                        audio: "Having strong computer skills makes you much more employable."
+                    },
+                    {
+                        wordText: "unemployed", label: "unemployed (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-adj">ed</span>`,
+                        meaning: "Bị thất nghiệp",
+                        exEn: `He has been <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-adj">ed</span></span> for six months since the factory closed.`,
+                        exVi: `Anh ấy đã <span class="t-adj">bị thất nghiệp</span> sáu tháng kể từ khi nhà máy đóng cửa.`,
+                        audio: "He has been unemployed for six months since the factory closed."
                     }
                 ]
             },
             {
-                baseWord: "bear", baseMeaning: "Chịu đựng", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `She couldn't <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">bear</span></span> the thought of losing her beloved dog.`,
-                baseExVi: `Cô ấy không thể <span class="t-verb">chịu đựng</span> được ý nghĩ sẽ mất đi chú chó cưng của mình.`,
-                baseAudio: "She couldn't bear the thought of losing her beloved dog.",
+                baseWord: "produce", baseMeaning: "Sản xuất, sản sinh", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Solar panels <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">produce</span></span> electricity from sunlight.`,
+                baseExVi: `Các tấm pin mặt trời <span class="t-verb">sản xuất</span> ra điện từ ánh sáng mặt trời.`,
+                baseAudio: "Solar panels produce electricity from sunlight.",
                 variants: [
                     {
-                        wordText: "bearable", label: "bearable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">bear</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể chịu đựng được",
-                        exEn: `The pain was severe but barely <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">bear</span><span class="suf-adj">able</span></span>.`,
-                        exVi: `Cơn đau rất dữ dội nhưng vừa đủ <span class="t-adj">có thể chịu đựng được</span>.`,
-                        audio: "The pain was severe but barely bearable."
+                        wordText: "production", label: "production (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">produc</span><span class="suf-n">tion</span>`,
+                        meaning: "Sự sản xuất, sản lượng",
+                        exEn: `The <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">produc</span><span class="suf-n">tion</span></span> of electric cars has increased rapidly over the decade.`,
+                        exVi: `<span class="t-noun">Sản lượng (sự sản xuất)</span> xe điện đã tăng nhanh trong suốt thập kỷ qua.`,
+                        audio: "The production of electric cars has increased rapidly over the decade."
                     },
                     {
-                        wordText: "unbearable", label: "unbearable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">bear</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể chịu nổi",
-                        exEn: `The heat in the desert during summer is <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">bear</span><span class="suf-adj">able</span></span>.`,
-                        exVi: `Cái nóng trên sa mạc vào mùa hè là <span class="t-adj">không thể chịu nổi</span>.`,
-                        audio: "The heat in the desert during summer is unbearable."
+                        wordText: "productive", label: "productive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">produc</span><span class="suf-adj">tive</span>`,
+                        meaning: "Năng suất, sinh lời",
+                        exEn: `We had a highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">produc</span><span class="suf-adj">tive</span></span> meeting that solved many problems.`,
+                        exVi: `Chúng tôi đã có một cuộc họp cực kỳ <span class="t-adj">năng suất</span> và giải quyết được nhiều vấn đề.`,
+                        audio: "We had a highly productive meeting that solved many problems."
+                    },
+                    {
+                        wordText: "productively", label: "productively (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">produc</span><span class="suf-adj">tive</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách năng suất",
+                        exEn: `She uses her free time <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">produc</span><span class="suf-adj">tive</span><span class="suf-adv">ly</span></span> by reading books.`,
+                        exVi: `Cô ấy sử dụng thời gian rảnh của mình <span class="t-adv">một cách năng suất</span> bằng việc đọc sách.`,
+                        audio: "She uses her free time productively by reading books."
+                    },
+                    {
+                        wordText: "unproductive", label: "unproductive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">produc</span><span class="suf-adj">tive</span>`,
+                        meaning: "Không năng suất, vô ích",
+                        exEn: `Arguing over petty details is completely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">produc</span><span class="suf-adj">tive</span></span>.`,
+                        exVi: `Tranh cãi về những chi tiết vụn vặt là hoàn toàn <span class="t-adj">vô ích (không năng suất)</span>.`,
+                        audio: "Arguing over petty details is completely unproductive."
+                    },
+                    {
+                        wordText: "producer", label: "producer (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">produc</span><span class="suf-n">er</span>`,
+                        meaning: "Nhà sản xuất",
+                        exEn: `Brazil is one of the world's leading coffee <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">produc</span><span class="suf-n">er</span>s</span>.`,
+                        exVi: `Brazil là một trong những <span class="t-noun">nhà sản xuất</span> cà phê hàng đầu thế giới.`,
+                        audio: "Brazil is one of the world's leading coffee producers."
+                    },
+                    {
+                        wordText: "product", label: "product (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">product</span>`,
+                        meaning: "Sản phẩm",
+                        exEn: `This new software <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">product</span></span> is highly rated by experts.`,
+                        exVi: `<span class="t-noun">Sản phẩm</span> phần mềm mới này được các chuyên gia đánh giá cao.`,
+                        audio: "This new software product is highly rated by experts."
                     }
                 ]
             },
             {
-                baseWord: "expect", baseMeaning: "Mong đợi, dự tính", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `We <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">expect</span></span> the delivery to arrive by tomorrow morning.`,
-                baseExVi: `Chúng tôi <span class="t-verb">mong đợi</span> gói hàng sẽ đến trước sáng ngày mai.`,
-                baseAudio: "We expect the delivery to arrive by tomorrow morning.",
+                baseWord: "compete", baseMeaning: "Cạnh tranh", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Small local businesses have to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">compete</span></span> against giant multinational corporations.`,
+                baseExVi: `Các doanh nghiệp địa phương nhỏ phải <span class="t-verb">cạnh tranh</span> với các tập đoàn đa quốc gia khổng lồ.`,
+                baseAudio: "Small local businesses have to compete against giant multinational corporations.",
                 variants: [
                     {
-                        wordText: "expected", label: "expected (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">expect</span><span class="suf-adj">ed</span>`,
-                        meaning: "Được dự tính, đúng như mong đợi",
-                        exEn: `The <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">expect</span><span class="suf-adj">ed</span></span> outcome of the meeting was positive.`,
-                        exVi: `Kết quả <span class="t-adj">được dự tính</span> của cuộc họp là tích cực.`,
-                        audio: "The expected outcome of the meeting was positive."
+                        wordText: "competition", label: "competition (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">compet</span><span class="suf-n">ition</span>`,
+                        meaning: "Cuộc thi, sự cạnh tranh",
+                        exEn: `There is fierce <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">compet</span><span class="suf-n">ition</span></span> for jobs in the tech industry today.`,
+                        exVi: `Ngày nay có <span class="t-noun">sự cạnh tranh</span> khốc liệt cho các công việc trong ngành công nghệ.`,
+                        audio: "There is fierce competition for jobs in the tech industry today."
                     },
                     {
-                        wordText: "unexpected", label: "unexpected (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">expect</span><span class="suf-adj">ed</span>`,
-                        meaning: "Bất ngờ, ngoài dự kiến",
-                        exEn: `His resignation came as an <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">expect</span><span class="suf-adj">ed</span></span> shock to everyone.`,
-                        exVi: `Việc anh ấy từ chức là một cú sốc <span class="t-adj">bất ngờ</span> đối với tất cả mọi người.`,
-                        audio: "His resignation came as an unexpected shock to everyone."
+                        wordText: "competitive", label: "competitive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">compet</span><span class="suf-adj">itive</span>`,
+                        meaning: "Có tính cạnh tranh",
+                        exEn: `To survive, we must offer high quality at <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">compet</span><span class="suf-adj">itive</span></span> prices.`,
+                        exVi: `Để tồn tại, chúng ta phải cung cấp chất lượng cao với giá cả <span class="t-adj">có tính cạnh tranh</span>.`,
+                        audio: "To survive, we must offer high quality at competitive prices."
+                    },
+                    {
+                        wordText: "competitively", label: "competitively (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">compet</span><span class="suf-adj">itive</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách có sức cạnh tranh",
+                        exEn: `Our products are <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">compet</span><span class="suf-adj">itive</span><span class="suf-adv">ly</span></span> priced compared to other brands.`,
+                        exVi: `Sản phẩm của chúng tôi được định giá <span class="t-adv">một cách cạnh tranh</span> so với các thương hiệu khác.`,
+                        audio: "Our products are competitively priced compared to other brands."
+                    },
+                    {
+                        wordText: "uncompetitive", label: "uncompetitive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">compet</span><span class="suf-adj">itive</span>`,
+                        meaning: "Không có sức cạnh tranh",
+                        exEn: `High labor costs have made the factory <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">compet</span><span class="suf-adj">itive</span></span> in the global market.`,
+                        exVi: `Chi phí lao động cao đã khiến nhà máy trở nên <span class="t-adj">kém sức cạnh tranh</span> trên thị trường toàn cầu.`,
+                        audio: "High labor costs have made the factory uncompetitive in the global market."
+                    },
+                    {
+                        wordText: "competitor", label: "competitor (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">compet</span><span class="suf-n">itor</span>`,
+                        meaning: "Đối thủ cạnh tranh",
+                        exEn: `We need a new strategy to stay ahead of our main <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">compet</span><span class="suf-n">itor</span></span>.`,
+                        exVi: `Chúng ta cần một chiến lược mới để dẫn trước <span class="t-noun">đối thủ cạnh tranh</span> chính của mình.`,
+                        audio: "We need a new strategy to stay ahead of our main competitor."
                     }
                 ]
             },
             {
-                baseWord: "mistake", baseMeaning: "Lỗi lầm", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `Making a <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">mistake</span></span> is a natural part of the learning process.`,
-                baseExVi: `Việc phạm <span class="t-noun">sai lầm</span> là một phần tự nhiên của quá trình học hỏi.`,
-                baseAudio: "Making a mistake is a natural part of the learning process.",
+                baseWord: "communicate", baseMeaning: "Giao tiếp, truyền đạt", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Animals <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">communicate</span></span> with each other through sounds and body language.`,
+                baseExVi: `Động vật <span class="t-verb">giao tiếp</span> với nhau thông qua âm thanh và ngôn ngữ cơ thể.`,
+                baseAudio: "Animals communicate with each other through sounds and body language.",
                 variants: [
                     {
-                        wordText: "mistaken", label: "mistaken (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">mistak</span><span class="suf-adj">en</span>`,
-                        meaning: "Sai lầm, hiểu lầm",
-                        exEn: `If you think I will surrender, you are sorely <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">mistak</span><span class="suf-adj">en</span></span>.`,
-                        exVi: `Nếu bạn nghĩ tôi sẽ đầu hàng, bạn đã cực kỳ <span class="t-adj">sai lầm</span>.`,
-                        audio: "If you think I will surrender, you are sorely mistaken."
+                        wordText: "communication", label: "communication (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">communicat</span><span class="suf-n">ion</span>`,
+                        meaning: "Sự giao tiếp",
+                        exEn: `Effective <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">communicat</span><span class="suf-n">ion</span></span> is essential for a healthy relationship.`,
+                        exVi: `<span class="t-noun">Sự giao tiếp</span> hiệu quả là điều cốt yếu cho một mối quan hệ lành mạnh.`,
+                        audio: "Effective communication is essential for a healthy relationship."
                     },
                     {
-                        wordText: "unmistakable", label: "unmistakable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-n">mistak</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể nhầm lẫn được",
-                        exEn: `She spoke with an <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">mistak</span><span class="suf-adj">able</span></span> French accent.`,
-                        exVi: `Cô ấy nói với một chất giọng Pháp <span class="t-adj">không thể nhầm lẫn được</span>.`,
-                        audio: "She spoke with an unmistakable French accent."
+                        wordText: "communicative", label: "communicative (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">communicat</span><span class="suf-adj">ive</span>`,
+                        meaning: "Cởi mở, thích giao tiếp",
+                        exEn: `He was surprisingly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">communicat</span><span class="suf-adj">ive</span></span> about his past experiences.`,
+                        exVi: `Anh ấy tỏ ra <span class="t-adj">cởi mở (thích giao tiếp)</span> một cách đáng ngạc nhiên về những trải nghiệm quá khứ của mình.`,
+                        audio: "He was surprisingly communicative about his past experiences."
+                    },
+                    {
+                        wordText: "uncommunicative", label: "uncommunicative (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">communicat</span><span class="suf-adj">ive</span>`,
+                        meaning: "Lầm lì, ít nói",
+                        exEn: `The boy became sad and <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">communicat</span><span class="suf-adj">ive</span></span> after the accident.`,
+                        exVi: `Cậu bé trở nên buồn bã và <span class="t-adj">ít nói (lầm lì)</span> sau tai nạn.`,
+                        audio: "The boy became sad and uncommunicative after the accident."
+                    },
+                    {
+                        wordText: "communicator", label: "communicator (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">communicat</span><span class="suf-n">or</span>`,
+                        meaning: "Người giao tiếp, truyền đạt",
+                        exEn: `As a teacher, you need to be an excellent <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">communicat</span><span class="suf-n">or</span></span>.`,
+                        exVi: `Là một giáo viên, bạn cần phải là một <span class="t-noun">người truyền đạt</span> xuất sắc.`,
+                        audio: "As a teacher, you need to be an excellent communicator."
                     }
                 ]
             },
             {
-                baseWord: "reason", baseMeaning: "Lý do, lý trí", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `There is no logical <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">reason</span></span> for his strange behavior.`,
-                baseExVi: `Không có <span class="t-noun">lý do</span> hợp lý nào cho hành vi kỳ lạ của anh ta.`,
-                baseAudio: "There is no logical reason for his strange behavior.",
+                baseWord: "decide", baseMeaning: "Quyết định", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `It is time for us to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">decide</span></span> our next strategic move.`,
+                baseExVi: `Đã đến lúc chúng ta phải <span class="t-verb">quyết định</span> bước đi chiến lược tiếp theo.`,
+                baseAudio: "It is time for us to decide our next strategic move.",
                 variants: [
                     {
-                        wordText: "reasonable", label: "reasonable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">reason</span><span class="suf-adj">able</span>`,
-                        meaning: "Hợp lý, có lý",
-                        exEn: `The shop offers high-quality goods at <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">reason</span><span class="suf-adj">able</span></span> prices.`,
-                        exVi: `Cửa hàng cung cấp hàng hóa chất lượng cao với mức giá <span class="t-adj">hợp lý</span>.`,
-                        audio: "The shop offers high-quality goods at reasonable prices."
+                        wordText: "decision", label: "decision (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">decis</span><span class="suf-n">ion</span>`,
+                        meaning: "Quyết định",
+                        exEn: `Buying this house was the best <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">decis</span><span class="suf-n">ion</span></span> we've ever made.`,
+                        exVi: `Việc mua ngôi nhà này là <span class="t-noun">quyết định</span> tuyệt vời nhất chúng tôi từng đưa ra.`,
+                        audio: "Buying this house was the best decision we've ever made."
                     },
                     {
-                        wordText: "unreasonable", label: "unreasonable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-n">reason</span><span class="suf-adj">able</span>`,
-                        meaning: "Vô lý, đòi hỏi quá đáng",
-                        exEn: `It is <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">reason</span><span class="suf-adj">able</span></span> to expect them to finish the work in one day.`,
-                        exVi: `Thật <span class="t-adj">vô lý</span> khi mong đợi họ hoàn thành công việc trong một ngày.`,
-                        audio: "It is unreasonable to expect them to finish the work in one day."
+                        wordText: "decisive", label: "decisive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">decis</span><span class="suf-adj">ive</span>`,
+                        meaning: "Kiên quyết, mang tính quyết định",
+                        exEn: `The commander took <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">decis</span><span class="suf-adj">ive</span></span> action to prevent a full-blown crisis.`,
+                        exVi: `Vị chỉ huy đã hành động <span class="t-adj">quyết đoán</span> để ngăn chặn một cuộc khủng hoảng toàn diện.`,
+                        audio: "The commander took decisive action to prevent a full-blown crisis."
+                    },
+                    {
+                        wordText: "decisively", label: "decisively (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">decis</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách dứt khoát",
+                        exEn: `She answered <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">decis</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> when asked about her future plans.`,
+                        exVi: `Cô ấy trả lời <span class="t-adv">một cách dứt khoát</span> khi được hỏi về kế hoạch tương lai của mình.`,
+                        audio: "She answered decisively when asked about her future plans."
+                    },
+                    {
+                        wordText: "indecisive", label: "indecisive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">in</span><span class="root-v">decis</span><span class="suf-adj">ive</span>`,
+                        meaning: "Thiếu quyết đoán, do dự",
+                        exEn: `A strong leader cannot afford to be <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">in</span><span class="root-v">decis</span><span class="suf-adj">ive</span></span> in times of emergency.`,
+                        exVi: `Một nhà lãnh đạo mạnh mẽ không thể tỏ ra <span class="t-adj">do dự (thiếu quyết đoán)</span> trong những trường hợp khẩn cấp.`,
+                        audio: "A strong leader cannot afford to be indecisive in times of emergency."
                     }
                 ]
             },
             {
-                baseWord: "doubt", baseMeaning: "Nghi ngờ", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `I seriously <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">doubt</span></span> that he will keep his promise.`,
-                baseExVi: `Tôi thực sự <span class="t-verb">nghi ngờ</span> rằng anh ấy sẽ giữ lời hứa của mình.`,
-                baseAudio: "I seriously doubt that he will keep his promise.",
+                baseWord: "attract", baseMeaning: "Thu hút, hấp dẫn", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Bright flowers are designed to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">attract</span></span> bees and butterflies.`,
+                baseExVi: `Những bông hoa rực rỡ được thiết kế để <span class="t-verb">thu hút</span> ong và bướm.`,
+                baseAudio: "Bright flowers are designed to attract bees and butterflies.",
                 variants: [
                     {
-                        wordText: "undoubted", label: "undoubted (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">doubt</span><span class="suf-adj">ed</span>`,
-                        meaning: "Chắc chắn, không thể nghi ngờ",
-                        exEn: `She is a woman of <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">doubt</span><span class="suf-adj">ed</span></span> brilliance and talent.`,
-                        exVi: `Cô ấy là một người phụ nữ với sự thông minh và tài năng <span class="t-adj">không thể nghi ngờ</span>.`,
-                        audio: "She is a woman of undoubted brilliance and talent."
+                        wordText: "attraction", label: "attraction (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">attract</span><span class="suf-n">ion</span>`,
+                        meaning: "Sự thu hút, điểm tham quan",
+                        exEn: `The Eiffel Tower is the most famous tourist <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">attract</span><span class="suf-n">ion</span></span> in Paris.`,
+                        exVi: `Tháp Eiffel là <span class="t-noun">điểm tham quan (sự thu hút)</span> du lịch nổi tiếng nhất ở Paris.`,
+                        audio: "The Eiffel Tower is the most famous tourist attraction in Paris."
                     },
                     {
-                        wordText: "undoubtedly", label: "undoubtedly (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">doubt</span><span class="suf-adj">ed</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách rõ ràng, không thể phủ nhận",
-                        exEn: `This is <span class="w-box" style="border-color: var(--c-adv);"><span class="g-pre-neg">un</span><span class="root-v">doubt</span><span class="suf-adj">ed</span><span class="suf-adv">ly</span></span> the best movie I have ever seen.`,
-                        exVi: `Đây <span class="t-adv">chắc chắn (không thể phủ nhận)</span> là bộ phim hay nhất tôi từng xem.`,
-                        audio: "This is undoubtedly the best movie I have ever seen."
+                        wordText: "attractive", label: "attractive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">attract</span><span class="suf-adj">ive</span>`,
+                        meaning: "Hấp dẫn, lôi cuốn",
+                        exEn: `The company offers a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">attract</span><span class="suf-adj">ive</span></span> salary package to skilled engineers.`,
+                        exVi: `Công ty đưa ra một gói lương rất <span class="t-adj">hấp dẫn</span> cho các kỹ sư lành nghề.`,
+                        audio: "The company offers a very attractive salary package to skilled engineers."
+                    },
+                    {
+                        wordText: "attractively", label: "attractively (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">attract</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách lôi cuốn, hấp dẫn",
+                        exEn: `The dessert was <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">attract</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> presented on a silver plate.`,
+                        exVi: `Món tráng miệng được bày biện <span class="t-adv">một cách hấp dẫn</span> trên một chiếc đĩa bạc.`,
+                        audio: "The dessert was attractively presented on a silver plate."
+                    },
+                    {
+                        wordText: "unattractive", label: "unattractive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">attract</span><span class="suf-adj">ive</span>`,
+                        meaning: "Kém hấp dẫn, xấu xí",
+                        exEn: `The proposal was financially <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">attract</span><span class="suf-adj">ive</span></span> to the investors.`,
+                        exVi: `Bản đề xuất <span class="t-adj">kém hấp dẫn</span> về mặt tài chính đối với các nhà đầu tư.`,
+                        audio: "The proposal was financially unattractive to the investors."
                     }
                 ]
             },
             {
-                baseWord: "sympathy", baseMeaning: "Sự cảm thông", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `I have deep <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">sympathy</span></span> for the victims of the earthquake.`,
-                baseExVi: `Tôi có một <span class="t-noun">sự cảm thông</span> sâu sắc đối với các nạn nhân của trận động đất.`,
-                baseAudio: "I have deep sympathy for the victims of the earthquake.",
+                baseWord: "depend", baseMeaning: "Phụ thuộc, dựa vào", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Young children <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">depend</span></span> entirely on their parents for survival.`,
+                baseExVi: `Trẻ nhỏ <span class="t-verb">phụ thuộc</span> hoàn toàn vào cha mẹ để sinh tồn.`,
+                baseAudio: "Young children depend entirely on their parents for survival.",
                 variants: [
                     {
-                        wordText: "sympathetic", label: "sympathetic (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">sympath</span><span class="suf-adj">etic</span>`,
-                        meaning: "Đầy sự cảm thông",
-                        exEn: `She was very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">sympath</span><span class="suf-adj">etic</span></span> when I told her about my loss.`,
-                        exVi: `Cô ấy rất <span class="t-adj">cảm thông</span> khi tôi kể cho cô ấy nghe về sự mất mát của mình.`,
-                        audio: "She was very sympathetic when I told her about my loss."
+                        wordText: "dependence", label: "dependence (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">depend</span><span class="suf-n">ence</span>`,
+                        meaning: "Sự phụ thuộc",
+                        exEn: `The country is trying to reduce its <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">depend</span><span class="suf-n">ence</span></span> on foreign oil.`,
+                        exVi: `Quốc gia này đang cố gắng giảm <span class="t-noun">sự phụ thuộc</span> vào dầu mỏ nước ngoài.`,
+                        audio: "The country is trying to reduce its dependence on foreign oil."
                     },
                     {
-                        wordText: "unsympathetic", label: "unsympathetic (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-n">sympath</span><span class="suf-adj">etic</span>`,
-                        meaning: "Vô cảm, không thông cảm",
-                        exEn: `The manager was surprisingly <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">sympath</span><span class="suf-adj">etic</span></span> to our complaints.`,
-                        exVi: `Người quản lý đã tỏ ra <span class="t-adj">vô cảm (không thông cảm)</span> một cách đáng ngạc nhiên trước những lời phàn nàn của chúng tôi.`,
-                        audio: "The manager was surprisingly unsympathetic to our complaints."
+                        wordText: "independence", label: "independence (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-n">ence</span>`,
+                        meaning: "Sự độc lập",
+                        exEn: `Vietnam declared its <span class="w-box" style="border-color: var(--c-noun);"><span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-n">ence</span></span> in 1945.`,
+                        exVi: `Việt Nam tuyên bố <span class="t-noun">độc lập</span> vào năm 1945.`,
+                        audio: "Vietnam declared its independence in 1945."
+                    },
+                    {
+                        wordText: "dependent", label: "dependent (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">depend</span><span class="suf-adj">ent</span>`,
+                        meaning: "Bị phụ thuộc, ỷ lại",
+                        exEn: `The local economy is heavily <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">depend</span><span class="suf-adj">ent</span></span> on international tourism.`,
+                        exVi: `Nền kinh tế địa phương <span class="t-adj">phụ thuộc</span> nặng nề vào du lịch quốc tế.`,
+                        audio: "The local economy is heavily dependent on international tourism."
+                    },
+                    {
+                        wordText: "independent", label: "independent (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span>`,
+                        meaning: "Độc lập, tự chủ",
+                        exEn: `She has always been a fiercely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span></span> and confident woman.`,
+                        exVi: `Cô ấy luôn là một người phụ nữ tự tin và <span class="t-adj">độc lập</span> mạnh mẽ.`,
+                        audio: "She has always been a fiercely independent and confident woman."
+                    },
+                    {
+                        wordText: "independently", label: "independently (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách độc lập",
+                        exEn: `Students are expected to work <span class="w-box" style="border-color: var(--c-adv);"><span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span><span class="suf-adv">ly</span></span> on this assignment.`,
+                        exVi: `Học sinh được mong đợi sẽ làm việc <span class="t-adv">một cách độc lập</span> trong bài tập này.`,
+                        audio: "Students are expected to work independently on this assignment."
                     }
                 ]
             },
             {
-                baseWord: "foresee", baseMeaning: "Nhìn thấy trước", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `We did not <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">foresee</span></span> any major problems with the plan.`,
-                baseExVi: `Chúng tôi đã không <span class="t-verb">lường trước</span> bất kỳ vấn đề lớn nào với kế hoạch.`,
-                baseAudio: "We did not foresee any major problems with the plan.",
+                baseWord: "prefer", baseMeaning: "Thích hơn", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `I usually <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">prefer</span></span> reading physical books over reading on a screen.`,
+                baseExVi: `Tôi thường <span class="t-verb">thích</span> đọc sách giấy <span class="t-verb">hơn</span> là đọc trên màn hình.`,
+                baseAudio: "I usually prefer reading physical books over reading on a screen.",
                 variants: [
                     {
-                        wordText: "foreseeable", label: "foreseeable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">foresee</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể lường trước được",
-                        exEn: `The situation will not improve in the <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">foresee</span><span class="suf-adj">able</span></span> future.`,
-                        exVi: `Tình hình sẽ không được cải thiện trong một tương lai <span class="t-adj">có thể lường trước được</span>.`,
-                        audio: "The situation will not improve in the foreseeable future."
+                        wordText: "preference", label: "preference (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">prefer</span><span class="suf-n">ence</span>`,
+                        meaning: "Sự thiên vị, sở thích",
+                        exEn: `Do you have any personal <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">prefer</span><span class="suf-n">ence</span></span> for the seat arrangement?`,
+                        exVi: `Bạn có <span class="t-noun">sở thích (sự ưu tiên)</span> cá nhân nào cho việc sắp xếp chỗ ngồi không?`,
+                        audio: "Do you have any personal preference for the seat arrangement?"
                     },
                     {
-                        wordText: "unforeseen", label: "unforeseen (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">foreseen</span>`,
-                        meaning: "Bất ngờ, không lường trước được",
-                        exEn: `Due to <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">foreseen</span></span> circumstances, the event has been cancelled.`,
-                        exVi: `Do những tình huống <span class="t-adj">không lường trước được</span>, sự kiện đã bị hủy bỏ.`,
-                        audio: "Due to unforeseen circumstances, the event has been cancelled."
+                        wordText: "preferable", label: "preferable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">prefer</span><span class="suf-adj">able</span>`,
+                        meaning: "Đáng thích hơn, tốt hơn",
+                        exEn: `An early start is highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">prefer</span><span class="suf-adj">able</span></span> if we want to avoid the heavy traffic.`,
+                        exVi: `Việc khởi hành sớm là rất <span class="t-adj">đáng ưu tiên (tốt hơn)</span> nếu chúng ta muốn tránh kẹt xe.`,
+                        audio: "An early start is highly preferable if we want to avoid the heavy traffic."
+                    },
+                    {
+                        wordText: "preferably", label: "preferably (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">prefer</span><span class="suf-adj">ab</span><span class="suf-adv">ly</span>`,
+                        meaning: "Tốt nhất là",
+                        exEn: `We need a new manager, <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">prefer</span><span class="suf-adj">ab</span><span class="suf-adv">ly</span></span> someone with international experience.`,
+                        exVi: `Chúng tôi cần một người quản lý mới, <span class="t-adv">tốt nhất là</span> một người có kinh nghiệm quốc tế.`,
+                        audio: "We need a new manager, preferably someone with international experience."
+                    },
+                    {
+                        wordText: "preferential", label: "preferential (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">prefer</span><span class="suf-adj">ential</span>`,
+                        meaning: "Ưu tiên, ưu đãi",
+                        exEn: `VIP members receive <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">prefer</span><span class="suf-adj">ential</span></span> treatment at the hotel.`,
+                        exVi: `Các thành viên VIP nhận được sự đối đãi <span class="t-adj">ưu tiên</span> tại khách sạn.`,
+                        audio: "VIP members receive preferential treatment at the hotel."
                     }
                 ]
             },
             {
-                baseWord: "conscious", baseMeaning: "Nhận thức, tỉnh táo", baseType: "Adj", baseClass: "root-adj", baseColor: "var(--c-adj)",
-                baseExEn: `The patient was fully <span class="w-box" style="border-color: var(--c-adj);"><span class="root-adj">conscious</span></span> during the operation.`,
-                baseExVi: `Bệnh nhân hoàn toàn <span class="t-adj">tỉnh táo (có nhận thức)</span> trong suốt ca phẫu thuật.`,
-                baseAudio: "The patient was fully conscious during the operation.",
+                baseWord: "achieve", baseMeaning: "Đạt được", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `He worked hard to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">achieve</span></span> his dream of becoming a doctor.`,
+                baseExVi: `Anh ấy đã làm việc chăm chỉ để <span class="t-verb">đạt được</span> giấc mơ trở thành bác sĩ.`,
+                baseAudio: "He worked hard to achieve his dream of becoming a doctor.",
                 variants: [
                     {
-                        wordText: "consciousness", label: "consciousness (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-adj">conscious</span><span class="suf-n">ness</span>`,
-                        meaning: "Trạng thái nhận thức, sự tỉnh táo",
-                        exEn: `He lost <span class="w-box" style="border-color: var(--c-noun);"><span class="root-adj">conscious</span><span class="suf-n">ness</span></span> after hitting his head on the floor.`,
-                        exVi: `Anh ta đã mất <span class="t-noun">sự tỉnh táo</span> sau khi đập đầu xuống sàn.`,
-                        audio: "He lost consciousness after hitting his head on the floor."
+                        wordText: "achievement", label: "achievement (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">achieve</span><span class="suf-n">ment</span>`,
+                        meaning: "Thành tựu, sự đạt được",
+                        exEn: `Winning the championship was his greatest <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">achieve</span><span class="suf-n">ment</span></span>.`,
+                        exVi: `Giành chức vô địch là <span class="t-noun">thành tựu</span> vĩ đại nhất của anh ấy.`,
+                        audio: "Winning the championship was his greatest achievement."
                     },
                     {
-                        wordText: "unconscious", label: "unconscious (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-adj">conscious</span>`,
-                        meaning: "Bất tỉnh, vô thức",
-                        exEn: `She lay <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-adj">conscious</span></span> on the ground for several minutes.`,
-                        exVi: `Cô ấy nằm <span class="t-adj">bất tỉnh</span> trên mặt đất trong vài phút.`,
-                        audio: "She lay unconscious on the ground for several minutes."
+                        wordText: "achievable", label: "achievable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">achiev</span><span class="suf-adj">able</span>`,
+                        meaning: "Có thể đạt được, khả thi",
+                        exEn: `Setting realistic and <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">achiev</span><span class="suf-adj">able</span></span> goals is the key to success.`,
+                        exVi: `Việc đặt ra những mục tiêu thực tế và <span class="t-adj">có thể đạt được</span> là chìa khóa để thành công.`,
+                        audio: "Setting realistic and achievable goals is the key to success."
+                    },
+                    {
+                        wordText: "unachievable", label: "unachievable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">achiev</span><span class="suf-adj">able</span>`,
+                        meaning: "Không thể đạt được, viển vông",
+                        exEn: `Ending all poverty worldwide seems like an noble but <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">achiev</span><span class="suf-adj">able</span></span> goal.`,
+                        exVi: `Chấm dứt hoàn toàn nghèo đói trên toàn cầu có vẻ là một mục tiêu cao cả nhưng <span class="t-adj">không thể đạt được</span>.`,
+                        audio: "Ending all poverty worldwide seems like an noble but unachievable goal."
+                    },
+                    {
+                        wordText: "achiever", label: "achiever (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">achiev</span><span class="suf-n">er</span>`,
+                        meaning: "Người thành đạt",
+                        exEn: `As a high <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">achiev</span><span class="suf-n">er</span></span>, she always pushes herself to the limit.`,
+                        exVi: `Là một <span class="t-noun">người có thành tích cao</span>, cô ấy luôn thúc đẩy bản thân đến giới hạn.`,
+                        audio: "As a high achiever, she always pushes herself to the limit."
                     }
                 ]
             },
             {
-                baseWord: "convention", baseMeaning: "Quy ước, tục lệ", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `She decided to defy social <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">convention</span></span> and travel the world alone.`,
-                baseExVi: `Cô ấy quyết định thách thức <span class="t-noun">tục lệ</span> xã hội và đi du lịch vòng quanh thế giới một mình.`,
-                baseAudio: "She decided to defy social convention and travel the world alone.",
+                baseWord: "succeed", baseMeaning: "Thành công, nối nghiệp", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `If you want to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">succeed</span></span> in business, you must take calculated risks.`,
+                baseExVi: `Nếu bạn muốn <span class="t-verb">thành công</span> trong kinh doanh, bạn phải chấp nhận những rủi ro có tính toán.`,
+                baseAudio: "If you want to succeed in business, you must take calculated risks.",
                 variants: [
                     {
-                        wordText: "conventional", label: "conventional (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">convention</span><span class="suf-adj">al</span>`,
-                        meaning: "Theo truyền thống, thông thường",
-                        exEn: `He prefers <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">convention</span><span class="suf-adj">al</span></span> methods of teaching.`,
-                        exVi: `Ông ấy thích các phương pháp giảng dạy <span class="t-adj">truyền thống (thông thường)</span>.`,
-                        audio: "He prefers conventional methods of teaching."
+                        wordText: "success", label: "success (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-n">success</span>`,
+                        meaning: "Sự thành công",
+                        exEn: `The new product was a massive commercial <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">success</span></span>.`,
+                        exVi: `Sản phẩm mới là một <span class="t-noun">sự thành công</span> thương mại khổng lồ.`,
+                        audio: "The new product was a massive commercial success."
                     },
                     {
-                        wordText: "unconventional", label: "unconventional (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-n">convention</span><span class="suf-adj">al</span>`,
-                        meaning: "Khác thường, phá cách",
-                        exEn: `Her <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">convention</span><span class="suf-adj">al</span></span> approach to art won her many awards.`,
-                        exVi: `Cách tiếp cận nghệ thuật <span class="t-adj">phá cách</span> đã giúp cô giành nhiều giải thưởng.`,
-                        audio: "Her unconventional approach to art won her many awards."
+                        wordText: "successful", label: "successful (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">success</span><span class="suf-adj">ful</span>`,
+                        meaning: "Thành công",
+                        exEn: `The marketing campaign was highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">success</span><span class="suf-adj">ful</span></span>.`,
+                        exVi: `Chiến dịch tiếp thị đã <span class="t-adj">thành công</span> rực rỡ.`,
+                        audio: "The marketing campaign was highly successful."
+                    },
+                    {
+                        wordText: "successfully", label: "successfully (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-n">success</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách thành công",
+                        exEn: `The surgeon <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">success</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span></span> completed the complex operation.`,
+                        exVi: `Bác sĩ phẫu thuật đã hoàn thành <span class="t-adv">một cách thành công</span> ca mổ phức tạp.`,
+                        audio: "The surgeon successfully completed the complex operation."
+                    },
+                    {
+                        wordText: "unsuccessful", label: "unsuccessful (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-n">success</span><span class="suf-adj">ful</span>`,
+                        meaning: "Không thành công, thất bại",
+                        exEn: `Despite their efforts, the rescue mission was tragically <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">success</span><span class="suf-adj">ful</span></span>.`,
+                        exVi: `Bất chấp nỗ lực của họ, nhiệm vụ cứu hộ đã <span class="t-adj">thất bại</span> một cách bi thảm.`,
+                        audio: "Despite their efforts, the rescue mission was tragically unsuccessful."
+                    },
+                    {
+                        wordText: "successive", label: "successive (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">success</span><span class="suf-adj">ive</span>`,
+                        meaning: "Liên tiếp, kế tiếp (⚠️ Bẫy)",
+                        exEn: `The team won the championship for three <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">success</span><span class="suf-adj">ive</span></span> years.`,
+                        exVi: `Đội đã giành chức vô địch trong 3 năm <span class="t-adj">liên tiếp</span>.`,
+                        audio: "The team won the championship for three successive years."
                     }
                 ]
             },
             {
-                baseWord: "desire", baseMeaning: "Khao khát, mong muốn", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `We all <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">desire</span></span> health, happiness, and peace in our lives.`,
-                baseExVi: `Tất cả chúng ta đều <span class="t-verb">mong muốn</span> sức khỏe, hạnh phúc và bình yên trong cuộc sống.`,
-                baseAudio: "We all desire health, happiness, and peace in our lives.",
+                baseWord: "care", baseMeaning: "Sự quan tâm, cẩn thận", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
+                baseExEn: `You need to handle these fragile glasses with extreme <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">care</span></span>.`,
+                baseExVi: `Bạn cần xử lý những chiếc ly dễ vỡ này với <span class="t-noun">sự cẩn thận</span> tột độ.`,
+                baseAudio: "You need to handle these fragile glasses with extreme care.",
                 variants: [
                     {
-                        wordText: "desirable", label: "desirable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">desir</span><span class="suf-adj">able</span>`,
-                        meaning: "Đáng mong đợi, đáng khao khát",
-                        exEn: `Experience in marketing is a highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">desir</span><span class="suf-adj">able</span></span> qualification for this job.`,
-                        exVi: `Kinh nghiệm tiếp thị là một phẩm chất rất <span class="t-adj">đáng mong đợi</span> cho công việc này.`,
-                        audio: "Experience in marketing is a highly desirable qualification for this job."
+                        wordText: "careful", label: "careful (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">care</span><span class="suf-adj">ful</span>`,
+                        meaning: "Cẩn thận",
+                        exEn: `Please be <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">care</span><span class="suf-adj">ful</span></span> when crossing the busy street.`,
+                        exVi: `Làm ơn hãy <span class="t-adj">cẩn thận</span> khi băng qua con đường đông đúc.`,
+                        audio: "Please be careful when crossing the busy street."
                     },
                     {
-                        wordText: "undesirable", label: "undesirable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">desir</span><span class="suf-adj">able</span>`,
-                        meaning: "Không mong muốn, phiền toái",
-                        exEn: `The drug has some <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">desir</span><span class="suf-adj">able</span></span> side effects.`,
-                        exVi: `Thuốc có một vài tác dụng phụ <span class="t-adj">không mong muốn</span>.`,
-                        audio: "The drug has some undesirable side effects."
+                        wordText: "carefully", label: "carefully (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-n">care</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách cẩn thận",
+                        exEn: `He <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">care</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span></span> placed the baby in the crib.`,
+                        exVi: `Anh ấy <span class="t-adv">cẩn thận</span> đặt đứa bé vào trong nôi.`,
+                        audio: "He carefully placed the baby in the crib."
+                    },
+                    {
+                        wordText: "careless", label: "careless (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">care</span><span class="suf-adj">less</span>`,
+                        meaning: "Bất cẩn, cẩu thả",
+                        exEn: `Losing your passport was a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">care</span><span class="suf-adj">less</span></span> mistake.`,
+                        exVi: `Làm mất hộ chiếu là một sai lầm rất <span class="t-adj">bất cẩn</span>.`,
+                        audio: "Losing your passport was a very careless mistake."
+                    },
+                    {
+                        wordText: "carelessly", label: "carelessly (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách cẩu thả",
+                        exEn: `He <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-adv">ly</span></span> threw his jacket on the floor.`,
+                        exVi: `Anh ấy ném chiếc áo khoác của mình xuống sàn <span class="t-adv">một cách cẩu thả</span>.`,
+                        audio: "He carelessly threw his jacket on the floor."
+                    },
+                    {
+                        wordText: "carelessness", label: "carelessness (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-n">ness</span>`,
+                        meaning: "Sự bất cẩn",
+                        exEn: `Most road accidents are caused by driver <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-n">ness</span></span>.`,
+                        exVi: `Hầu hết các vụ tai nạn đường bộ là do <span class="t-noun">sự bất cẩn</span> của tài xế.`,
+                        audio: "Most road accidents are caused by driver carelessness."
+                    },
+                    {
+                        wordText: "caring", label: "caring (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">car</span><span class="suf-adj">ing</span>`,
+                        meaning: "Chu đáo, biết quan tâm",
+                        exEn: `She is a deeply <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">car</span><span class="suf-adj">ing</span></span> nurse who loves her patients.`,
+                        exVi: `Cô ấy là một y tá vô cùng <span class="t-adj">chu đáo</span>, yêu thương bệnh nhân của mình.`,
+                        audio: "She is a deeply caring nurse who loves her patients."
+                    }
+                ]
+            },
+            {
+                baseWord: "use", baseMeaning: "Sử dụng, công dụng", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
+                baseExEn: `This tool has multiple <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">uses</span></span> in the kitchen.`,
+                baseExVi: `Công cụ này có rất nhiều <span class="t-noun">công dụng</span> trong nhà bếp.`,
+                baseAudio: "This tool has multiple uses in the kitchen.",
+                variants: [
+                    {
+                        wordText: "useful", label: "useful (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">use</span><span class="suf-adj">ful</span>`,
+                        meaning: "Hữu ích",
+                        exEn: `A pocket knife is a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">use</span><span class="suf-adj">ful</span></span> tool for camping.`,
+                        exVi: `Dao bỏ túi là một công cụ rất <span class="t-adj">hữu ích</span> cho việc cắm trại.`,
+                        audio: "A pocket knife is a very useful tool for camping."
+                    },
+                    {
+                        wordText: "usefully", label: "usefully (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-n">use</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách hữu ích",
+                        exEn: `The extra money could be <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">use</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span></span> spent on repairing the roof.`,
+                        exVi: `Số tiền thừa có thể được chi tiêu <span class="t-adv">một cách hữu ích</span> vào việc sửa mái nhà.`,
+                        audio: "The extra money could be usefully spent on repairing the roof."
+                    },
+                    {
+                        wordText: "useless", label: "useless (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">use</span><span class="suf-adj">less</span>`,
+                        meaning: "Vô ích, không có tác dụng",
+                        exEn: `This old map is completely <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">use</span><span class="suf-adj">less</span></span> because the roads have changed.`,
+                        exVi: `Tấm bản đồ cũ này hoàn toàn <span class="t-adj">vô dụng</span> vì các con đường đã thay đổi.`,
+                        audio: "This old map is completely useless because the roads have changed."
+                    },
+                    {
+                        wordText: "uselessly", label: "uselessly (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-n">use</span><span class="suf-adj">less</span><span class="suf-adv">ly</span>`,
+                        meaning: "Một cách vô ích",
+                        exEn: `The machine kept spinning <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">use</span><span class="suf-adj">less</span><span class="suf-adv">ly</span></span> without producing anything.`,
+                        exVi: `Cỗ máy cứ quay <span class="t-adv">một cách vô ích</span> mà không sản xuất ra thứ gì.`,
+                        audio: "The machine kept spinning uselessly without producing anything."
+                    },
+                    {
+                        wordText: "reusable", label: "reusable (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-att">re</span><span class="root-v">us</span><span class="suf-adj">able</span>`,
+                        meaning: "Có thể tái sử dụng",
+                        exEn: `We should all switch to <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-att">re</span><span class="root-v">us</span><span class="suf-adj">able</span></span> water bottles to reduce plastic waste.`,
+                        exVi: `Tất cả chúng ta nên chuyển sang dùng chai nước <span class="t-adj">có thể tái sử dụng</span> để giảm rác thải nhựa.`,
+                        audio: "We should all switch to reusable water bottles to reduce plastic waste."
+                    },
+                    {
+                        wordText: "user", label: "user (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">us</span><span class="suf-n">er</span>`,
+                        meaning: "Người sử dụng",
+                        exEn: `The app was redesigned to create a better experience for the end <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">us</span><span class="suf-n">er</span></span>.`,
+                        exVi: `Ứng dụng đã được thiết kế lại để tạo ra trải nghiệm tốt hơn cho <span class="t-noun">người dùng</span> cuối.`,
+                        audio: "The app was redesigned to create a better experience for the end user."
+                    }
+                ]
+            },
+            {
+                baseWord: "origin", baseMeaning: "Nguồn gốc", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
+                baseExEn: `Scientists are still debating the exact <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">origin</span></span> of the universe.`,
+                baseExVi: `Các nhà khoa học vẫn đang tranh luận về <span class="t-noun">nguồn gốc</span> chính xác của vũ trụ.`,
+                baseAudio: "Scientists are still debating the exact origin of the universe.",
+                variants: [
+                    {
+                        wordText: "original", label: "original (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">origin</span><span class="suf-adj">al</span>`,
+                        meaning: "Nguyên bản, độc đáo",
+                        exEn: `The painting is a highly valuable <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">origin</span><span class="suf-adj">al</span></span> work by Picasso.`,
+                        exVi: `Bức tranh là một tác phẩm <span class="t-adj">nguyên bản</span> vô cùng giá trị của Picasso.`,
+                        audio: "The painting is a highly valuable original work by Picasso."
+                    },
+                    {
+                        wordText: "originally", label: "originally (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-n">origin</span><span class="suf-adj">al</span><span class="suf-adv">ly</span>`,
+                        meaning: "Ban đầu, khởi đầu",
+                        exEn: `The building was <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">origin</span><span class="suf-adj">al</span><span class="suf-adv">ly</span></span> designed to be a hospital, not a school.`,
+                        exVi: `Tòa nhà <span class="t-adv">ban đầu</span> được thiết kế để làm bệnh viện, không phải trường học.`,
+                        audio: "The building was originally designed to be a hospital, not a school."
+                    },
+                    {
+                        wordText: "unoriginal", label: "unoriginal (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-n">origin</span><span class="suf-adj">al</span>`,
+                        meaning: "Sao chép, thiếu tính sáng tạo",
+                        exEn: `The movie's plot was incredibly boring and <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">origin</span><span class="suf-adj">al</span></span>.`,
+                        exVi: `Cốt truyện của bộ phim cực kỳ nhàm chán và <span class="t-adj">thiếu sáng tạo (sao chép)</span>.`,
+                        audio: "The movie's plot was incredibly boring and unoriginal."
+                    },
+                    {
+                        wordText: "originate", label: "originate (V)", type: "V", color: "var(--c-verb)",
+                        html: `<span class="root-n">origin</span><span class="suf-v">ate</span>`,
+                        meaning: "Bắt nguồn từ, khởi phát",
+                        exEn: `The disease is believed to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-n">origin</span><span class="suf-v">ate</span></span> from a remote jungle in Africa.`,
+                        exVi: `Căn bệnh được cho là <span class="t-verb">bắt nguồn từ</span> một khu rừng rậm hẻo lánh ở Châu Phi.`,
+                        audio: "The disease is believed to originate from a remote jungle in Africa."
+                    },
+                    {
+                        wordText: "originator", label: "originator (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-n">origin</span><span class="suf-v">at</span><span class="suf-n">or</span>`,
+                        meaning: "Người khởi xướng, người sáng lập",
+                        exEn: `He is credited as the <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">origin</span><span class="suf-v">at</span><span class="suf-n">or</span></span> of this revolutionary theory.`,
+                        exVi: `Ông được ghi nhận là <span class="t-noun">người khởi xướng</span> ra lý thuyết mang tính cách mạng này.`,
+                        audio: "He is credited as the originator of this revolutionary theory."
+                    }
+                ]
+            },
+            {
+                baseWord: "nation", baseMeaning: "Quốc gia, dân tộc", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
+                baseExEn: `The whole <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">nation</span></span> mourned the sudden death of the beloved president.`,
+                baseExVi: `Cả <span class="t-noun">quốc gia</span> thương tiếc sự ra đi đột ngột của vị tổng thống đáng kính.`,
+                baseAudio: "The whole nation mourned the sudden death of the beloved president.",
+                variants: [
+                    {
+                        wordText: "national", label: "national (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span>`,
+                        meaning: "Thuộc về quốc gia, dân tộc",
+                        exEn: `The eagle is recognized as the <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">nation</span><span class="suf-adj">al</span></span> symbol of the United States.`,
+                        exVi: `Đại bàng được công nhận là biểu tượng <span class="t-adj">quốc gia</span> của Hoa Kỳ.`,
+                        audio: "The eagle is recognized as the national symbol of the United States."
+                    },
+                    {
+                        wordText: "nationally", label: "nationally (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-adv">ly</span>`,
+                        meaning: "Trên phạm vi toàn quốc",
+                        exEn: `The news of his victory was broadcast <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-adv">ly</span></span>.`,
+                        exVi: `Tin tức về chiến thắng của anh ấy được phát sóng <span class="t-adv">trên toàn quốc</span>.`,
+                        audio: "The news of his victory was broadcast nationally."
+                    },
+                    {
+                        wordText: "international", label: "international (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-att">inter</span><span class="root-n">nation</span><span class="suf-adj">al</span>`,
+                        meaning: "Quốc tế",
+                        exEn: `The airport has flights to many <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-att">inter</span><span class="root-n">nation</span><span class="suf-adj">al</span></span> destinations.`,
+                        exVi: `Sân bay có các chuyến bay đến nhiều điểm đến <span class="t-adj">quốc tế</span>.`,
+                        audio: "The airport has flights to many international destinations."
+                    },
+                    {
+                        wordText: "nationality", label: "nationality (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-n">ity</span>`,
+                        meaning: "Quốc tịch",
+                        exEn: `She has dual <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-n">ity</span></span>, holding passports from both France and Canada.`,
+                        exVi: `Cô ấy có <span class="t-noun">quốc tịch</span> kép, sở hữu hộ chiếu của cả Pháp và Canada.`,
+                        audio: "She has dual nationality, holding passports from both France and Canada."
+                    },
+                    {
+                        wordText: "nationalize", label: "nationalize (V)", type: "V", color: "var(--c-verb)",
+                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-v">ize</span>`,
+                        meaning: "Quốc hữu hóa",
+                        exEn: `The government decided to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-v">ize</span></span> the railway network.`,
+                        exVi: `Chính phủ quyết định <span class="t-verb">quốc hữu hóa</span> mạng lưới đường sắt.`,
+                        audio: "The government decided to nationalize the railway network."
+                    }
+                ]
+            },
+            {
+                baseWord: "educate", baseMeaning: "Giáo dục, dạy dỗ", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Parents should <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">educate</span></span> their children about the dangers of the internet.`,
+                baseExVi: `Cha mẹ nên <span class="t-verb">giáo dục</span> con cái về những mối nguy hiểm của internet.`,
+                baseAudio: "Parents should educate their children about the dangers of the internet.",
+                variants: [
+                    {
+                        wordText: "education", label: "education (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">educat</span><span class="suf-n">ion</span>`,
+                        meaning: "Nền giáo dục, sự giáo dục",
+                        exEn: `A good <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">educat</span><span class="suf-n">ion</span></span> is the key to escaping the cycle of poverty.`,
+                        exVi: `Một nền <span class="t-noun">giáo dục</span> tốt là chìa khóa để thoát khỏi vòng luẩn quẩn của nghèo đói.`,
+                        audio: "A good education is the key to escaping the cycle of poverty."
+                    },
+                    {
+                        wordText: "educational", label: "educational (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span>`,
+                        meaning: "Thuộc về giáo dục, mang tính giáo dục",
+                        exEn: `The museum offers many interactive and <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span></span> exhibits for kids.`,
+                        exVi: `Bảo tàng cung cấp nhiều triển lãm tương tác và <span class="t-adj">mang tính giáo dục</span> cho trẻ em.`,
+                        audio: "The museum offers many interactive and educational exhibits for kids."
+                    },
+                    {
+                        wordText: "educationally", label: "educationally (Adv)", type: "Adv", color: "var(--c-adv)",
+                        html: `<span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span><span class="suf-adv">ly</span>`,
+                        meaning: "Về mặt giáo dục",
+                        exEn: `The new policy is designed to support <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span><span class="suf-adv">ly</span></span> disadvantaged students.`,
+                        exVi: `Chính sách mới được thiết kế để hỗ trợ những sinh viên gặp bất lợi <span class="t-adv">về mặt giáo dục</span>.`,
+                        audio: "The new policy is designed to support educationally disadvantaged students."
+                    },
+                    {
+                        wordText: "uneducated", label: "uneducated (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">educat</span><span class="suf-adj">ed</span>`,
+                        meaning: "Vô học, không được giáo dục",
+                        exEn: `He is an <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">educat</span><span class="suf-adj">ed</span></span> man but possesses great practical wisdom.`,
+                        exVi: `Ông ấy là một người <span class="t-adj">không được học hành</span> nhưng sở hữu sự thông thái thực tế tuyệt vời.`,
+                        audio: "He is an uneducated man but possesses great practical wisdom."
+                    },
+                    {
+                        wordText: "educator", label: "educator (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">educat</span><span class="suf-n">or</span>`,
+                        meaning: "Nhà giáo dục",
+                        exEn: `She is a highly respected <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">educat</span><span class="suf-n">or</span></span> with 30 years of teaching experience.`,
+                        exVi: `Bà là một <span class="t-noun">nhà giáo dục</span> rất được kính trọng với 30 năm kinh nghiệm giảng dạy.`,
+                        audio: "She is a highly respected educator with 30 years of teaching experience."
+                    }
+                ]
+            },
+            {
+                baseWord: "inform", baseMeaning: "Thông báo", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
+                baseExEn: `Please <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">inform</span></span> me immediately if there are any changes to the plan.`,
+                baseExVi: `Vui lòng <span class="t-verb">thông báo</span> cho tôi ngay lập tức nếu có bất kỳ thay đổi nào đối với kế hoạch.`,
+                baseAudio: "Please inform me immediately if there are any changes to the plan.",
+                variants: [
+                    {
+                        wordText: "information", label: "information (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">inform</span><span class="suf-n">ation</span>`,
+                        meaning: "Thông tin",
+                        exEn: `You can find more detailed <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">inform</span><span class="suf-n">ation</span></span> on our official website.`,
+                        exVi: `Bạn có thể tìm thấy <span class="t-noun">thông tin</span> chi tiết hơn trên trang web chính thức của chúng tôi.`,
+                        audio: "You can find more detailed information on our official website."
+                    },
+                    {
+                        wordText: "informative", label: "informative (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">inform</span><span class="suf-adj">ative</span>`,
+                        meaning: "Nhiều thông tin hữu ích",
+                        exEn: `The documentary was both entertaining and highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">inform</span><span class="suf-adj">ative</span></span>.`,
+                        exVi: `Bộ phim tài liệu vừa mang tính giải trí vừa <span class="t-adj">cung cấp rất nhiều thông tin hữu ích</span>.`,
+                        audio: "The documentary was both entertaining and highly informative."
+                    },
+                    {
+                        wordText: "uninformative", label: "uninformative (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ative</span>`,
+                        meaning: "Nghèo nàn thông tin, không cung cấp kiến thức",
+                        exEn: `The instruction manual was completely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ative</span></span> and confusing.`,
+                        exVi: `Cuốn sổ tay hướng dẫn hoàn toàn <span class="t-adj">nghèo nàn thông tin</span> và gây bối rối.`,
+                        audio: "The instruction manual was completely uninformative and confusing."
+                    },
+                    {
+                        wordText: "informed", label: "informed (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="root-v">inform</span><span class="suf-adj">ed</span>`,
+                        meaning: "Có hiểu biết, được cập nhật thông tin",
+                        exEn: `Consumers today are much more <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">inform</span><span class="suf-adj">ed</span></span> about what they buy.`,
+                        exVi: `Người tiêu dùng ngày nay <span class="t-adj">có hiểu biết (được cập nhật thông tin)</span> hơn nhiều về những gì họ mua.`,
+                        audio: "Consumers today are much more informed about what they buy."
+                    },
+                    {
+                        wordText: "uninformed", label: "uninformed (Adj)", type: "Adj", color: "var(--c-adj)",
+                        html: `<span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ed</span>`,
+                        meaning: "Thiếu hiểu biết, không được báo trước",
+                        exEn: `Making a major financial decision while <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ed</span></span> is very dangerous.`,
+                        exVi: `Việc đưa ra một quyết định tài chính lớn trong khi <span class="t-adj">thiếu hiểu biết</span> là rất nguy hiểm.`,
+                        audio: "Making a major financial decision while uninformed is very dangerous."
+                    },
+                    {
+                        wordText: "informant", label: "informant (N)", type: "N", color: "var(--c-noun)",
+                        html: `<span class="root-v">inform</span><span class="suf-n">ant</span>`,
+                        meaning: "Người cung cấp thông tin, người báo tin",
+                        exEn: `The police relied on a secret <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">inform</span><span class="suf-n">ant</span></span> to catch the criminal.`,
+                        exVi: `Cảnh sát đã dựa vào một <span class="t-noun">người cung cấp thông tin</span> bí mật để bắt giữ tên tội phạm.`,
+                        audio: "The police relied on a secret informant to catch the criminal."
                     }
                 ]
             }
@@ -794,7 +1462,7 @@
                 tTypeBadge.style.borderColor = color;
                 tTypeBadge.style.boxShadow = `0 0 10px ${color}40`;
                 
-                tMeaning.innerHTML = meaning;
+                tMeaning.innerHTML = "- " + meaning;
                 
                 // Inject nội dung
                 exampleBox.innerHTML = `
@@ -808,6 +1476,12 @@
                 `;
                 
                 detailsEl.classList.remove('fading');
+
+                // --- AUTO PLAY: Tự động phát âm từ vừa được hiển thị ---
+                setTimeout(() => {
+                    playCurrentWordAudio();
+                }, 50);
+
             }, 200); // 200ms matches CSS transition
         }
 
@@ -823,8 +1497,11 @@
                 // 1. Inject Root Word Info (Cùng dòng với nghĩa tiếng Việt) - Đã xóa Nút Loa ở đây
                 rootWordBox.innerHTML = `[ <span class="${data.baseClass}">${data.baseWord}</span> ] <span class="badge-type" style="color:${data.baseColor}; border-color:${data.baseColor}; font-size:12px; margin:0 8px;">${data.baseType}</span> <span class="root-meaning-text">- ${data.baseMeaning}</span>`;
                 
-                // 2. Build Variant Nav Buttons (Hiển thị nghĩa trên button)
+                // 2. Build Variant Nav Buttons
                 variantListEl.innerHTML = '';
+                
+                // Đã gỡ bỏ logic JS đếm > 5 biến thể. Flexbox sẽ tự động tính toán không gian.
+
                 data.variants.forEach((v, vIdx) => {
                     const btn = document.createElement('button');
                     btn.className = 'variant-btn';
@@ -899,7 +1576,15 @@
                 option.value = index;
                 voiceSelect.appendChild(option);
             });
-            const bestVoice = availableVoices.findIndex(v => v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha'));
+            
+            // Ưu tiên tìm giọng David làm mặc định
+            let bestVoice = availableVoices.findIndex(v => v.name.includes('David'));
+            
+            // Nếu không có David, tìm các giọng nghe tự nhiên khác
+            if (bestVoice === -1) {
+                bestVoice = availableVoices.findIndex(v => v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha'));
+            }
+            
             if(bestVoice !== -1) voiceSelect.selectedIndex = bestVoice;
         }
         if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
@@ -981,6 +1666,19 @@
         function handleSwipe() {
             if (touchendX < touchstartX - 40) nextCard(); // Vuốt sang trái -> Thẻ tiếp theo
             if (touchendX > touchstartX + 40) prevCard(); // Vuốt sang phải -> Thẻ trước đó
+        }
+
+        // Hàm bật/tắt toàn màn hình
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Lỗi fullscreen: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
         }
 
         // ================= KEYBOARD BINDINGS =================
