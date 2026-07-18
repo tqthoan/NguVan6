@@ -3,1700 +3,844 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neuro-Matrix Flashcards | Hack Tiềm Thức Word Form</title>
+    <title>Neuro-Player Pro | Ultimate Audio Matrix</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
     <style>
-        /* ================= HỆ THỐNG MÀU NEON ================= */
+        /* ================= HỆ THỐNG MÀU & BIẾN ================= */
         :root {
-            --bg-deep: #05050A;
-            --bg-panel: rgba(15, 15, 25, 0.85);
-            
-            --c-noun: #4ade80;     /* Noun */
-            --c-verb: #facc15;     /* Verb */
-            --c-adj:  #22d3ee;     /* Adj */
-            --c-adv:  #2dd4bf;     /* Adv */
-            
-            --c-suf-n:   #86efac;
-            --c-suf-v:   #fef08a;
-            --c-suf-adj: #67e8f9;
-            --c-suf-adv: #5eead4;
-
-            --c-pre-neg: #f43f5e;  /* Negative Prefix */
-            --c-pre-att: #d946ef;  /* Attitude Prefix */
-            
-            --grid-color: rgba(255, 255, 255, 0.03);
-            --card-width: 850px;
-            
-            --active-color: var(--c-adj); /* Thay đổi động bằng JS */
-        }
-
-        /* Thêm nền tối cho Option của Dropdown để hiển thị rõ chữ */
-        select option {
-            background-color: var(--bg-deep) !important;
-            color: #f8fafc !important;
+            --bg-deep: #090a0f; 
+            --bg-card: #111218; 
+            --text-main: #f8fafc;
+            --theme-color: #f59e0b;
+            --theme-text-color: #fbbf24;
+            --theme-glow: rgba(245, 158, 11, 0.02);
+            --theme-glow-strong: rgba(245, 158, 11, 0.06);
+            --aurora-1: rgba(245, 158, 11, 0.02);
+            --aurora-2: rgba(245, 158, 11, 0.005);
+            --aurora-3: rgba(245, 158, 11, 0.01);
+            --reading-size: 22px;
         }
 
         body {
-            font-family: 'Inter', sans-serif; background-color: var(--bg-deep); color: #f8fafc;
-            margin: 0; height: 100vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; overflow: hidden; -webkit-font-smoothing: antialiased;
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-deep); 
+            color: var(--text-main);
+            margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; -webkit-font-smoothing: antialiased;
+            perspective: 2000px;
         }
 
-        /* BACKGROUND EFFECTS */
-        .cyber-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;
-            background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-        .aurora-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-            overflow: hidden; pointer-events: none; opacity: 0.3;
-        }
-        .aurora-blob {
-            position: absolute; filter: blur(120px); border-radius: 50%;
-            animation: float-aurora 20s infinite alternate ease-in-out; transition: background 1s ease;
-        }
-        .a1 { background: rgba(34, 211, 238, 0.3); width: 40vw; height: 40vh; top: -10%; left: -10%; }
-        .a2 { background: rgba(244, 63, 94, 0.2); width: 50vw; height: 50vh; top: 40%; right: -20%; animation-delay: -5s; }
+        /* BACKGROUND EFFECTS (Ép xung GPU bằng translate3d) */
+        .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; opacity: 0.3; transition: opacity 0.5s; }
+        .aurora-blob { position: absolute; filter: blur(150px); border-radius: 50%; animation: float-aurora 45s infinite alternate ease-in-out; transition: background 1.5s ease; transform: translate3d(0,0,0); backface-visibility: hidden;}
+        .a1 { background: var(--aurora-1); width: 55vw; height: 55vh; top: -15%; left: -10%; }
+        .a2 { background: var(--aurora-2); width: 65vw; height: 65vh; top: 35%; right: -25%; animation-delay: -7s; }
+        .a3 { background: var(--aurora-3); width: 45vw; height: 45vh; bottom: -15%; left: 25%; animation-delay: -12s; }
+        @keyframes float-aurora { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(8vw, 8vh, 0) scale(1.3); } }
 
-        @keyframes float-aurora { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(5vw, 5vh) scale(1.1); } }
-
-        /* APP HEADER */
-        .app-header { position: absolute; top: 28px; left: 30px; text-align: left; z-index: 10; opacity: 0.25; transition: opacity 0.3s; }
-        .app-header:hover { opacity: 0.8; }
-        .app-title { font-size: 14px; font-weight: 700; color: white; letter-spacing: 4px; text-transform: uppercase; margin: 0; font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; }
-
-        /* TOP RIGHT CONTROLS (Audio & Counter) */
-        .top-right-controls {
-            position: absolute; top: 20px; right: 30px; display: flex; align-items: center; gap: 15px; z-index: 100;
-        }
-
-        /* CARD COUNTER (Moved out of card) */
-        .card-counter {
-            width: 36px; height: 36px;
-            border-radius: 50%; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8;
-            font-size: 11px; font-family: 'JetBrains Mono', monospace;
-            display: flex; align-items: center; justify-content: center; letter-spacing: 0.5px;
-        }
-
-        /* FLASHCARD CONTAINER - KHÓA CHẶT CHIỀU CAO TỔNG THỂ */
-        .flashcard-wrapper { 
-            width: 95%; max-width: 900px; perspective: 1500px; z-index: 10; 
-            height: calc(100vh - 140px); /* Giữ chiều cao cố định để không đẩy nút xuống dưới */
-            min-height: 520px; display: flex; 
-        }
-        .flashcard {
-            position: relative; width: 100%; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
-            background: var(--bg-panel); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
-            padding: 30px 40px; display: flex; flex-direction: column; box-sizing: border-box; flex: 1;
-            overflow: hidden; /* CẤM TUYỆT ĐỐI THANH CUỘN Ở THẺ TỔNG */
-        }
-
-        /* TYPOGRAPHY (Màu ngữ pháp) */
-        .g-pre-neg { color: var(--c-pre-neg); font-weight: 900; text-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
-        .g-pre-att { color: var(--c-pre-att); font-weight: 900; text-shadow: 0 0 10px rgba(217, 70, 239, 0.5); }
-        .root-n   { color: var(--c-noun); font-weight: 800; text-transform: lowercase; text-shadow: 0 0 10px rgba(74, 222, 128, 0.4); }
-        .root-v   { color: var(--c-verb); font-weight: 800; text-transform: lowercase; text-shadow: 0 0 10px rgba(250, 204, 21, 0.4); }
-        .root-adj { color: var(--c-adj);  font-weight: 800; text-transform: lowercase; text-shadow: 0 0 10px rgba(34, 211, 238, 0.4); }
-        .root-adv { color: var(--c-adv);  font-weight: 800; text-transform: lowercase; font-style: italic; text-shadow: 0 0 10px rgba(45, 212, 191, 0.4); }
-        .suf-n   { color: var(--c-suf-n); font-weight: 900; text-shadow: 0 0 8px rgba(134, 239, 172, 0.6); }
-        .suf-v   { color: var(--c-suf-v); font-weight: 900; text-shadow: 0 0 8px rgba(254, 240, 138, 0.6); }
-        .suf-adj { color: var(--c-suf-adj); font-weight: 900; text-shadow: 0 0 8px rgba(103, 232, 249, 0.6); }
-        .suf-adv { color: var(--c-suf-adv); font-weight: 900; text-shadow: 0 0 8px rgba(94, 234, 212, 0.6); font-style: italic;}
-        
-        .t-noun { color: var(--c-noun); font-weight: 700; text-shadow: 0 0 5px rgba(74, 222, 128, 0.3); }
-        .t-verb { color: var(--c-verb); font-weight: 700; text-shadow: 0 0 5px rgba(250, 204, 21, 0.3); }
-        .t-adj  { color: var(--c-adj);  font-weight: 700; text-shadow: 0 0 5px rgba(34, 211, 238, 0.3); }
-        .t-adv  { color: var(--c-adv);  font-weight: 700; font-style: italic; text-shadow: 0 0 5px rgba(45, 212, 191, 0.3); }
-
-        .w-box {
-            display: inline-flex; align-items: baseline; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px; padding: 4px 12px; margin: 0 4px; font-family: 'JetBrains Mono', monospace; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); line-height: 1.2;
-        }
-        .w-box.massive { font-size: 38px; padding: 8px 24px; border-radius: 16px; margin-bottom: 15px; transition: all 0.4s ease; }
-        
-        .badge-type { font-size: 14px; padding: 3px 10px; border-radius: 6px; font-weight: 900; text-transform: uppercase; border: 2px solid; margin-left: 12px; vertical-align: middle; font-family: 'JetBrains Mono', monospace; }
-
-        /* ROOT INFO SECTION (Đóng băng không cho co rút) */
-        .card-header-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 25px; border-radius: 16px; cursor: pointer; transition: all 0.3s;
-            display: flex; justify-content: center; align-items: center; margin-bottom: 20px;
-            width: fit-content; margin-left: auto; margin-right: auto;
-            flex-shrink: 0; /* Khóa cứng kích thước */
-        }
-        .card-header-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        .card-header-btn.active {
-            background: rgba(0,0,0,0.5); border-color: var(--active-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.1), 0 0 15px var(--active-color);
-            transform: scale(1.03);
-        }
-        .base-word-info { color: #cbd5e1; font-size: 22px; font-weight: 700; letter-spacing: 1px; display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 8px;}
-
-        /* TEXT CLASSES FOR RESPONSIVENESS */
-        .root-meaning-text { color: #94a3b8; font-size: 18px; font-weight: 500; font-style: italic; font-family: 'Inter', sans-serif; letter-spacing: 0; text-transform: none; }
-        .example-en { font-size: 22px; line-height: 1.5; color: #f8fafc; }
-        .example-vi { font-size: 18px; color: #94a3b8; font-style: italic; margin-top: 8px; }
-
-        /* VARIANT NAVIGATOR - KHU VỰC DUY NHẤT CÓ THANH CUỘN TỰ ĐỘNG */
-        .variant-list { 
-            display: flex; flex-direction: column; align-items: flex-start; width: 100%; max-width: 600px;
-            margin: 0 auto 20px auto; gap: 10px; 
-            padding-right: 10px;
-            flex: 1 1 auto; /* Tự động phình to/co rút lấp đầy khoảng trống ở giữa */
-            min-height: 0; /* Bắt buộc để Flexbox tính toán scroll đúng */
-            overflow-y: auto; /* THANH CUỘN CHỈ XUẤT HIỆN Ở ĐÂY NẾU DANH SÁCH QUÁ DÀI */
+        /* ================= KHUNG THẺ CHÍNH ================= */
+        .app-container { 
+            display: flex; flex-direction: column; width: 96vw; max-width: 96vw; height: 96vh; gap: 20px; z-index: 10; 
+            background-color: var(--bg-card); 
+            border: 1px solid rgba(255, 255, 255, 0.06); 
+            border-radius: 24px; 
+            padding: 24px; box-sizing: border-box;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
         }
         
-        /* Tùy chỉnh thanh cuộn cho danh sách biến thể */
-        .variant-list::-webkit-scrollbar { width: 4px; }
-        .variant-list::-webkit-scrollbar-track { background: transparent; }
-        .variant-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        .app-container:hover { border-color: rgba(255, 255, 255, 0.12); box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 8px var(--theme-glow); }
+        .app-container.playing { border-color: var(--theme-color); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 12px var(--theme-glow-strong); }
+        :fullscreen .app-container, :-webkit-full-screen .app-container { width: 96vw !important; height: 96vh !important; max-width: 96vw !important; margin: auto; }
 
-        .variant-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8;
-            padding: 12px 24px; border-radius: 12px; cursor: pointer; transition: all 0.3s; font-family: 'JetBrains Mono', monospace; font-size: 18px; /* Tăng 20% (từ 15px lên 18px) */
-            opacity: 0.6; text-align: left; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; width: 100%; box-sizing: border-box;
+        .panel { 
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+            border-radius: 20px; position: relative; 
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.02);
+        }
+
+        /* KHU VỰC HIỂN THỊ CHÍNH */
+        .karaoke-panel { 
+            flex: 1; overflow: hidden; display: flex; flex-direction: column; 
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%); 
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%); 
+            position: relative; 
+        }
+        #emptyState { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 5; transition: opacity 0.4s; width: 100%;}
+        .empty-title { font-size: 32px; font-weight: 800; color: var(--theme-color); margin-bottom: 10px; text-shadow: 0 0 15px var(--theme-glow); letter-spacing: 2px;}
+        .empty-sub { color: #94a3b8; font-size: 16px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+        .empty-dev { margin-top: 35px; font-size: 13px; color: #475569; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        
+        /* HIỆU ỨNG CUỘN (Tối ưu GPU) */
+        .lyrics-scroll { 
+            position: absolute; top: 0; left: 0; width: 100%; 
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); 
+            padding: 9vh 15px 80vh 15px; 
+            box-sizing: border-box; z-index: 2; 
+            will-change: transform; 
+            transform: translate3d(0, 0, 0);
         }
         
-        @keyframes btn-glow {
-            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 5px transparent; border-color: rgba(255,255,255,0.2); }
-            100% { box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 15px var(--btn-color), inset 0 0 10px var(--btn-color); border-color: var(--btn-color); }
+        /* ================= CHẾ ĐỘ HIỂN THỊ ================= */
+        .tts-paragraph { 
+            font-size: var(--reading-size); font-weight: 500; line-height: 1.6; 
+            max-width: 100%; margin: 0 auto; transition: font-size 0.3s;
+            word-wrap: break-word; word-break: break-word;
+            /* Đã gỡ white-space: pre-wrap; để hệ thống tự định dạng thẻ <p> như IPA App */
         }
-        .variant-btn:hover { background: rgba(255,255,255,0.1); color: white; transform: translateX(8px); opacity: 0.95; animation: btn-glow 1.2s infinite alternate ease-in-out; }
+        .tts-line { transition: opacity 0.4s ease; transform-origin: center center; }
+        .tts-spacer { transition: height 0.4s; }
         
-        @keyframes active-btn-glow {
-            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.1), 0 0 2px transparent; }
-            100% { box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.1), 0 0 15px var(--btn-color); }
+        .k-word { 
+            transition: color 0.3s ease, text-shadow 0.3s ease, opacity 0.3s ease; 
+            border-radius: 4px; display: inline; cursor: pointer; padding: 1px 0;
+            font-weight: inherit; 
         }
-        .variant-btn.active {
-            background: rgba(0,0,0,0.5); border-color: var(--btn-color); color: white; opacity: 1; transform: translateX(8px);
-            animation: active-btn-glow 2s infinite alternate ease-in-out;
-        }
+
+        /* Mode 1: Continuous */
+        #karaokeContainer.mode-continuous .tts-paragraph { text-align: left; width: 95%; }
+        #karaokeContainer.mode-continuous .tts-line { opacity: 1; transform: none; }
+        #karaokeContainer.mode-continuous .k-word { color: #f8fafc; opacity: 1; }
+        #karaokeContainer.mode-continuous .k-word.read { color: var(--theme-text-color); opacity: 0.55; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        #karaokeContainer.mode-continuous .k-word:hover { color: var(--theme-color); }
+        #karaokeContainer.mode-continuous .k-word.active { color: var(--theme-color) !important; text-shadow: 0 0 15px var(--theme-glow-strong); opacity: 1 !important; background-color: transparent !important; box-shadow: none !important; border-radius: 0; transform: none !important; }
+
+        /* Mode 2: Karaoke */
+        #karaokeContainer.mode-karaoke .tts-paragraph { text-align: center; }
+        #karaokeContainer.mode-karaoke .tts-line { opacity: 0.4; transform: none; width: 82%; margin: 0 auto; }
+        #karaokeContainer.mode-karaoke .tts-line.active { opacity: 1; transform: none; z-index: 10; position: relative; }
+        #karaokeContainer.mode-karaoke .k-word, #karaokeContainer.mode-karaoke .tts-line.active .k-word { color: #f8fafc; opacity: 1; }
+        #karaokeContainer.mode-karaoke .tts-line.active .k-word.read { color: var(--theme-text-color); text-shadow: 0 2px 4px rgba(0,0,0,0.95); opacity: 0.65; }
+        #karaokeContainer.mode-karaoke .tts-line.active .k-word.active { color: var(--theme-color) !important; text-shadow: 0 0 15px var(--theme-glow-strong); opacity: 1; background-color: transparent !important; box-shadow: none !important; border-radius: 0; transform: none !important; }
+        #karaokeContainer.mode-karaoke .tts-spacer { height: 25px !important; }
+
+        /* MP3 Lyrics */
+        .lyric-line { text-align: center; margin: 35px auto; opacity: 0.3; transform: scale(0.9); transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); cursor: pointer; transform-origin: center center; filter: blur(1px); width: 82%; word-wrap: break-word;}
+        .lyric-line:hover { opacity: 0.6; filter: blur(0); }
+        .lyric-main { font-size: calc(var(--reading-size) + 4px); font-weight: 900; margin-bottom: 5px; color: #cbd5e1; transition: color 0.4s, text-shadow 0.4s, font-size 0.3s; } 
+        .lyric-sub { font-size: calc(var(--reading-size) - 4px); font-weight: 700; font-family: 'Inter', sans-serif; margin-bottom: 5px; color: #64748b; transition: color 0.4s, text-shadow 0.4s, font-size 0.3s; } 
+        .lyric-line.active { opacity: 1; transform: scale(1.15); filter: blur(0); }
+        .lyric-line.active .lyric-main { color: var(--theme-color); text-shadow: 0 0 20px var(--theme-glow-strong); }
+        .lyric-line.active .lyric-sub { color: var(--text-main); text-shadow: 0 0 20px rgba(255,255,255,0.4); }
+
+        /* ================= OVERLAY NẠP DỮ LIỆU ================= */
+        .data-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 5, 10, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); z-index: 50; display: flex; flex-direction: column; padding: 40px; box-sizing: border-box; border-radius: 25px; opacity: 0; pointer-events: none; transform: scale(0.95); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 0 30px var(--theme-glow); }
+        .data-overlay.active { opacity: 1; pointer-events: all; transform: scale(1); }
+        .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;}
+        .overlay-title { font-size: 20px; font-weight: 800; color: white; display: flex; align-items: center; gap: 10px; }
+        .overlay-close { background: none; border: none; color: #cbd5e1; font-size: 32px; cursor: pointer; transition: 0.3s; line-height: 1;}
+        .overlay-close:hover { color: var(--theme-color); transform: rotate(90deg); }
+        .overlay-content { display: flex; flex-direction: column; gap: 15px; height: 100%; }
+        textarea.custom-text { flex: 1; background: rgba(0,0,0,0.4); color: #f8fafc; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; font-family: inherit; font-size: 16px; resize: none; outline: none; transition: 0.3s; line-height: 1.6;}
+        textarea.custom-text:focus { border-color: var(--theme-color); box-shadow: inset 0 0 15px var(--theme-glow); }
+
+        .btn-compact-row { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
+        .btn-compact { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; padding: 12px 20px; border-radius: 100px; font-weight: 600; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1; }
+        .btn-compact:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn-compact.primary { background: var(--theme-color); color: #000; border: none; font-weight: 800;}
+        .btn-compact.primary:hover { box-shadow: 0 0 20px var(--theme-glow); background: #ffffff; color: var(--theme-color); }
+
+        /* THANH ĐIỀU KHIỂN ================= */
+        .control-deck { padding: 20px 30px; display: flex; flex-direction: column; gap: 15px; z-index: 20; }
+        .progress-container { display: flex; align-items: center; gap: 15px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #94a3b8; }
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 14px; width: 14px; border-radius: 50%; background: white; cursor: pointer; margin-top: -5px; box-shadow: 0 0 8px white; transition: background 0.2s, transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); background: var(--theme-color); box-shadow: 0 0 10px var(--theme-color);}
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
+        input[type=range]:focus { outline: none; }
+        .progress-bar { flex: 1; }
+        .progress-bar::-webkit-slider-thumb { background: var(--theme-color); box-shadow: 0 0 10px var(--theme-color); height: 16px; width: 16px; margin-top: -6px; }
+
+        .deck-bottom-row { display: flex; justify-content: space-between; align-items: center; }
         
-        /* Tắt hiệu ứng viền sáng chói (glow) trên các nút nhỏ để font chữ sắc nét hơn */
-        .variant-btn span { text-shadow: none !important; }
+        .deck-left { display: flex; align-items: center; gap: 15px; flex: 1; min-width: 250px;}
+        .btn-data-dot { width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: var(--theme-color); box-shadow: 0 0 15px var(--theme-glow), 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #ffffff; flex-shrink: 0; font-weight: bold; }
+        .btn-data-dot:hover { transform: scale(1.15); box-shadow: 0 0 25px var(--theme-glow-strong); border-color: white;}
+        .track-info-mini { display: flex; flex-direction: column; overflow: hidden; }
+        .track-title-mini { font-size: 16px; font-weight: 800; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+        .track-artist-mini { font-size: 11px; color: #94a3b8; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* ================= HIỆU ỨNG NEON CHUYỂN ĐỘNG (HOVER) CHO CÁC THÀNH PHẦN ================= */
-        /* ĐÃ LOẠI BỎ NEON BAO QUANH TOÀN BỘ THẺ THEO YÊU CẦU */
+        .deck-center { display: flex; align-items: center; justify-content: center; gap: 12px; flex: 1; }
+        .btn { background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.2) 100%); border: none; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s; box-shadow: 5px 5px 10px rgba(0,0,0,0.4), -3px -3px 10px rgba(255,255,255,0.03); }
+        .btn:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .btn-nav, .btn-stop-reset { width: 42px; height: 42px; font-size: 14px; font-weight: bold; color: #94a3b8; }
+        .btn-nav:hover, .btn-stop-reset:hover { color: white; }
+        .btn-play { width: 64px; height: 64px; font-size: 26px; color: var(--theme-color); text-shadow: 0 0 10px var(--theme-glow); border: 1px solid rgba(255,255,255,0.1);}
+        .btn-play:hover { background: rgba(255,255,255,0.1); box-shadow: 0 0 25px var(--theme-glow); border-color: transparent;}
 
-        @keyframes word-glow {
-            0% { filter: drop-shadow(0 0 2px transparent); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 15px var(--active-color)) brightness(1.15); transform: scale(1.03); }
-        }
-        .w-box.massive:hover { animation: word-glow 1.2s infinite alternate ease-in-out; cursor: crosshair; }
+        .deck-right { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 1.5; flex-wrap: nowrap;}
+        .sys-control-box { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 100px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
+        .sys-icon { font-size: 13px; opacity: 0.8; }
+        .sys-control-box input[type=range] { width: 55px; height: 4px; }
+        .sys-val { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: #94a3b8; min-width: 32px; text-align: right; user-select: none; }
+        .lang-control-box { display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); padding: 5px 10px; border-radius: 100px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
+        .lang-cb-label { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #94a3b8; cursor: pointer; user-select: none; font-weight: 700; text-transform: uppercase;}
+        .lang-cb-label input { accent-color: var(--theme-color); cursor: pointer; width: 14px; height: 14px; margin: 0; }
+        .lang-cb-label:hover { color: white; }
+        .audio-select { background: transparent; color: white; border: none; outline: none; font-size: 11px; max-width: 100px; text-overflow: ellipsis; cursor: pointer; font-family: inherit;}
+        .audio-select option { background: var(--bg-deep); color: white; }
 
-        @keyframes box-glow {
-            0% { box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4), 0 0 0px transparent; }
-            100% { box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 0 0 20px var(--box-color, var(--active-color)); }
-        }
-        .card-bottom:hover { animation: box-glow 1.5s infinite alternate ease-in-out; }
+        /* FIXED TOOLS ================= */
+        .btn-fullscreen { position: fixed; bottom: 25px; right: 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 24px; z-index: 100; transition: all 0.3s; backdrop-filter: blur(10px); }
+        .btn-fullscreen:hover { background: rgba(255,255,255,0.15); color: white; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.3);}
+        .fixed-left-tools { position: fixed; bottom: 25px; left: 25px; z-index: 100; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
+        .btn-theme-toggle { width: 34px; height: 34px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: var(--theme-color); box-shadow: 0 0 15px var(--theme-glow), 4px 4px 10px rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s; flex-shrink: 0;}
+        .btn-theme-toggle:hover { transform: scale(1.15); border-color: white; box-shadow: 0 0 25px var(--theme-glow-strong); }
+        .text-size-tools { display: flex; gap: 5px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .btn-ts { background: transparent; border: none; color: #94a3b8; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; justify-content: center;}
+        .btn-ts:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .fixed-top-right-tools { position: fixed; top: 25px; right: 25px; z-index: 100; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
+        .btn-mode-toggle { width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: rgba(15, 23, 42, 0.6); color: white; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.3s; display: flex; justify-content: center; align-items: center; font-size: 16px; }
+        .btn-mode-toggle:hover { transform: scale(1.15); border-color: var(--theme-color); box-shadow: 0 0 20px var(--theme-glow); color: var(--theme-color);}
 
-        /* VARIANT DETAILS SECTION (Đóng băng không cho co rút) */
-        .variant-details { 
-            text-align: center; transition: opacity 0.3s, transform 0.3s; 
-            display: flex; flex-direction: column; justify-content: flex-end; 
-            flex-shrink: 0; /* Khóa cứng phần dưới cùng */
-        }
-        .variant-details.fading { opacity: 0; transform: translateY(10px); }
-        .word-meaning { font-size: 20px; color: #cbd5e1; font-weight: 500; font-style: italic;}
-        
-        .card-bottom {
-            background: rgba(0, 0, 0, 0.2); border: 1px solid var(--box-color, var(--active-color)); padding: 20px 25px; border-radius: 16px;
-            text-align: left; transition: border-color 0.4s, box-shadow 0.4s;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
-        }
-
-        /* CONTROLS - THU NHỎ, TINH TẾ, VIỀN MỎNG */
-        .controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; z-index: 10; }
-        .btn-nav, .btn-jump { 
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); /* Viền cực mỏng */
-            color: rgba(255,255,255,0.6); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; 
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px); 
-        }
-        .btn-nav { width: 42px; height: 42px; font-size: 18px; }
-        .btn-jump { width: 42px; height: 42px; font-size: 18px; font-family: 'JetBrains Mono', monospace; font-weight: 400; }
-        
-        .btn-nav:hover:not(:disabled) { background: rgba(255,255,255,0.1); transform: scale(1.1); color: white; border-color: rgba(255,255,255,0.3);}
-        .btn-jump:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); color: white; border-color: rgba(255,255,255,0.3);}
-        .btn-nav:disabled { opacity: 0.2; cursor: not-allowed; }
-
-        .btn-play-sm { 
-            width: 44px; height: 44px; font-size: 18px; flex-shrink: 0; background: rgba(0,0,0,0.4); 
-            border: 1px solid; border-radius: 50%; cursor: pointer; transition: 0.3s; 
-            display: inline-flex; justify-content: center; align-items: center;
-        }
-        .btn-play-sm:hover { transform: scale(1.1); box-shadow: 0 0 15px currentColor; }
-        .btn-play-sm.playing { background: currentColor !important; color: black !important; box-shadow: 0 0 20px currentColor; }
-
-        @keyframes pulse-audio { 0% { box-shadow: 0 0 0 0 var(--active-color); } 70% { box-shadow: 0 0 0 20px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
-
-        /* ================= AUDIO SETTINGS & MINI SPEAKER ================= */
-        .audio-settings {
-            display: flex; gap: 8px; opacity: 0.25; transition: opacity 0.3s;
-        }
-        .audio-settings:hover { opacity: 0.9; }
-        .audio-settings select {
-            background: rgba(0, 0, 0, 0.4); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
-            padding: 5px 10px; font-size: 11px; outline: none; cursor: pointer; font-family: 'JetBrains Mono', monospace;
-            max-width: 110px; text-overflow: ellipsis; backdrop-filter: blur(5px);
-        }
-        .mini-speaker {
-            background: none; border: none; cursor: pointer; opacity: 0.4; font-size: 14px; transition: all 0.2s; padding: 0 5px; filter: grayscale(100%);
-        }
-        .mini-speaker:hover { opacity: 1; filter: grayscale(0%); transform: scale(1.2); }
-
-        /* FULLSCREEN BUTTON */
-        .btn-fullscreen {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #94a3b8;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 20px;
-            z-index: 100;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-        .btn-fullscreen:hover { background: rgba(255,255,255,0.15); color: white; transform: scale(1.1); }
-
-        /* ================= MOBILE OPTIMIZATION ================= */
-        @media (max-width: 768px) {
-            /* Tối ưu góc trên và setting */
-            .app-header { top: 15px; left: 12px; opacity: 0.6; }
-            .app-title { font-size: 12px; letter-spacing: 2px; }
-            
-            .top-right-controls { top: 8px; right: 12px; gap: 8px; }
-            .audio-settings { opacity: 0.8; }
-            .audio-settings select { max-width: 80px; font-size: 10px; padding: 4px 6px; }
-            .card-counter { width: 30px; height: 30px; font-size: 10px; }
-            
-            /* Tối ưu không gian thẻ để vừa 1 màn hình */
-            .flashcard-wrapper { height: calc(100vh - 80px); margin-top: 20px; align-items: center;}
-            .flashcard { padding: 25px 15px 15px 15px; }
-            
-            /* Tối ưu lề và các thẻ biến thể */
-            .card-header-btn { padding: 10px 15px; margin-bottom: 12px; width: 100%; box-sizing: border-box;}
-            .base-word-info { font-size: 18px; }
-            .root-meaning-text { font-size: 14px; }
-            
-            .variant-list { margin-bottom: 12px; gap: 8px; width: 100%; }
-            .variant-btn { padding: 8px 12px; font-size: 14px; gap: 6px; } 
-            
-            /* Từ vựng khổng lồ & Nghĩa nhắm mục tiêu cùng dòng */
-            .w-box.massive { font-size: 20px; padding: 4px 12px; margin-bottom: 0; }
-            .word-meaning { font-size: 14px; margin-bottom: 0; }
-            
-            /* Khung ví dụ & Size chữ ví dụ cho di động */
-            .card-bottom { padding: 12px 15px; }
-            .example-en { font-size: 15px; }
-            .example-vi { font-size: 13px; margin-top: 4px; }
-            
-            /* Nút điều khiển bên trong và bên ngoài thẻ */
-            .btn-play-sm { width: 32px; height: 32px; font-size: 14px; }
-            
-            .controls { margin-top: 15px; gap: 15px; }
-            .btn-nav, .btn-jump { width: 38px; height: 38px; font-size: 16px;}
-            
-            /* ẨN NÚT FULLSCREEN TRÊN ĐIỆN THOẠI */
-            .btn-fullscreen { display: none !important; }
+        @media (max-width: 1024px) {
+            .deck-bottom-row { flex-wrap: wrap; gap: 20px; justify-content: center; }
+            .deck-left, .deck-right, .deck-center { flex: unset; justify-content: center; width: 100%; flex-wrap: wrap;}
+            .btn-compact-row { flex-direction: column; }
+            .data-overlay { padding: 20px; }
+            .app-container { height: auto; padding: 10px; width: 98vw; border-radius: 20px;}
+            .empty-title { font-size: 24px; }
+            .btn-fullscreen, .fixed-left-tools, .fixed-top-right-tools { display: none !important; }
+            .karaoke-panel { height: 60vh; flex: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="cyber-bg"></div>
     <div class="aurora-container">
-        <div class="aurora-blob a1" id="aurora1"></div>
-        <div class="aurora-blob a2" id="aurora2"></div>
+        <div class="aurora-blob a1"></div><div class="aurora-blob a2"></div><div class="aurora-blob a3"></div>
     </div>
 
-    <div class="app-header">
-        <div class="app-title">NEURO-MATRIX</div>
-    </div>
-
-    <!-- TOP RIGHT CONTROLS -->
-    <div class="top-right-controls">
-        <div class="audio-settings">
-            <select id="voiceSelect" title="Giọng đọc"></select>
-            <select id="rateSelect" title="Tốc độ">
-                <option value="0.6">0.6x</option>
-                <option value="0.85" selected>0.85x</option>
-                <option value="1.0">1.0x</option>
-                <option value="1.2">1.2x</option>
-            </select>
-        </div>
-        <div class="card-counter" id="cardCounter">1/5</div>
-    </div>
-
-    <div class="flashcard-wrapper">
-        <div class="flashcard" id="flashcard">
-            
-            <!-- Root Word Header as Button -->
-            <div class="card-header-btn" id="rootWordHeader" onclick="renderVariant(-1)">
-                <div class="base-word-info" id="rootWordBox">
-                    <!-- Injected Root Word -->
-                </div>
-            </div>
-            
-            <!-- Variant List (Pills) -->
-            <div class="variant-list" id="variantList">
-                <!-- Injected Variant Buttons -->
-            </div>
-
-            <!-- Variant Details (Main Content) -->
-            <div class="variant-details" id="variantDetails">
-                <!-- Gộp Tên, Loại từ, Nghĩa và Loa trên cùng một dòng -->
-                <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 20px; gap: 10px;">
-                    <div class="w-box massive" id="targetWordBox" style="margin-bottom: 0;"></div>
-                    <span class="badge-type" id="targetTypeBadge" style="margin-left: 0;"></span>
-                    <span class="word-meaning" id="targetMeaning"></span>
-                    <span class="mini-speaker" onclick="playCurrentWordAudio(event)" style="font-size: 24px; cursor: pointer; margin-left: 2px;" title="Nghe phát âm từ này">🔊</span>
-                </div>
-                <div class="card-bottom" id="exampleBox">
-                    <!-- Ví dụ được chèn từ JS với nút loa -->
-                </div>
-            </div>
+    <button class="btn-fullscreen no-print" onclick="toggleFullScreen()" title="Phóng to Toàn màn hình">⛶</button>
+    
+    <div class="fixed-left-tools no-print">
+        <button class="btn-theme-toggle" id="btnThemeToggle" onclick="cycleTheme()" title="Đổi màu sắc chủ đề"></button>
+        <div class="text-size-tools" title="Thu phóng cỡ chữ">
+            <button class="btn-ts" onclick="adjustTextSize(-4)">A-</button>
+            <button class="btn-ts" onclick="resetTextSize()">A</button>
+            <button class="btn-ts" onclick="adjustTextSize(4)">A+</button>
         </div>
     </div>
 
-    <div class="controls">
-        <button class="btn-nav" id="btnPrev" onclick="prevCard()">←</button>
-        <button class="btn-jump" id="btnJump" onclick="jumpToMiddle()" title="Nhảy đến điểm giữa (Median / Mean)">µ</button>
-        <button class="btn-nav" id="btnNext" onclick="nextCard()">→</button>
+    <div class="fixed-top-right-tools no-print">
+        <button class="btn-mode-toggle" id="btnModeToggle" onclick="toggleReadMode()" title="Chế độ đọc: Hiện tại / Karaoke">🎤</button>
     </div>
 
-    <!-- Thay thế thẻ Hướng dẫn bằng nút Fullscreen -->
-    <button class="btn-fullscreen" onclick="toggleFullScreen()" title="Toàn màn hình">⛶</button>
+    <div class="app-container" id="mainAppContainer">
+        <div class="panel karaoke-panel mode-continuous" id="karaokeContainer">
+            <div id="emptyState">
+                <div style="font-size: 64px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));">🎧</div>
+                <div class="empty-title">NEURO-PLAYER PRO</div>
+                <div class="empty-sub">Kích vào chấm tròn <span style="color: #a855f7; font-weight: 900;">➕</span> bên dưới để nạp dữ liệu</div>
+                <div class="empty-sub">(Hỗ trợ Đọc Văn Bản Khớp Lời)</div>
+                <div class="empty-dev">Developed by Viễn Thông Quy Nhơn</div>
+            </div>
+            
+            <div class="lyrics-scroll" id="lyricsScroll"></div>
+            
+            <div class="data-overlay" id="dataOverlay">
+                <div class="overlay-header">
+                    <div class="overlay-title"><span>📥</span> NẠP VĂN BẢN CỦA BẠN</div>
+                    <button class="overlay-close" onclick="toggleDataOverlay()" title="Đóng cửa sổ">×</button>
+                </div>
+                
+                <div class="overlay-content">
+                    <span style="color: #94a3b8; font-size: 14px; line-height: 1.5; margin-bottom: 5px;">Nhập, dán (Paste) hoặc tải lên tệp văn bản Word (.docx). Hệ thống tự động nhận diện tiếng Anh/Việt.</span>
+                    <textarea id="customText" class="custom-text" placeholder="Dán văn bản Tiếng Anh / Tiếng Việt vào đây..."></textarea>
+                    
+                    <div class="btn-compact-row">
+                        <button class="btn-compact" onclick="clearCustomText()" title="Làm trống ô nhập liệu">🗑️ Xóa Trắng</button>
+                        <button class="btn-compact" onclick="document.getElementById('textUpload').click()" title="Tải file từ máy tính">📄 Tải File Word</button>
+                        <input type="file" id="textUpload" accept=".docx" style="display: none;" onchange="handleTextUpload(event)">
+                        <button class="btn-compact primary" onclick="loadCustomData()" title="Lưu lại và về màn hình chờ đọc">📥 Nạp Dữ Liệu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel control-deck">
+            <div class="progress-container">
+                <span id="timeCurrent">00:00</span>
+                <input type="range" class="progress-bar" id="progressBar" value="0" min="0" max="100" step="0.1">
+                <span id="timeTotal">00:00</span>
+            </div>
+            
+            <div class="deck-bottom-row">
+                <div class="deck-left">
+                    <button class="btn-data-dot" id="btnDataToggle" onclick="toggleDataOverlay()" title="Nạp Dữ Dạ (Văn Bản)">➕</button>
+                    <div class="track-info-mini">
+                        <div class="track-title-mini" id="uiTitle">Chưa có dữ liệu</div>
+                        <div class="track-artist-mini" id="uiArtist">Bấm nút ➕ để bắt đầu...</div>
+                    </div>
+                </div>
+
+                <div class="deck-center">
+                    <button class="btn btn-nav" onclick="skipBack()" title="Tua lùi">⏪</button>
+                    <button class="btn btn-stop-reset" onclick="resetReading()" title="Dừng và Về lại đầu bài">■</button>
+                    <button class="btn btn-play" id="btnPlayPause" onclick="togglePlay()">▶</button>
+                    <button class="btn btn-nav" onclick="skipForward()" title="Tua tới">⏩</button>
+                </div>
+
+                <div class="deck-right">
+                    <div class="sys-control-box" title="Âm lượng tổng">
+                        <span class="sys-icon">🔊</span>
+                        <input type="range" id="sliderVolume" min="0" max="1" step="0.05" value="1">
+                        <span id="volValue" class="sys-val">100%</span>
+                    </div>
+                    
+                    <div class="sys-control-box" title="Tốc độ (Speed)">
+                        <span class="sys-icon" style="color: var(--theme-color);">⚡</span>
+                        <input type="range" id="sliderTempo" min="0.5" max="2.0" step="0.1" value="1.0">
+                        <span id="tempoValue" class="sys-val">1.0x</span>
+                    </div>
+                    
+                    <div class="lang-control-box" title="Giọng Tiếng Anh">
+                        <label class="lang-cb-label"><input type="checkbox" id="enableEn" checked> EN</label>
+                        <select id="voiceSelectEn" class="audio-select"></select>
+                    </div>
+                    
+                    <div class="lang-control-box" title="Giọng Tiếng Việt">
+                        <label class="lang-cb-label"><input type="checkbox" id="enableVi" checked> VN</label>
+                        <select id="voiceSelectVi" class="audio-select"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="mainAudio"></audio>
 
     <script>
-        // ================= DATABASE: PROTOCOL BETA (HẬU TỐ ĐA HÌNH - 20 TỪ ĐẦU) =================
-        const flashcards = [
-            {
-                baseWord: "create", baseMeaning: "Tạo ra, sáng tạo", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `We need to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">create</span></span> a detailed plan before starting.`,
-                baseExVi: `Chúng ta cần <span class="t-verb">tạo ra</span> một kế hoạch chi tiết trước khi bắt đầu.`,
-                baseAudio: "We need to create a detailed plan before starting.",
-                variants: [
-                    {
-                        wordText: "creative", label: "creative (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">creat</span><span class="suf-adj">ive</span>`,
-                        meaning: "Sáng tạo",
-                        exEn: `She is a highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">creat</span><span class="suf-adj">ive</span></span> designer with unique ideas.`,
-                        exVi: `Cô ấy là một nhà thiết kế rất <span class="t-adj">sáng tạo</span> với những ý tưởng độc đáo.`,
-                        audio: "She is a highly creative designer with unique ideas."
-                    },
-                    {
-                        wordText: "creatively", label: "creatively (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">creat</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách sáng tạo",
-                        exEn: `The space was <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">creat</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> decorated with recycled materials.`,
-                        exVi: `Không gian được trang trí <span class="t-adv">một cách sáng tạo</span> bằng vật liệu tái chế.`,
-                        audio: "The space was creatively decorated with recycled materials."
-                    },
-                    {
-                        wordText: "creativity", label: "creativity (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">creat</span><span class="suf-adj">iv</span><span class="suf-n">ity</span>`,
-                        meaning: "Sự sáng tạo, óc sáng tạo",
-                        exEn: `This puzzle game is designed to stimulate your child's <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">creat</span><span class="suf-adj">iv</span><span class="suf-n">ity</span></span>.`,
-                        exVi: `Trò chơi xếp hình này được thiết kế để kích thích <span class="t-noun">óc sáng tạo</span> của trẻ.`,
-                        audio: "This puzzle game is designed to stimulate your child's creativity."
-                    },
-                    {
-                        wordText: "creation", label: "creation (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">creat</span><span class="suf-n">ion</span>`,
-                        meaning: "Sự tạo ra, tác phẩm",
-                        exEn: `The <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">creat</span><span class="suf-n">ion</span></span> of the internet revolutionized global communication.`,
-                        exVi: `<span class="t-noun">Sự ra đời (tạo ra)</span> của internet đã cách mạng hóa giao tiếp toàn cầu.`,
-                        audio: "The creation of the internet revolutionized global communication."
-                    },
-                    {
-                        wordText: "creator", label: "creator (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">creat</span><span class="suf-n">or</span>`,
-                        meaning: "Người sáng tạo, tác giả",
-                        exEn: `He is the original <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">creat</span><span class="suf-n">or</span></span> of this famous comic book series.`,
-                        exVi: `Ông là <span class="t-noun">tác giả (người tạo ra)</span> ban đầu của loạt truyện tranh nổi tiếng này.`,
-                        audio: "He is the original creator of this famous comic book series."
-                    }
-                ]
-            },
-            {
-                baseWord: "move", baseMeaning: "Di chuyển, chuyển động", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Could you please <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">move</span></span> your car a little bit forward?`,
-                baseExVi: `Bạn có thể vui lòng <span class="t-verb">di chuyển</span> xe của mình lên phía trước một chút không?`,
-                baseAudio: "Could you please move your car a little bit forward?",
-                variants: [
-                    {
-                        wordText: "movement", label: "movement (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">move</span><span class="suf-n">ment</span>`,
-                        meaning: "Sự chuyển động, phong trào",
-                        exEn: `The camera detects the slightest <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">move</span><span class="suf-n">ment</span></span> in the room.`,
-                        exVi: `Camera phát hiện ra <span class="t-noun">sự chuyển động</span> nhỏ nhất trong phòng.`,
-                        audio: "The camera detects the slightest movement in the room."
-                    },
-                    {
-                        wordText: "movable", label: "movable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">mov</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể di chuyển được",
-                        exEn: `The festival is a <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">mov</span><span class="suf-adj">able</span></span> feast, held on different dates each year.`,
-                        exVi: `Lễ hội là một ngày lễ <span class="t-adj">có thể xê dịch</span>, được tổ chức vào các ngày khác nhau mỗi năm.`,
-                        audio: "The festival is a movable feast, held on different dates each year."
-                    },
-                    {
-                        wordText: "immovable", label: "immovable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">im</span><span class="root-v">mov</span><span class="suf-adj">able</span>`,
-                        meaning: "Bất động, cố định, kiên định",
-                        exEn: `His stance on the political issue remained completely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">im</span><span class="root-v">mov</span><span class="suf-adj">able</span></span>.`,
-                        exVi: `Lập trường của ông về vấn đề chính trị vẫn hoàn toàn <span class="t-adj">kiên định (bất động)</span>.`,
-                        audio: "His stance on the political issue remained completely immovable."
-                    },
-                    {
-                        wordText: "moving", label: "moving (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">mov</span><span class="suf-adj">ing</span>`,
-                        meaning: "Cảm động (gây xúc động) / Đang di chuyển",
-                        exEn: `The documentary told a deeply <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">mov</span><span class="suf-adj">ing</span></span> story about orphans.`,
-                        exVi: `Bộ phim tài liệu kể một câu chuyện vô cùng <span class="t-adj">cảm động</span> về những đứa trẻ mồ côi.`,
-                        audio: "The documentary told a deeply moving story about orphans."
-                    },
-                    {
-                        wordText: "moved", label: "moved (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">mov</span><span class="suf-adj">ed</span>`,
-                        meaning: "Cảm động (trạng thái con người)",
-                        exEn: `I was deeply <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">mov</span><span class="suf-adj">ed</span></span> by the community's generous support.`,
-                        exVi: `Tôi vô cùng <span class="t-adj">xúc động</span> trước sự ủng hộ hào phóng của cộng đồng.`,
-                        audio: "I was deeply moved by the community's generous support."
-                    }
-                ]
-            },
-            {
-                baseWord: "act", baseMeaning: "Hành động, đóng vai", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `We must <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">act</span></span> quickly to prevent further environmental damage.`,
-                baseExVi: `Chúng ta phải <span class="t-verb">hành động</span> nhanh chóng để ngăn chặn thiệt hại môi trường thêm.`,
-                baseAudio: "We must act quickly to prevent further environmental damage.",
-                variants: [
-                    {
-                        wordText: "active", label: "active (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">act</span><span class="suf-adj">ive</span>`,
-                        meaning: "Năng động, tích cực",
-                        exEn: `Grandpa is 80 years old but still maintains a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">act</span><span class="suf-adj">ive</span></span> lifestyle.`,
-                        exVi: `Ông nội đã 80 tuổi nhưng vẫn duy trì lối sống rất <span class="t-adj">năng động</span>.`,
-                        audio: "Grandpa is 80 years old but still maintains a very active lifestyle."
-                    },
-                    {
-                        wordText: "actively", label: "actively (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">act</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách tích cực, chủ động",
-                        exEn: `The government is <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">act</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> seeking solutions to the housing crisis.`,
-                        exVi: `Chính phủ đang <span class="t-adv">tích cực (chủ động)</span> tìm kiếm các giải pháp cho cuộc khủng hoảng nhà ở.`,
-                        audio: "The government is actively seeking solutions to the housing crisis."
-                    },
-                    {
-                        wordText: "activity", label: "activity (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ity</span>`,
-                        meaning: "Hoạt động",
-                        exEn: `Reading is a great indoor <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ity</span></span> for rainy days.`,
-                        exVi: `Đọc sách là một <span class="t-noun">hoạt động</span> trong nhà tuyệt vời cho những ngày mưa.`,
-                        audio: "Reading is a great indoor activity for rainy days."
-                    },
-                    {
-                        wordText: "activate", label: "activate (V)", type: "V", color: "var(--c-verb)",
-                        html: `<span class="root-v">act</span><span class="suf-v">ivate</span>`,
-                        meaning: "Kích hoạt",
-                        exEn: `You need to enter the code to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">act</span><span class="suf-v">ivate</span></span> your new credit card.`,
-                        exVi: `Bạn cần nhập mã để <span class="t-verb">kích hoạt</span> thẻ tín dụng mới của mình.`,
-                        audio: "You need to enter the code to activate your new credit card."
-                    },
-                    {
-                        wordText: "activation", label: "activation (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">act</span><span class="suf-v">ivat</span><span class="suf-n">ion</span>`,
-                        meaning: "Sự kích hoạt",
-                        exEn: `The alarm <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-v">ivat</span><span class="suf-n">ion</span></span> was triggered by a stray cat.`,
-                        exVi: `<span class="t-noun">Sự kích hoạt</span> chuông báo động đã bị kích hoạt bởi một con mèo hoang.`,
-                        audio: "The alarm activation was triggered by a stray cat."
-                    },
-                    {
-                        wordText: "activist", label: "activist (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ist</span>`,
-                        meaning: "Nhà hoạt động",
-                        exEn: `The environmental <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ist</span></span> organized a protest against plastic waste.`,
-                        exVi: `<span class="t-noun">Nhà hoạt động</span> môi trường đã tổ chức một cuộc biểu tình chống rác thải nhựa.`,
-                        audio: "The environmental activist organized a protest against plastic waste."
-                    },
-                    {
-                        wordText: "activism", label: "activism (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ism</span>`,
-                        meaning: "Chủ nghĩa hoạt động",
-                        exEn: `Her lifelong dedication to social <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">act</span><span class="suf-adj">iv</span><span class="suf-n">ism</span></span> is truly inspiring.`,
-                        exVi: `Sự cống hiến cả đời của cô cho <span class="t-noun">phong trào hoạt động</span> xã hội thực sự truyền cảm hứng.`,
-                        audio: "Her lifelong dedication to social activism is truly inspiring."
-                    },
-                    {
-                        wordText: "inactive", label: "inactive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">in</span><span class="root-v">act</span><span class="suf-adj">ive</span>`,
-                        meaning: "Không hoạt động, thụ động",
-                        exEn: `The volcano has remained <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">in</span><span class="root-v">act</span><span class="suf-adj">ive</span></span> for over three centuries.`,
-                        exVi: `Núi lửa vẫn <span class="t-adj">không hoạt động</span> trong hơn ba thế kỷ qua.`,
-                        audio: "The volcano has remained inactive for over three centuries."
-                    }
-                ]
-            },
-            {
-                baseWord: "manage", baseMeaning: "Quản lý, xoay xở", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `How do you <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">manage</span></span> to stay so calm under intense pressure?`,
-                baseExVi: `Làm thế nào bạn <span class="t-verb">xoay xở (quản lý)</span> để giữ bình tĩnh dưới áp lực cường độ cao?`,
-                baseAudio: "How do you manage to stay so calm under intense pressure?",
-                variants: [
-                    {
-                        wordText: "management", label: "management (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">manage</span><span class="suf-n">ment</span>`,
-                        meaning: "Sự quản lý, ban quản trị",
-                        exEn: `Effective time <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">manage</span><span class="suf-n">ment</span></span> is crucial for academic success.`,
-                        exVi: `<span class="t-noun">Sự quản lý</span> thời gian hiệu quả là cốt lõi cho thành công học thuật.`,
-                        audio: "Effective time management is crucial for academic success."
-                    },
-                    {
-                        wordText: "manageable", label: "manageable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">manage</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể quản lý được, vừa sức",
-                        exEn: `Divide the complex project into smaller, <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">manage</span><span class="suf-adj">able</span></span> tasks.`,
-                        exVi: `Hãy chia dự án phức tạp thành những nhiệm vụ nhỏ hơn, <span class="t-adj">vừa sức (có thể quản lý)</span>.`,
-                        audio: "Divide the complex project into smaller, manageable tasks."
-                    },
-                    {
-                        wordText: "unmanageable", label: "unmanageable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">manage</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể quản lý, khó bảo",
-                        exEn: `The toddler's behavior became totally <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">manage</span><span class="suf-adj">able</span></span> in the supermarket.`,
-                        exVi: `Hành vi của đứa trẻ mới biết đi trở nên hoàn toàn <span class="t-adj">khó bảo (không thể quản lý)</span> trong siêu thị.`,
-                        audio: "The toddler's behavior became totally unmanageable in the supermarket."
-                    },
-                    {
-                        wordText: "manager", label: "manager (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">manag</span><span class="suf-n">er</span>`,
-                        meaning: "Người quản lý, giám đốc",
-                        exEn: `The store <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">manag</span><span class="suf-n">er</span></span> apologized for the terrible customer service.`,
-                        exVi: `<span class="t-noun">Quản lý</span> cửa hàng đã xin lỗi về dịch vụ khách hàng tồi tệ.`,
-                        audio: "The store manager apologized for the terrible customer service."
-                    },
-                    {
-                        wordText: "managerial", label: "managerial (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">manager</span><span class="suf-adj">ial</span>`,
-                        meaning: "Thuộc về cấp quản lý",
-                        exEn: `She is applying for a <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">manager</span><span class="suf-adj">ial</span></span> position in the marketing department.`,
-                        exVi: `Cô ấy đang ứng tuyển vào một vị trí <span class="t-adj">thuộc cấp quản lý</span> trong bộ phận marketing.`,
-                        audio: "She is applying for a managerial position in the marketing department."
-                    }
-                ]
-            },
-            {
-                baseWord: "employ", baseMeaning: "Thuê mướn, sử dụng", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `The factory will <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">employ</span></span> over 500 local workers next year.`,
-                baseExVi: `Nhà máy sẽ <span class="t-verb">thuê</span> hơn 500 công nhân địa phương vào năm tới.`,
-                baseAudio: "The factory will employ over 500 local workers next year.",
-                variants: [
-                    {
-                        wordText: "employment", label: "employment (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">employ</span><span class="suf-n">ment</span>`,
-                        meaning: "Việc làm, sự thuê mướn",
-                        exEn: `The new policies aim to boost full <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">employ</span><span class="suf-n">ment</span></span> in the region.`,
-                        exVi: `Các chính sách mới nhằm mục đích thúc đẩy <span class="t-noun">việc làm</span> toàn diện trong khu vực.`,
-                        audio: "The new policies aim to boost full employment in the region."
-                    },
-                    {
-                        wordText: "unemployment", label: "unemployment (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-n">ment</span>`,
-                        meaning: "Tình trạng thất nghiệp",
-                        exEn: `High <span class="w-box" style="border-color: var(--c-noun);"><span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-n">ment</span></span> rates are a major concern for the economy.`,
-                        exVi: `Tỷ lệ <span class="t-noun">thất nghiệp</span> cao là một mối lo ngại lớn cho nền kinh tế.`,
-                        audio: "High unemployment rates are a major concern for the economy."
-                    },
-                    {
-                        wordText: "employer", label: "employer (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">employ</span><span class="suf-n">er</span>`,
-                        meaning: "Nhà tuyển dụng, ông chủ",
-                        exEn: `They are a fair <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">employ</span><span class="suf-n">er</span></span> who treats their staff very well.`,
-                        exVi: `Họ là một <span class="t-noun">nhà tuyển dụng</span> công bằng, đối xử rất tốt với nhân viên.`,
-                        audio: "They are a fair employer who treats their staff very well."
-                    },
-                    {
-                        wordText: "employee", label: "employee (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">employ</span><span class="suf-n">ee</span>`,
-                        meaning: "Nhân viên, người làm công",
-                        exEn: `Every <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">employ</span><span class="suf-n">ee</span></span> must attend the safety training session.`,
-                        exVi: `Mọi <span class="t-noun">nhân viên</span> đều phải tham dự buổi đào tạo an toàn.`,
-                        audio: "Every employee must attend the safety training session."
-                    },
-                    {
-                        wordText: "employable", label: "employable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">employ</span><span class="suf-adj">able</span>`,
-                        meaning: "Có đủ kỹ năng để được thuê",
-                        exEn: `Having strong computer skills makes you much more <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">employ</span><span class="suf-adj">able</span></span>.`,
-                        exVi: `Có kỹ năng máy tính tốt giúp bạn <span class="t-adj">dễ được tuyển dụng hơn</span> rất nhiều.`,
-                        audio: "Having strong computer skills makes you much more employable."
-                    },
-                    {
-                        wordText: "unemployed", label: "unemployed (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-adj">ed</span>`,
-                        meaning: "Bị thất nghiệp",
-                        exEn: `He has been <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">employ</span><span class="suf-adj">ed</span></span> for six months since the factory closed.`,
-                        exVi: `Anh ấy đã <span class="t-adj">bị thất nghiệp</span> sáu tháng kể từ khi nhà máy đóng cửa.`,
-                        audio: "He has been unemployed for six months since the factory closed."
-                    }
-                ]
-            },
-            {
-                baseWord: "produce", baseMeaning: "Sản xuất, sản sinh", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Solar panels <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">produce</span></span> electricity from sunlight.`,
-                baseExVi: `Các tấm pin mặt trời <span class="t-verb">sản xuất</span> ra điện từ ánh sáng mặt trời.`,
-                baseAudio: "Solar panels produce electricity from sunlight.",
-                variants: [
-                    {
-                        wordText: "production", label: "production (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">produc</span><span class="suf-n">tion</span>`,
-                        meaning: "Sự sản xuất, sản lượng",
-                        exEn: `The <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">produc</span><span class="suf-n">tion</span></span> of electric cars has increased rapidly over the decade.`,
-                        exVi: `<span class="t-noun">Sản lượng (sự sản xuất)</span> xe điện đã tăng nhanh trong suốt thập kỷ qua.`,
-                        audio: "The production of electric cars has increased rapidly over the decade."
-                    },
-                    {
-                        wordText: "productive", label: "productive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">produc</span><span class="suf-adj">tive</span>`,
-                        meaning: "Năng suất, sinh lời",
-                        exEn: `We had a highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">produc</span><span class="suf-adj">tive</span></span> meeting that solved many problems.`,
-                        exVi: `Chúng tôi đã có một cuộc họp cực kỳ <span class="t-adj">năng suất</span> và giải quyết được nhiều vấn đề.`,
-                        audio: "We had a highly productive meeting that solved many problems."
-                    },
-                    {
-                        wordText: "productively", label: "productively (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">produc</span><span class="suf-adj">tive</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách năng suất",
-                        exEn: `She uses her free time <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">produc</span><span class="suf-adj">tive</span><span class="suf-adv">ly</span></span> by reading books.`,
-                        exVi: `Cô ấy sử dụng thời gian rảnh của mình <span class="t-adv">một cách năng suất</span> bằng việc đọc sách.`,
-                        audio: "She uses her free time productively by reading books."
-                    },
-                    {
-                        wordText: "unproductive", label: "unproductive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">produc</span><span class="suf-adj">tive</span>`,
-                        meaning: "Không năng suất, vô ích",
-                        exEn: `Arguing over petty details is completely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">produc</span><span class="suf-adj">tive</span></span>.`,
-                        exVi: `Tranh cãi về những chi tiết vụn vặt là hoàn toàn <span class="t-adj">vô ích (không năng suất)</span>.`,
-                        audio: "Arguing over petty details is completely unproductive."
-                    },
-                    {
-                        wordText: "producer", label: "producer (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">produc</span><span class="suf-n">er</span>`,
-                        meaning: "Nhà sản xuất",
-                        exEn: `Brazil is one of the world's leading coffee <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">produc</span><span class="suf-n">er</span>s</span>.`,
-                        exVi: `Brazil là một trong những <span class="t-noun">nhà sản xuất</span> cà phê hàng đầu thế giới.`,
-                        audio: "Brazil is one of the world's leading coffee producers."
-                    },
-                    {
-                        wordText: "product", label: "product (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">product</span>`,
-                        meaning: "Sản phẩm",
-                        exEn: `This new software <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">product</span></span> is highly rated by experts.`,
-                        exVi: `<span class="t-noun">Sản phẩm</span> phần mềm mới này được các chuyên gia đánh giá cao.`,
-                        audio: "This new software product is highly rated by experts."
-                    }
-                ]
-            },
-            {
-                baseWord: "compete", baseMeaning: "Cạnh tranh", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Small local businesses have to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">compete</span></span> against giant multinational corporations.`,
-                baseExVi: `Các doanh nghiệp địa phương nhỏ phải <span class="t-verb">cạnh tranh</span> với các tập đoàn đa quốc gia khổng lồ.`,
-                baseAudio: "Small local businesses have to compete against giant multinational corporations.",
-                variants: [
-                    {
-                        wordText: "competition", label: "competition (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">compet</span><span class="suf-n">ition</span>`,
-                        meaning: "Cuộc thi, sự cạnh tranh",
-                        exEn: `There is fierce <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">compet</span><span class="suf-n">ition</span></span> for jobs in the tech industry today.`,
-                        exVi: `Ngày nay có <span class="t-noun">sự cạnh tranh</span> khốc liệt cho các công việc trong ngành công nghệ.`,
-                        audio: "There is fierce competition for jobs in the tech industry today."
-                    },
-                    {
-                        wordText: "competitive", label: "competitive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">compet</span><span class="suf-adj">itive</span>`,
-                        meaning: "Có tính cạnh tranh",
-                        exEn: `To survive, we must offer high quality at <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">compet</span><span class="suf-adj">itive</span></span> prices.`,
-                        exVi: `Để tồn tại, chúng ta phải cung cấp chất lượng cao với giá cả <span class="t-adj">có tính cạnh tranh</span>.`,
-                        audio: "To survive, we must offer high quality at competitive prices."
-                    },
-                    {
-                        wordText: "competitively", label: "competitively (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">compet</span><span class="suf-adj">itive</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách có sức cạnh tranh",
-                        exEn: `Our products are <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">compet</span><span class="suf-adj">itive</span><span class="suf-adv">ly</span></span> priced compared to other brands.`,
-                        exVi: `Sản phẩm của chúng tôi được định giá <span class="t-adv">một cách cạnh tranh</span> so với các thương hiệu khác.`,
-                        audio: "Our products are competitively priced compared to other brands."
-                    },
-                    {
-                        wordText: "uncompetitive", label: "uncompetitive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">compet</span><span class="suf-adj">itive</span>`,
-                        meaning: "Không có sức cạnh tranh",
-                        exEn: `High labor costs have made the factory <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">compet</span><span class="suf-adj">itive</span></span> in the global market.`,
-                        exVi: `Chi phí lao động cao đã khiến nhà máy trở nên <span class="t-adj">kém sức cạnh tranh</span> trên thị trường toàn cầu.`,
-                        audio: "High labor costs have made the factory uncompetitive in the global market."
-                    },
-                    {
-                        wordText: "competitor", label: "competitor (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">compet</span><span class="suf-n">itor</span>`,
-                        meaning: "Đối thủ cạnh tranh",
-                        exEn: `We need a new strategy to stay ahead of our main <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">compet</span><span class="suf-n">itor</span></span>.`,
-                        exVi: `Chúng ta cần một chiến lược mới để dẫn trước <span class="t-noun">đối thủ cạnh tranh</span> chính của mình.`,
-                        audio: "We need a new strategy to stay ahead of our main competitor."
-                    }
-                ]
-            },
-            {
-                baseWord: "communicate", baseMeaning: "Giao tiếp, truyền đạt", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Animals <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">communicate</span></span> with each other through sounds and body language.`,
-                baseExVi: `Động vật <span class="t-verb">giao tiếp</span> với nhau thông qua âm thanh và ngôn ngữ cơ thể.`,
-                baseAudio: "Animals communicate with each other through sounds and body language.",
-                variants: [
-                    {
-                        wordText: "communication", label: "communication (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">communicat</span><span class="suf-n">ion</span>`,
-                        meaning: "Sự giao tiếp",
-                        exEn: `Effective <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">communicat</span><span class="suf-n">ion</span></span> is essential for a healthy relationship.`,
-                        exVi: `<span class="t-noun">Sự giao tiếp</span> hiệu quả là điều cốt yếu cho một mối quan hệ lành mạnh.`,
-                        audio: "Effective communication is essential for a healthy relationship."
-                    },
-                    {
-                        wordText: "communicative", label: "communicative (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">communicat</span><span class="suf-adj">ive</span>`,
-                        meaning: "Cởi mở, thích giao tiếp",
-                        exEn: `He was surprisingly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">communicat</span><span class="suf-adj">ive</span></span> about his past experiences.`,
-                        exVi: `Anh ấy tỏ ra <span class="t-adj">cởi mở (thích giao tiếp)</span> một cách đáng ngạc nhiên về những trải nghiệm quá khứ của mình.`,
-                        audio: "He was surprisingly communicative about his past experiences."
-                    },
-                    {
-                        wordText: "uncommunicative", label: "uncommunicative (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">communicat</span><span class="suf-adj">ive</span>`,
-                        meaning: "Lầm lì, ít nói",
-                        exEn: `The boy became sad and <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">communicat</span><span class="suf-adj">ive</span></span> after the accident.`,
-                        exVi: `Cậu bé trở nên buồn bã và <span class="t-adj">ít nói (lầm lì)</span> sau tai nạn.`,
-                        audio: "The boy became sad and uncommunicative after the accident."
-                    },
-                    {
-                        wordText: "communicator", label: "communicator (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">communicat</span><span class="suf-n">or</span>`,
-                        meaning: "Người giao tiếp, truyền đạt",
-                        exEn: `As a teacher, you need to be an excellent <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">communicat</span><span class="suf-n">or</span></span>.`,
-                        exVi: `Là một giáo viên, bạn cần phải là một <span class="t-noun">người truyền đạt</span> xuất sắc.`,
-                        audio: "As a teacher, you need to be an excellent communicator."
-                    }
-                ]
-            },
-            {
-                baseWord: "decide", baseMeaning: "Quyết định", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `It is time for us to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">decide</span></span> our next strategic move.`,
-                baseExVi: `Đã đến lúc chúng ta phải <span class="t-verb">quyết định</span> bước đi chiến lược tiếp theo.`,
-                baseAudio: "It is time for us to decide our next strategic move.",
-                variants: [
-                    {
-                        wordText: "decision", label: "decision (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">decis</span><span class="suf-n">ion</span>`,
-                        meaning: "Quyết định",
-                        exEn: `Buying this house was the best <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">decis</span><span class="suf-n">ion</span></span> we've ever made.`,
-                        exVi: `Việc mua ngôi nhà này là <span class="t-noun">quyết định</span> tuyệt vời nhất chúng tôi từng đưa ra.`,
-                        audio: "Buying this house was the best decision we've ever made."
-                    },
-                    {
-                        wordText: "decisive", label: "decisive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">decis</span><span class="suf-adj">ive</span>`,
-                        meaning: "Kiên quyết, mang tính quyết định",
-                        exEn: `The commander took <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">decis</span><span class="suf-adj">ive</span></span> action to prevent a full-blown crisis.`,
-                        exVi: `Vị chỉ huy đã hành động <span class="t-adj">quyết đoán</span> để ngăn chặn một cuộc khủng hoảng toàn diện.`,
-                        audio: "The commander took decisive action to prevent a full-blown crisis."
-                    },
-                    {
-                        wordText: "decisively", label: "decisively (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">decis</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách dứt khoát",
-                        exEn: `She answered <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">decis</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> when asked about her future plans.`,
-                        exVi: `Cô ấy trả lời <span class="t-adv">một cách dứt khoát</span> khi được hỏi về kế hoạch tương lai của mình.`,
-                        audio: "She answered decisively when asked about her future plans."
-                    },
-                    {
-                        wordText: "indecisive", label: "indecisive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">in</span><span class="root-v">decis</span><span class="suf-adj">ive</span>`,
-                        meaning: "Thiếu quyết đoán, do dự",
-                        exEn: `A strong leader cannot afford to be <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">in</span><span class="root-v">decis</span><span class="suf-adj">ive</span></span> in times of emergency.`,
-                        exVi: `Một nhà lãnh đạo mạnh mẽ không thể tỏ ra <span class="t-adj">do dự (thiếu quyết đoán)</span> trong những trường hợp khẩn cấp.`,
-                        audio: "A strong leader cannot afford to be indecisive in times of emergency."
-                    }
-                ]
-            },
-            {
-                baseWord: "attract", baseMeaning: "Thu hút, hấp dẫn", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Bright flowers are designed to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">attract</span></span> bees and butterflies.`,
-                baseExVi: `Những bông hoa rực rỡ được thiết kế để <span class="t-verb">thu hút</span> ong và bướm.`,
-                baseAudio: "Bright flowers are designed to attract bees and butterflies.",
-                variants: [
-                    {
-                        wordText: "attraction", label: "attraction (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">attract</span><span class="suf-n">ion</span>`,
-                        meaning: "Sự thu hút, điểm tham quan",
-                        exEn: `The Eiffel Tower is the most famous tourist <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">attract</span><span class="suf-n">ion</span></span> in Paris.`,
-                        exVi: `Tháp Eiffel là <span class="t-noun">điểm tham quan (sự thu hút)</span> du lịch nổi tiếng nhất ở Paris.`,
-                        audio: "The Eiffel Tower is the most famous tourist attraction in Paris."
-                    },
-                    {
-                        wordText: "attractive", label: "attractive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">attract</span><span class="suf-adj">ive</span>`,
-                        meaning: "Hấp dẫn, lôi cuốn",
-                        exEn: `The company offers a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">attract</span><span class="suf-adj">ive</span></span> salary package to skilled engineers.`,
-                        exVi: `Công ty đưa ra một gói lương rất <span class="t-adj">hấp dẫn</span> cho các kỹ sư lành nghề.`,
-                        audio: "The company offers a very attractive salary package to skilled engineers."
-                    },
-                    {
-                        wordText: "attractively", label: "attractively (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">attract</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách lôi cuốn, hấp dẫn",
-                        exEn: `The dessert was <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">attract</span><span class="suf-adj">ive</span><span class="suf-adv">ly</span></span> presented on a silver plate.`,
-                        exVi: `Món tráng miệng được bày biện <span class="t-adv">một cách hấp dẫn</span> trên một chiếc đĩa bạc.`,
-                        audio: "The dessert was attractively presented on a silver plate."
-                    },
-                    {
-                        wordText: "unattractive", label: "unattractive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">attract</span><span class="suf-adj">ive</span>`,
-                        meaning: "Kém hấp dẫn, xấu xí",
-                        exEn: `The proposal was financially <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">attract</span><span class="suf-adj">ive</span></span> to the investors.`,
-                        exVi: `Bản đề xuất <span class="t-adj">kém hấp dẫn</span> về mặt tài chính đối với các nhà đầu tư.`,
-                        audio: "The proposal was financially unattractive to the investors."
-                    }
-                ]
-            },
-            {
-                baseWord: "depend", baseMeaning: "Phụ thuộc, dựa vào", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Young children <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">depend</span></span> entirely on their parents for survival.`,
-                baseExVi: `Trẻ nhỏ <span class="t-verb">phụ thuộc</span> hoàn toàn vào cha mẹ để sinh tồn.`,
-                baseAudio: "Young children depend entirely on their parents for survival.",
-                variants: [
-                    {
-                        wordText: "dependence", label: "dependence (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">depend</span><span class="suf-n">ence</span>`,
-                        meaning: "Sự phụ thuộc",
-                        exEn: `The country is trying to reduce its <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">depend</span><span class="suf-n">ence</span></span> on foreign oil.`,
-                        exVi: `Quốc gia này đang cố gắng giảm <span class="t-noun">sự phụ thuộc</span> vào dầu mỏ nước ngoài.`,
-                        audio: "The country is trying to reduce its dependence on foreign oil."
-                    },
-                    {
-                        wordText: "independence", label: "independence (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-n">ence</span>`,
-                        meaning: "Sự độc lập",
-                        exEn: `Vietnam declared its <span class="w-box" style="border-color: var(--c-noun);"><span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-n">ence</span></span> in 1945.`,
-                        exVi: `Việt Nam tuyên bố <span class="t-noun">độc lập</span> vào năm 1945.`,
-                        audio: "Vietnam declared its independence in 1945."
-                    },
-                    {
-                        wordText: "dependent", label: "dependent (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">depend</span><span class="suf-adj">ent</span>`,
-                        meaning: "Bị phụ thuộc, ỷ lại",
-                        exEn: `The local economy is heavily <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">depend</span><span class="suf-adj">ent</span></span> on international tourism.`,
-                        exVi: `Nền kinh tế địa phương <span class="t-adj">phụ thuộc</span> nặng nề vào du lịch quốc tế.`,
-                        audio: "The local economy is heavily dependent on international tourism."
-                    },
-                    {
-                        wordText: "independent", label: "independent (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span>`,
-                        meaning: "Độc lập, tự chủ",
-                        exEn: `She has always been a fiercely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span></span> and confident woman.`,
-                        exVi: `Cô ấy luôn là một người phụ nữ tự tin và <span class="t-adj">độc lập</span> mạnh mẽ.`,
-                        audio: "She has always been a fiercely independent and confident woman."
-                    },
-                    {
-                        wordText: "independently", label: "independently (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách độc lập",
-                        exEn: `Students are expected to work <span class="w-box" style="border-color: var(--c-adv);"><span class="g-pre-neg">in</span><span class="root-v">depend</span><span class="suf-adj">ent</span><span class="suf-adv">ly</span></span> on this assignment.`,
-                        exVi: `Học sinh được mong đợi sẽ làm việc <span class="t-adv">một cách độc lập</span> trong bài tập này.`,
-                        audio: "Students are expected to work independently on this assignment."
-                    }
-                ]
-            },
-            {
-                baseWord: "prefer", baseMeaning: "Thích hơn", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `I usually <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">prefer</span></span> reading physical books over reading on a screen.`,
-                baseExVi: `Tôi thường <span class="t-verb">thích</span> đọc sách giấy <span class="t-verb">hơn</span> là đọc trên màn hình.`,
-                baseAudio: "I usually prefer reading physical books over reading on a screen.",
-                variants: [
-                    {
-                        wordText: "preference", label: "preference (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">prefer</span><span class="suf-n">ence</span>`,
-                        meaning: "Sự thiên vị, sở thích",
-                        exEn: `Do you have any personal <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">prefer</span><span class="suf-n">ence</span></span> for the seat arrangement?`,
-                        exVi: `Bạn có <span class="t-noun">sở thích (sự ưu tiên)</span> cá nhân nào cho việc sắp xếp chỗ ngồi không?`,
-                        audio: "Do you have any personal preference for the seat arrangement?"
-                    },
-                    {
-                        wordText: "preferable", label: "preferable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">prefer</span><span class="suf-adj">able</span>`,
-                        meaning: "Đáng thích hơn, tốt hơn",
-                        exEn: `An early start is highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">prefer</span><span class="suf-adj">able</span></span> if we want to avoid the heavy traffic.`,
-                        exVi: `Việc khởi hành sớm là rất <span class="t-adj">đáng ưu tiên (tốt hơn)</span> nếu chúng ta muốn tránh kẹt xe.`,
-                        audio: "An early start is highly preferable if we want to avoid the heavy traffic."
-                    },
-                    {
-                        wordText: "preferably", label: "preferably (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">prefer</span><span class="suf-adj">ab</span><span class="suf-adv">ly</span>`,
-                        meaning: "Tốt nhất là",
-                        exEn: `We need a new manager, <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">prefer</span><span class="suf-adj">ab</span><span class="suf-adv">ly</span></span> someone with international experience.`,
-                        exVi: `Chúng tôi cần một người quản lý mới, <span class="t-adv">tốt nhất là</span> một người có kinh nghiệm quốc tế.`,
-                        audio: "We need a new manager, preferably someone with international experience."
-                    },
-                    {
-                        wordText: "preferential", label: "preferential (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">prefer</span><span class="suf-adj">ential</span>`,
-                        meaning: "Ưu tiên, ưu đãi",
-                        exEn: `VIP members receive <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">prefer</span><span class="suf-adj">ential</span></span> treatment at the hotel.`,
-                        exVi: `Các thành viên VIP nhận được sự đối đãi <span class="t-adj">ưu tiên</span> tại khách sạn.`,
-                        audio: "VIP members receive preferential treatment at the hotel."
-                    }
-                ]
-            },
-            {
-                baseWord: "achieve", baseMeaning: "Đạt được", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `He worked hard to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">achieve</span></span> his dream of becoming a doctor.`,
-                baseExVi: `Anh ấy đã làm việc chăm chỉ để <span class="t-verb">đạt được</span> giấc mơ trở thành bác sĩ.`,
-                baseAudio: "He worked hard to achieve his dream of becoming a doctor.",
-                variants: [
-                    {
-                        wordText: "achievement", label: "achievement (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">achieve</span><span class="suf-n">ment</span>`,
-                        meaning: "Thành tựu, sự đạt được",
-                        exEn: `Winning the championship was his greatest <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">achieve</span><span class="suf-n">ment</span></span>.`,
-                        exVi: `Giành chức vô địch là <span class="t-noun">thành tựu</span> vĩ đại nhất của anh ấy.`,
-                        audio: "Winning the championship was his greatest achievement."
-                    },
-                    {
-                        wordText: "achievable", label: "achievable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">achiev</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể đạt được, khả thi",
-                        exEn: `Setting realistic and <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">achiev</span><span class="suf-adj">able</span></span> goals is the key to success.`,
-                        exVi: `Việc đặt ra những mục tiêu thực tế và <span class="t-adj">có thể đạt được</span> là chìa khóa để thành công.`,
-                        audio: "Setting realistic and achievable goals is the key to success."
-                    },
-                    {
-                        wordText: "unachievable", label: "unachievable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">achiev</span><span class="suf-adj">able</span>`,
-                        meaning: "Không thể đạt được, viển vông",
-                        exEn: `Ending all poverty worldwide seems like an noble but <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">achiev</span><span class="suf-adj">able</span></span> goal.`,
-                        exVi: `Chấm dứt hoàn toàn nghèo đói trên toàn cầu có vẻ là một mục tiêu cao cả nhưng <span class="t-adj">không thể đạt được</span>.`,
-                        audio: "Ending all poverty worldwide seems like an noble but unachievable goal."
-                    },
-                    {
-                        wordText: "achiever", label: "achiever (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">achiev</span><span class="suf-n">er</span>`,
-                        meaning: "Người thành đạt",
-                        exEn: `As a high <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">achiev</span><span class="suf-n">er</span></span>, she always pushes herself to the limit.`,
-                        exVi: `Là một <span class="t-noun">người có thành tích cao</span>, cô ấy luôn thúc đẩy bản thân đến giới hạn.`,
-                        audio: "As a high achiever, she always pushes herself to the limit."
-                    }
-                ]
-            },
-            {
-                baseWord: "succeed", baseMeaning: "Thành công, nối nghiệp", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `If you want to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">succeed</span></span> in business, you must take calculated risks.`,
-                baseExVi: `Nếu bạn muốn <span class="t-verb">thành công</span> trong kinh doanh, bạn phải chấp nhận những rủi ro có tính toán.`,
-                baseAudio: "If you want to succeed in business, you must take calculated risks.",
-                variants: [
-                    {
-                        wordText: "success", label: "success (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-n">success</span>`,
-                        meaning: "Sự thành công",
-                        exEn: `The new product was a massive commercial <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">success</span></span>.`,
-                        exVi: `Sản phẩm mới là một <span class="t-noun">sự thành công</span> thương mại khổng lồ.`,
-                        audio: "The new product was a massive commercial success."
-                    },
-                    {
-                        wordText: "successful", label: "successful (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">success</span><span class="suf-adj">ful</span>`,
-                        meaning: "Thành công",
-                        exEn: `The marketing campaign was highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">success</span><span class="suf-adj">ful</span></span>.`,
-                        exVi: `Chiến dịch tiếp thị đã <span class="t-adj">thành công</span> rực rỡ.`,
-                        audio: "The marketing campaign was highly successful."
-                    },
-                    {
-                        wordText: "successfully", label: "successfully (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-n">success</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách thành công",
-                        exEn: `The surgeon <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">success</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span></span> completed the complex operation.`,
-                        exVi: `Bác sĩ phẫu thuật đã hoàn thành <span class="t-adv">một cách thành công</span> ca mổ phức tạp.`,
-                        audio: "The surgeon successfully completed the complex operation."
-                    },
-                    {
-                        wordText: "unsuccessful", label: "unsuccessful (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-n">success</span><span class="suf-adj">ful</span>`,
-                        meaning: "Không thành công, thất bại",
-                        exEn: `Despite their efforts, the rescue mission was tragically <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">success</span><span class="suf-adj">ful</span></span>.`,
-                        exVi: `Bất chấp nỗ lực của họ, nhiệm vụ cứu hộ đã <span class="t-adj">thất bại</span> một cách bi thảm.`,
-                        audio: "Despite their efforts, the rescue mission was tragically unsuccessful."
-                    },
-                    {
-                        wordText: "successive", label: "successive (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">success</span><span class="suf-adj">ive</span>`,
-                        meaning: "Liên tiếp, kế tiếp (⚠️ Bẫy)",
-                        exEn: `The team won the championship for three <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">success</span><span class="suf-adj">ive</span></span> years.`,
-                        exVi: `Đội đã giành chức vô địch trong 3 năm <span class="t-adj">liên tiếp</span>.`,
-                        audio: "The team won the championship for three successive years."
-                    }
-                ]
-            },
-            {
-                baseWord: "care", baseMeaning: "Sự quan tâm, cẩn thận", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `You need to handle these fragile glasses with extreme <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">care</span></span>.`,
-                baseExVi: `Bạn cần xử lý những chiếc ly dễ vỡ này với <span class="t-noun">sự cẩn thận</span> tột độ.`,
-                baseAudio: "You need to handle these fragile glasses with extreme care.",
-                variants: [
-                    {
-                        wordText: "careful", label: "careful (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">care</span><span class="suf-adj">ful</span>`,
-                        meaning: "Cẩn thận",
-                        exEn: `Please be <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">care</span><span class="suf-adj">ful</span></span> when crossing the busy street.`,
-                        exVi: `Làm ơn hãy <span class="t-adj">cẩn thận</span> khi băng qua con đường đông đúc.`,
-                        audio: "Please be careful when crossing the busy street."
-                    },
-                    {
-                        wordText: "carefully", label: "carefully (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-n">care</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách cẩn thận",
-                        exEn: `He <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">care</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span></span> placed the baby in the crib.`,
-                        exVi: `Anh ấy <span class="t-adv">cẩn thận</span> đặt đứa bé vào trong nôi.`,
-                        audio: "He carefully placed the baby in the crib."
-                    },
-                    {
-                        wordText: "careless", label: "careless (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">care</span><span class="suf-adj">less</span>`,
-                        meaning: "Bất cẩn, cẩu thả",
-                        exEn: `Losing your passport was a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">care</span><span class="suf-adj">less</span></span> mistake.`,
-                        exVi: `Làm mất hộ chiếu là một sai lầm rất <span class="t-adj">bất cẩn</span>.`,
-                        audio: "Losing your passport was a very careless mistake."
-                    },
-                    {
-                        wordText: "carelessly", label: "carelessly (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách cẩu thả",
-                        exEn: `He <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-adv">ly</span></span> threw his jacket on the floor.`,
-                        exVi: `Anh ấy ném chiếc áo khoác của mình xuống sàn <span class="t-adv">một cách cẩu thả</span>.`,
-                        audio: "He carelessly threw his jacket on the floor."
-                    },
-                    {
-                        wordText: "carelessness", label: "carelessness (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-n">ness</span>`,
-                        meaning: "Sự bất cẩn",
-                        exEn: `Most road accidents are caused by driver <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">care</span><span class="suf-adj">less</span><span class="suf-n">ness</span></span>.`,
-                        exVi: `Hầu hết các vụ tai nạn đường bộ là do <span class="t-noun">sự bất cẩn</span> của tài xế.`,
-                        audio: "Most road accidents are caused by driver carelessness."
-                    },
-                    {
-                        wordText: "caring", label: "caring (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">car</span><span class="suf-adj">ing</span>`,
-                        meaning: "Chu đáo, biết quan tâm",
-                        exEn: `She is a deeply <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">car</span><span class="suf-adj">ing</span></span> nurse who loves her patients.`,
-                        exVi: `Cô ấy là một y tá vô cùng <span class="t-adj">chu đáo</span>, yêu thương bệnh nhân của mình.`,
-                        audio: "She is a deeply caring nurse who loves her patients."
-                    }
-                ]
-            },
-            {
-                baseWord: "use", baseMeaning: "Sử dụng, công dụng", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `This tool has multiple <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">uses</span></span> in the kitchen.`,
-                baseExVi: `Công cụ này có rất nhiều <span class="t-noun">công dụng</span> trong nhà bếp.`,
-                baseAudio: "This tool has multiple uses in the kitchen.",
-                variants: [
-                    {
-                        wordText: "useful", label: "useful (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">use</span><span class="suf-adj">ful</span>`,
-                        meaning: "Hữu ích",
-                        exEn: `A pocket knife is a very <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">use</span><span class="suf-adj">ful</span></span> tool for camping.`,
-                        exVi: `Dao bỏ túi là một công cụ rất <span class="t-adj">hữu ích</span> cho việc cắm trại.`,
-                        audio: "A pocket knife is a very useful tool for camping."
-                    },
-                    {
-                        wordText: "usefully", label: "usefully (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-n">use</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách hữu ích",
-                        exEn: `The extra money could be <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">use</span><span class="suf-adj">ful</span><span class="suf-adv">ly</span></span> spent on repairing the roof.`,
-                        exVi: `Số tiền thừa có thể được chi tiêu <span class="t-adv">một cách hữu ích</span> vào việc sửa mái nhà.`,
-                        audio: "The extra money could be usefully spent on repairing the roof."
-                    },
-                    {
-                        wordText: "useless", label: "useless (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">use</span><span class="suf-adj">less</span>`,
-                        meaning: "Vô ích, không có tác dụng",
-                        exEn: `This old map is completely <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">use</span><span class="suf-adj">less</span></span> because the roads have changed.`,
-                        exVi: `Tấm bản đồ cũ này hoàn toàn <span class="t-adj">vô dụng</span> vì các con đường đã thay đổi.`,
-                        audio: "This old map is completely useless because the roads have changed."
-                    },
-                    {
-                        wordText: "uselessly", label: "uselessly (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-n">use</span><span class="suf-adj">less</span><span class="suf-adv">ly</span>`,
-                        meaning: "Một cách vô ích",
-                        exEn: `The machine kept spinning <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">use</span><span class="suf-adj">less</span><span class="suf-adv">ly</span></span> without producing anything.`,
-                        exVi: `Cỗ máy cứ quay <span class="t-adv">một cách vô ích</span> mà không sản xuất ra thứ gì.`,
-                        audio: "The machine kept spinning uselessly without producing anything."
-                    },
-                    {
-                        wordText: "reusable", label: "reusable (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-att">re</span><span class="root-v">us</span><span class="suf-adj">able</span>`,
-                        meaning: "Có thể tái sử dụng",
-                        exEn: `We should all switch to <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-att">re</span><span class="root-v">us</span><span class="suf-adj">able</span></span> water bottles to reduce plastic waste.`,
-                        exVi: `Tất cả chúng ta nên chuyển sang dùng chai nước <span class="t-adj">có thể tái sử dụng</span> để giảm rác thải nhựa.`,
-                        audio: "We should all switch to reusable water bottles to reduce plastic waste."
-                    },
-                    {
-                        wordText: "user", label: "user (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">us</span><span class="suf-n">er</span>`,
-                        meaning: "Người sử dụng",
-                        exEn: `The app was redesigned to create a better experience for the end <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">us</span><span class="suf-n">er</span></span>.`,
-                        exVi: `Ứng dụng đã được thiết kế lại để tạo ra trải nghiệm tốt hơn cho <span class="t-noun">người dùng</span> cuối.`,
-                        audio: "The app was redesigned to create a better experience for the end user."
-                    }
-                ]
-            },
-            {
-                baseWord: "origin", baseMeaning: "Nguồn gốc", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `Scientists are still debating the exact <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">origin</span></span> of the universe.`,
-                baseExVi: `Các nhà khoa học vẫn đang tranh luận về <span class="t-noun">nguồn gốc</span> chính xác của vũ trụ.`,
-                baseAudio: "Scientists are still debating the exact origin of the universe.",
-                variants: [
-                    {
-                        wordText: "original", label: "original (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">origin</span><span class="suf-adj">al</span>`,
-                        meaning: "Nguyên bản, độc đáo",
-                        exEn: `The painting is a highly valuable <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">origin</span><span class="suf-adj">al</span></span> work by Picasso.`,
-                        exVi: `Bức tranh là một tác phẩm <span class="t-adj">nguyên bản</span> vô cùng giá trị của Picasso.`,
-                        audio: "The painting is a highly valuable original work by Picasso."
-                    },
-                    {
-                        wordText: "originally", label: "originally (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-n">origin</span><span class="suf-adj">al</span><span class="suf-adv">ly</span>`,
-                        meaning: "Ban đầu, khởi đầu",
-                        exEn: `The building was <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">origin</span><span class="suf-adj">al</span><span class="suf-adv">ly</span></span> designed to be a hospital, not a school.`,
-                        exVi: `Tòa nhà <span class="t-adv">ban đầu</span> được thiết kế để làm bệnh viện, không phải trường học.`,
-                        audio: "The building was originally designed to be a hospital, not a school."
-                    },
-                    {
-                        wordText: "unoriginal", label: "unoriginal (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-n">origin</span><span class="suf-adj">al</span>`,
-                        meaning: "Sao chép, thiếu tính sáng tạo",
-                        exEn: `The movie's plot was incredibly boring and <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-n">origin</span><span class="suf-adj">al</span></span>.`,
-                        exVi: `Cốt truyện của bộ phim cực kỳ nhàm chán và <span class="t-adj">thiếu sáng tạo (sao chép)</span>.`,
-                        audio: "The movie's plot was incredibly boring and unoriginal."
-                    },
-                    {
-                        wordText: "originate", label: "originate (V)", type: "V", color: "var(--c-verb)",
-                        html: `<span class="root-n">origin</span><span class="suf-v">ate</span>`,
-                        meaning: "Bắt nguồn từ, khởi phát",
-                        exEn: `The disease is believed to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-n">origin</span><span class="suf-v">ate</span></span> from a remote jungle in Africa.`,
-                        exVi: `Căn bệnh được cho là <span class="t-verb">bắt nguồn từ</span> một khu rừng rậm hẻo lánh ở Châu Phi.`,
-                        audio: "The disease is believed to originate from a remote jungle in Africa."
-                    },
-                    {
-                        wordText: "originator", label: "originator (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-n">origin</span><span class="suf-v">at</span><span class="suf-n">or</span>`,
-                        meaning: "Người khởi xướng, người sáng lập",
-                        exEn: `He is credited as the <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">origin</span><span class="suf-v">at</span><span class="suf-n">or</span></span> of this revolutionary theory.`,
-                        exVi: `Ông được ghi nhận là <span class="t-noun">người khởi xướng</span> ra lý thuyết mang tính cách mạng này.`,
-                        audio: "He is credited as the originator of this revolutionary theory."
-                    }
-                ]
-            },
-            {
-                baseWord: "nation", baseMeaning: "Quốc gia, dân tộc", baseType: "N", baseClass: "root-n", baseColor: "var(--c-noun)",
-                baseExEn: `The whole <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">nation</span></span> mourned the sudden death of the beloved president.`,
-                baseExVi: `Cả <span class="t-noun">quốc gia</span> thương tiếc sự ra đi đột ngột của vị tổng thống đáng kính.`,
-                baseAudio: "The whole nation mourned the sudden death of the beloved president.",
-                variants: [
-                    {
-                        wordText: "national", label: "national (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span>`,
-                        meaning: "Thuộc về quốc gia, dân tộc",
-                        exEn: `The eagle is recognized as the <span class="w-box" style="border-color: var(--c-adj);"><span class="root-n">nation</span><span class="suf-adj">al</span></span> symbol of the United States.`,
-                        exVi: `Đại bàng được công nhận là biểu tượng <span class="t-adj">quốc gia</span> của Hoa Kỳ.`,
-                        audio: "The eagle is recognized as the national symbol of the United States."
-                    },
-                    {
-                        wordText: "nationally", label: "nationally (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-adv">ly</span>`,
-                        meaning: "Trên phạm vi toàn quốc",
-                        exEn: `The news of his victory was broadcast <span class="w-box" style="border-color: var(--c-adv);"><span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-adv">ly</span></span>.`,
-                        exVi: `Tin tức về chiến thắng của anh ấy được phát sóng <span class="t-adv">trên toàn quốc</span>.`,
-                        audio: "The news of his victory was broadcast nationally."
-                    },
-                    {
-                        wordText: "international", label: "international (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-att">inter</span><span class="root-n">nation</span><span class="suf-adj">al</span>`,
-                        meaning: "Quốc tế",
-                        exEn: `The airport has flights to many <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-att">inter</span><span class="root-n">nation</span><span class="suf-adj">al</span></span> destinations.`,
-                        exVi: `Sân bay có các chuyến bay đến nhiều điểm đến <span class="t-adj">quốc tế</span>.`,
-                        audio: "The airport has flights to many international destinations."
-                    },
-                    {
-                        wordText: "nationality", label: "nationality (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-n">ity</span>`,
-                        meaning: "Quốc tịch",
-                        exEn: `She has dual <span class="w-box" style="border-color: var(--c-noun);"><span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-n">ity</span></span>, holding passports from both France and Canada.`,
-                        exVi: `Cô ấy có <span class="t-noun">quốc tịch</span> kép, sở hữu hộ chiếu của cả Pháp và Canada.`,
-                        audio: "She has dual nationality, holding passports from both France and Canada."
-                    },
-                    {
-                        wordText: "nationalize", label: "nationalize (V)", type: "V", color: "var(--c-verb)",
-                        html: `<span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-v">ize</span>`,
-                        meaning: "Quốc hữu hóa",
-                        exEn: `The government decided to <span class="w-box" style="border-color: var(--c-verb);"><span class="root-n">nation</span><span class="suf-adj">al</span><span class="suf-v">ize</span></span> the railway network.`,
-                        exVi: `Chính phủ quyết định <span class="t-verb">quốc hữu hóa</span> mạng lưới đường sắt.`,
-                        audio: "The government decided to nationalize the railway network."
-                    }
-                ]
-            },
-            {
-                baseWord: "educate", baseMeaning: "Giáo dục, dạy dỗ", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Parents should <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">educate</span></span> their children about the dangers of the internet.`,
-                baseExVi: `Cha mẹ nên <span class="t-verb">giáo dục</span> con cái về những mối nguy hiểm của internet.`,
-                baseAudio: "Parents should educate their children about the dangers of the internet.",
-                variants: [
-                    {
-                        wordText: "education", label: "education (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">educat</span><span class="suf-n">ion</span>`,
-                        meaning: "Nền giáo dục, sự giáo dục",
-                        exEn: `A good <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">educat</span><span class="suf-n">ion</span></span> is the key to escaping the cycle of poverty.`,
-                        exVi: `Một nền <span class="t-noun">giáo dục</span> tốt là chìa khóa để thoát khỏi vòng luẩn quẩn của nghèo đói.`,
-                        audio: "A good education is the key to escaping the cycle of poverty."
-                    },
-                    {
-                        wordText: "educational", label: "educational (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span>`,
-                        meaning: "Thuộc về giáo dục, mang tính giáo dục",
-                        exEn: `The museum offers many interactive and <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span></span> exhibits for kids.`,
-                        exVi: `Bảo tàng cung cấp nhiều triển lãm tương tác và <span class="t-adj">mang tính giáo dục</span> cho trẻ em.`,
-                        audio: "The museum offers many interactive and educational exhibits for kids."
-                    },
-                    {
-                        wordText: "educationally", label: "educationally (Adv)", type: "Adv", color: "var(--c-adv)",
-                        html: `<span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span><span class="suf-adv">ly</span>`,
-                        meaning: "Về mặt giáo dục",
-                        exEn: `The new policy is designed to support <span class="w-box" style="border-color: var(--c-adv);"><span class="root-v">educat</span><span class="suf-n">ion</span><span class="suf-adj">al</span><span class="suf-adv">ly</span></span> disadvantaged students.`,
-                        exVi: `Chính sách mới được thiết kế để hỗ trợ những sinh viên gặp bất lợi <span class="t-adv">về mặt giáo dục</span>.`,
-                        audio: "The new policy is designed to support educationally disadvantaged students."
-                    },
-                    {
-                        wordText: "uneducated", label: "uneducated (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">educat</span><span class="suf-adj">ed</span>`,
-                        meaning: "Vô học, không được giáo dục",
-                        exEn: `He is an <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">educat</span><span class="suf-adj">ed</span></span> man but possesses great practical wisdom.`,
-                        exVi: `Ông ấy là một người <span class="t-adj">không được học hành</span> nhưng sở hữu sự thông thái thực tế tuyệt vời.`,
-                        audio: "He is an uneducated man but possesses great practical wisdom."
-                    },
-                    {
-                        wordText: "educator", label: "educator (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">educat</span><span class="suf-n">or</span>`,
-                        meaning: "Nhà giáo dục",
-                        exEn: `She is a highly respected <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">educat</span><span class="suf-n">or</span></span> with 30 years of teaching experience.`,
-                        exVi: `Bà là một <span class="t-noun">nhà giáo dục</span> rất được kính trọng với 30 năm kinh nghiệm giảng dạy.`,
-                        audio: "She is a highly respected educator with 30 years of teaching experience."
-                    }
-                ]
-            },
-            {
-                baseWord: "inform", baseMeaning: "Thông báo", baseType: "V", baseClass: "root-v", baseColor: "var(--c-verb)",
-                baseExEn: `Please <span class="w-box" style="border-color: var(--c-verb);"><span class="root-v">inform</span></span> me immediately if there are any changes to the plan.`,
-                baseExVi: `Vui lòng <span class="t-verb">thông báo</span> cho tôi ngay lập tức nếu có bất kỳ thay đổi nào đối với kế hoạch.`,
-                baseAudio: "Please inform me immediately if there are any changes to the plan.",
-                variants: [
-                    {
-                        wordText: "information", label: "information (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">inform</span><span class="suf-n">ation</span>`,
-                        meaning: "Thông tin",
-                        exEn: `You can find more detailed <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">inform</span><span class="suf-n">ation</span></span> on our official website.`,
-                        exVi: `Bạn có thể tìm thấy <span class="t-noun">thông tin</span> chi tiết hơn trên trang web chính thức của chúng tôi.`,
-                        audio: "You can find more detailed information on our official website."
-                    },
-                    {
-                        wordText: "informative", label: "informative (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">inform</span><span class="suf-adj">ative</span>`,
-                        meaning: "Nhiều thông tin hữu ích",
-                        exEn: `The documentary was both entertaining and highly <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">inform</span><span class="suf-adj">ative</span></span>.`,
-                        exVi: `Bộ phim tài liệu vừa mang tính giải trí vừa <span class="t-adj">cung cấp rất nhiều thông tin hữu ích</span>.`,
-                        audio: "The documentary was both entertaining and highly informative."
-                    },
-                    {
-                        wordText: "uninformative", label: "uninformative (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ative</span>`,
-                        meaning: "Nghèo nàn thông tin, không cung cấp kiến thức",
-                        exEn: `The instruction manual was completely <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ative</span></span> and confusing.`,
-                        exVi: `Cuốn sổ tay hướng dẫn hoàn toàn <span class="t-adj">nghèo nàn thông tin</span> và gây bối rối.`,
-                        audio: "The instruction manual was completely uninformative and confusing."
-                    },
-                    {
-                        wordText: "informed", label: "informed (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="root-v">inform</span><span class="suf-adj">ed</span>`,
-                        meaning: "Có hiểu biết, được cập nhật thông tin",
-                        exEn: `Consumers today are much more <span class="w-box" style="border-color: var(--c-adj);"><span class="root-v">inform</span><span class="suf-adj">ed</span></span> about what they buy.`,
-                        exVi: `Người tiêu dùng ngày nay <span class="t-adj">có hiểu biết (được cập nhật thông tin)</span> hơn nhiều về những gì họ mua.`,
-                        audio: "Consumers today are much more informed about what they buy."
-                    },
-                    {
-                        wordText: "uninformed", label: "uninformed (Adj)", type: "Adj", color: "var(--c-adj)",
-                        html: `<span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ed</span>`,
-                        meaning: "Thiếu hiểu biết, không được báo trước",
-                        exEn: `Making a major financial decision while <span class="w-box" style="border-color: var(--c-adj);"><span class="g-pre-neg">un</span><span class="root-v">inform</span><span class="suf-adj">ed</span></span> is very dangerous.`,
-                        exVi: `Việc đưa ra một quyết định tài chính lớn trong khi <span class="t-adj">thiếu hiểu biết</span> là rất nguy hiểm.`,
-                        audio: "Making a major financial decision while uninformed is very dangerous."
-                    },
-                    {
-                        wordText: "informant", label: "informant (N)", type: "N", color: "var(--c-noun)",
-                        html: `<span class="root-v">inform</span><span class="suf-n">ant</span>`,
-                        meaning: "Người cung cấp thông tin, người báo tin",
-                        exEn: `The police relied on a secret <span class="w-box" style="border-color: var(--c-noun);"><span class="root-v">inform</span><span class="suf-n">ant</span></span> to catch the criminal.`,
-                        exVi: `Cảnh sát đã dựa vào một <span class="t-noun">người cung cấp thông tin</span> bí mật để bắt giữ tên tội phạm.`,
-                        audio: "The police relied on a secret informant to catch the criminal."
-                    }
-                ]
-            }
+        // ================= DỮ LIỆU CHỦ ĐỀ =================
+        const themeColors = [
+            { name: "Amber Warm", hex: "#d97706", textHex: "#f59e0b", glow: "rgba(217, 119, 6, 0.02)", glowStrong: "rgba(217, 119, 6, 0.06)", a1: "rgba(217, 119, 6, 0.04)", a2: "rgba(217, 119, 6, 0.01)", a3: "rgba(217, 119, 6, 0.02)" },
+            { name: "Tea Mint", hex: "#059669", textHex: "#10b981", glow: "rgba(5, 150, 105, 0.02)", glowStrong: "rgba(5, 150, 105, 0.06)", a1: "rgba(5, 150, 105, 0.04)", a2: "rgba(5, 150, 105, 0.01)", a3: "rgba(5, 150, 105, 0.02)" },
+            { name: "Soft Sky Cyan", hex: "#0891b2", textHex: "#22d3ee", glow: "rgba(8, 145, 178, 0.02)", glowStrong: "rgba(8, 145, 178, 0.06)", a1: "rgba(8, 145, 178, 0.04)", a2: "rgba(8, 145, 178, 0.01)", a3: "rgba(8, 145, 178, 0.02)" },
+            { name: "Violet Soft", hex: "#7c3aed", textHex: "#a78bfa", glow: "rgba(124, 58, 237, 0.02)", glowStrong: "rgba(124, 58, 237, 0.06)", a1: "rgba(124, 58, 237, 0.04)", a2: "rgba(124, 58, 237, 0.01)", a3: "rgba(124, 58, 237, 0.02)" },
+            { name: "Rose Silk", hex: "#db2777", textHex: "#fb7185", glow: "rgba(219, 39, 119, 0.02)", glowStrong: "rgba(219, 39, 119, 0.06)", a1: "rgba(219, 39, 119, 0.04)", a2: "rgba(219, 39, 119, 0.01)", a3: "rgba(219, 39, 119, 0.02)" }
         ];
-
-        // ================= APP LOGIC & STATE =================
-        let currentCardIndex = 0;
-        let currentVariantIndex = -1; // -1 represents the Root Word selection
-        const totalCards = flashcards.length;
         
-        const cardEl = document.getElementById('flashcard');
-        const cardCounterEl = document.getElementById('cardCounter');
-        const rootWordHeader = document.getElementById('rootWordHeader');
-        const rootWordBox = document.getElementById('rootWordBox');
-        const variantListEl = document.getElementById('variantList');
-        const detailsEl = document.getElementById('variantDetails');
+        let currentThemeIndex = 0;
+        let currentReadMode = 'continuous';
+        let currentTextSize = 34; 
+        let currentMode = 'NONE'; 
+        let isPlaying = false;
+        let isDraggingSlider = false;
+        let currentContinuousScrollY = 0;
         
-        // Element references inside details
-        const tWordBox = document.getElementById('targetWordBox');
-        const tTypeBadge = document.getElementById('targetTypeBadge');
-        const tMeaning = document.getElementById('targetMeaning');
-        const exampleBox = document.getElementById('exampleBox');
+        const btnPlayPause = document.getElementById('btnPlayPause');
+        const progressBar = document.getElementById('progressBar');
+        const timeCurrent = document.getElementById('timeCurrent');
+        const timeTotal = document.getElementById('timeTotal');
+        const lyricsScroll = document.getElementById('lyricsScroll');
+        const emptyState = document.getElementById('emptyState');
+        const mainAppContainer = document.getElementById('mainAppContainer');
+        const dataOverlay = document.getElementById('dataOverlay');
+        const audioEl = document.getElementById('mainAudio');
+
+        let currentLyrics = []; 
+        let activeLyricIndex = -1;
         
-        const btnPrev = document.getElementById('btnPrev');
-        const btnNext = document.getElementById('btnNext');
-
-        function jumpToMiddle() {
-            if(synth.speaking) synth.cancel();
-            const middleIndex = Math.floor(totalCards / 2);
-            currentCardIndex = middleIndex;
-            renderCard(currentCardIndex);
-        }
-
-        function updateThemeColor(color) {
-            document.documentElement.style.setProperty('--active-color', color);
-            // Add a soft glow to background auroras matching the active grammar color
-            document.getElementById('aurora1').style.background = color;
-            document.getElementById('aurora1').style.opacity = '0.15';
-        }
-
-        function renderVariant(vIndex) {
-            currentVariantIndex = vIndex;
-            const data = flashcards[currentCardIndex];
-            
-            // 1. Update active states for Header and Variant Buttons
-            const buttons = variantListEl.querySelectorAll('.variant-btn');
-            
-            if (vIndex === -1) {
-                // Root Word is selected
-                rootWordHeader.classList.add('active');
-                buttons.forEach(btn => btn.classList.remove('active'));
-            } else {
-                // A Variant is selected
-                rootWordHeader.classList.remove('active');
-                buttons.forEach((btn, idx) => {
-                    if(idx === currentVariantIndex) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                });
-            }
-
-            // 2. Fade details section, inject data, fade back in
-            detailsEl.classList.add('fading');
-            
-            setTimeout(() => {
-                let color, html, type, meaning, exEn, exVi, audio;
-                
-                if (vIndex === -1) {
-                    color = data.baseColor;
-                    html = `<span class="${data.baseClass}">${data.baseWord}</span>`;
-                    type = data.baseType;
-                    meaning = data.baseMeaning;
-                    exEn = data.baseExEn;
-                    exVi = data.baseExVi;
-                    audio = data.baseAudio;
-                } else {
-                    const vData = data.variants[vIndex];
-                    color = vData.color;
-                    html = vData.html;
-                    type = vData.type;
-                    meaning = vData.meaning;
-                    exEn = vData.exEn;
-                    exVi = vData.exVi;
-                    audio = vData.audio;
-                }
-                
-                updateThemeColor(color);
-                
-                tWordBox.innerHTML = html;
-                tWordBox.style.borderColor = color;
-                tWordBox.style.boxShadow = `inset 0 0 20px rgba(0,0,0,0.8), 0 0 30px ${color}40`;
-                
-                tTypeBadge.textContent = type;
-                tTypeBadge.style.color = color;
-                tTypeBadge.style.borderColor = color;
-                tTypeBadge.style.boxShadow = `0 0 10px ${color}40`;
-                
-                tMeaning.innerHTML = "- " + meaning;
-                
-                // Inject nội dung
-                exampleBox.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
-                        <div style="flex: 1; text-align: left;">
-                            <div class="example-en">${exEn}</div>
-                            <div class="example-vi">${exVi}</div>
-                        </div>
-                        <button class="btn-play-sm" style="color: ${color}; border-color: ${color};" onclick="playSentenceAudio(event, '${audio.replace(/'/g, "\\'")}')" title="Nghe câu này">🔊</button>
-                    </div>
-                `;
-                
-                detailsEl.classList.remove('fading');
-
-                // --- AUTO PLAY: Tự động phát âm từ vừa được hiển thị ---
-                setTimeout(() => {
-                    playCurrentWordAudio();
-                }, 50);
-
-            }, 200); // 200ms matches CSS transition
-        }
-
-        function renderCard(index) {
-            const data = flashcards[index];
-            currentVariantIndex = -1; // Default to selecting Root Word
-            
-            // Animation Out Card
-            cardEl.classList.remove('animating-in');
-            cardEl.classList.add('animating-out');
-            
-            setTimeout(() => {
-                // 1. Inject Root Word Info (Cùng dòng với nghĩa tiếng Việt) - Đã xóa Nút Loa ở đây
-                rootWordBox.innerHTML = `[ <span class="${data.baseClass}">${data.baseWord}</span> ] <span class="badge-type" style="color:${data.baseColor}; border-color:${data.baseColor}; font-size:12px; margin:0 8px;">${data.baseType}</span> <span class="root-meaning-text">- ${data.baseMeaning}</span>`;
-                
-                // 2. Build Variant Nav Buttons
-                variantListEl.innerHTML = '';
-                
-                // Đã gỡ bỏ logic JS đếm > 5 biến thể. Flexbox sẽ tự động tính toán không gian.
-
-                data.variants.forEach((v, vIdx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'variant-btn';
-                    btn.style.setProperty('--btn-color', v.color); // Lưu màu sắc riêng biệt của từng loại từ vào thẻ
-                    // Font chữ ở đây sẽ kế thừa từ .variant-btn - Đã xóa Nút Loa ở đây
-                    btn.innerHTML = `<div>${v.html} <span style="color: #64748b; font-size: 0.85em; font-weight: normal; margin-left: 4px;">(${v.type})</span></div> <span style="color: #cbd5e1; font-family: 'Inter', sans-serif; font-size: 0.95em;">- ${v.meaning}</span>`;
-                    btn.onclick = () => {
-                        if(currentVariantIndex !== vIdx) {
-                            if(synth.speaking) synth.cancel();
-                            renderVariant(vIdx);
-                        }
-                    };
-                    variantListEl.appendChild(btn);
-                });
-
-                // Update Progress UI
-                cardCounterEl.textContent = `${index + 1}/${totalCards}`;
-
-                // Call render variant to populate bottom section automatically (Mặc định chọn vIndex = -1)
-                renderVariant(-1);
-
-                // Animation In Card
-                cardEl.classList.remove('animating-out');
-                cardEl.classList.add('animating-in');
-                
-                setTimeout(() => {
-                    cardEl.classList.remove('animating-in');
-                }, 400);
-
-            }, 300); 
-        }
-
-        function nextCard() {
-            if(synth.speaking) synth.cancel();
-            currentCardIndex = (currentCardIndex + 1) % totalCards; // Xoay vòng về 0 nếu đang ở cuối
-            renderCard(currentCardIndex);
-        }
-
-        function prevCard() {
-            if(synth.speaking) synth.cancel();
-            currentCardIndex = (currentCardIndex - 1 + totalCards) % totalCards; // Xoay vòng về cuối nếu đang ở 0
-            renderCard(currentCardIndex);
-        }
-        
-        function nextVariant() {
-            const maxVariants = flashcards[currentCardIndex].variants.length;
-            if (currentVariantIndex < maxVariants - 1) {
-                if(synth.speaking) synth.cancel();
-                renderVariant(currentVariantIndex + 1);
-            }
-        }
-        
-        function prevVariant() {
-            if (currentVariantIndex > -1) {
-                if(synth.speaking) synth.cancel();
-                renderVariant(currentVariantIndex - 1);
-            }
-        }
-
-        // ================= AUDIO ENGINE =================
         const synth = window.speechSynthesis;
-        let availableVoices = [];
-        const voiceSelect = document.getElementById('voiceSelect');
-        const rateSelect = document.getElementById('rateSelect');
+        let ttsText = "";
+        let textChunks = [];
+        let wordMapping = [];
+        let currentActiveWordIdx = -1;
+        let ttsSyncInterval = null;
+        let ttsGlobalStartIdx = 0;
+        let hasBoundaryEvent = false;
+        let isTTSPaused = false; 
+        let ttsUtteranceId = 0;   
+        let manualSeekIdx = -1;   
 
-        function loadVoices() {
-            availableVoices = synth.getVoices().filter(v => v.lang.startsWith('en'));
-            voiceSelect.innerHTML = '';
-            availableVoices.forEach((voice, index) => {
-                const option = document.createElement('option');
-                option.textContent = voice.name.replace('Google ', '').replace('Microsoft ', ''); // Rút gọn tên
-                option.value = index;
-                voiceSelect.appendChild(option);
-            });
-            
-            // Ưu tiên tìm giọng David làm mặc định
-            let bestVoice = availableVoices.findIndex(v => v.name.includes('David'));
-            
-            // Nếu không có David, tìm các giọng nghe tự nhiên khác
-            if (bestVoice === -1) {
-                bestVoice = availableVoices.findIndex(v => v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha'));
+        // ================= KHỞI TẠO & CÀI ĐẶT =================
+        function cycleTheme() {
+            currentThemeIndex = (currentThemeIndex + 1) % themeColors.length;
+            const t = themeColors[currentThemeIndex];
+            const root = document.documentElement;
+            root.style.setProperty('--theme-color', t.hex);
+            root.style.setProperty('--theme-glow', t.glow);
+            root.style.setProperty('--theme-glow-strong', t.glowStrong);
+            root.style.setProperty('--theme-text-color', t.textHex || t.hex);
+            root.style.setProperty('--aurora-1', t.a1);
+            root.style.setProperty('--aurora-2', t.a2);
+            root.style.setProperty('--aurora-3', t.a3);
+            if(currentReadMode === 'karaoke') {
+                const btn = document.getElementById('btnModeToggle');
+                btn.style.borderColor = 'var(--theme-color)';
+                btn.style.color = 'var(--theme-color)';
+                btn.style.boxShadow = '0 0 12px var(--theme-glow)';
             }
-            
-            if(bestVoice !== -1) voiceSelect.selectedIndex = bestVoice;
         }
-        if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
 
-        // Hàm phát âm TỪ VỰNG hiện tại (Đã gộp chung thay vì nhận tham số text)
-        function playCurrentWordAudio(e) {
-            if (e) e.stopPropagation();
-            if (!synth) return;
-            if (synth.speaking) synth.cancel();
-            
-            let textToPlay = "";
-            if (currentVariantIndex === -1) {
-                textToPlay = flashcards[currentCardIndex].baseWord;
+        function toggleReadMode() {
+            const container = document.getElementById('karaokeContainer');
+            const btn = document.getElementById('btnModeToggle');
+            if (currentReadMode === 'continuous') {
+                currentReadMode = 'karaoke';
+                container.classList.remove('mode-continuous');
+                container.classList.add('mode-karaoke');
+                btn.innerText = '🌟';
+                btn.title = "Chế độ đọc: Karaoke";
+                btn.style.borderColor = 'var(--theme-color)';
+                btn.style.color = 'var(--theme-color)';
+                btn.style.boxShadow = '0 0 12px var(--theme-glow)';
             } else {
-                textToPlay = flashcards[currentCardIndex].variants[currentVariantIndex].wordText;
+                currentReadMode = 'continuous';
+                currentContinuousScrollY = 0;
+                container.classList.remove('mode-karaoke');
+                container.classList.add('mode-continuous');
+                btn.innerText = '🎤';
+                btn.title = "Chế độ đọc: Hiện tại";
+                btn.style.borderColor = 'rgba(255,255,255,0.8)';
+                btn.style.color = 'white';
+                btn.style.boxShadow = '0 0 15px rgba(0,0,0,0.5)';
             }
-
-            let utterance = new SpeechSynthesisUtterance(textToPlay);
-            if(availableVoices.length > 0) utterance.voice = availableVoices[voiceSelect.value];
-            utterance.rate = parseFloat(rateSelect.value);
-            synth.speak(utterance);
+            scrollActiveWordToView();
         }
 
-        function playSentenceAudio(e, text) {
-            e.stopPropagation(); // Ngăn nhấn vào loa làm lật thẻ
-            if (!synth) return;
-            if (synth.speaking) synth.cancel();
-            
-            // Tắt hiệu ứng màu loa cũ (nếu có)
-            document.querySelectorAll('.btn-play-sm').forEach(btn => btn.classList.remove('playing'));
-            let currentBtn = e.currentTarget;
-
-            let utterance = new SpeechSynthesisUtterance(text);
-            if(availableVoices.length > 0) utterance.voice = availableVoices[voiceSelect.value];
-            utterance.rate = parseFloat(rateSelect.value);
-            
-            currentBtn.classList.add('playing');
-            utterance.onend = () => { currentBtn.classList.remove('playing'); };
-            utterance.onerror = () => { currentBtn.classList.remove('playing'); };
-
-            synth.speak(utterance);
+        function adjustTextSize(delta) {
+            currentTextSize = Math.max(16, Math.min(80, currentTextSize + delta));
+            document.documentElement.style.setProperty('--reading-size', currentTextSize + 'px');
+            if (currentMode === 'TTS') updateTTSHighlight(ttsGlobalStartIdx);
+            if (currentMode === 'MP3') updateKaraokeDisplay();
         }
 
-        function playCurrentAudio() {
-            if (!synth) return;
-            let text = "";
-            if (currentVariantIndex === -1) {
-                text = flashcards[currentCardIndex].baseAudio;
-            } else {
-                text = flashcards[currentCardIndex].variants[currentVariantIndex].audio;
-            }
-            
-            if (synth.speaking) {
-                synth.cancel();
-                return;
-            }
-
-            let utterance = new SpeechSynthesisUtterance(text);
-            if(availableVoices.length > 0) utterance.voice = availableVoices[voiceSelect.value];
-            utterance.rate = parseFloat(rateSelect.value);
-            
-            synth.speak(utterance);
+        function resetTextSize() {
+            currentTextSize = 34;
+            document.documentElement.style.setProperty('--reading-size', currentTextSize + 'px');
+            if (currentMode === 'TTS') updateTTSHighlight(ttsGlobalStartIdx);
+            if (currentMode === 'MP3') updateKaraokeDisplay();
         }
 
-        // ================= TOUCH SWIPE FOR MOBILE =================
-        let touchstartX = 0;
-        let touchendX = 0;
-        const flashcardWrapper = document.querySelector('.flashcard-wrapper');
-
-        flashcardWrapper.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-        }, {passive: true});
-
-        flashcardWrapper.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, {passive: true});
-
-        function handleSwipe() {
-            if (touchendX < touchstartX - 40) nextCard(); // Vuốt sang trái -> Thẻ tiếp theo
-            if (touchendX > touchstartX + 40) prevCard(); // Vuốt sang phải -> Thẻ trước đó
-        }
-
-        // Hàm bật/tắt toàn màn hình
+        function toggleDataOverlay() { dataOverlay.classList.toggle('active'); }
         function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Lỗi fullscreen: ${err.message}`);
-                });
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => console.log(err));
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+
+        function formatTime(sec) {
+            if (isNaN(sec) || !isFinite(sec)) return "00:00";
+            return `${Math.floor(sec/60).toString().padStart(2,'0')}:${Math.floor(sec%60).toString().padStart(2,'0')}`;
+        }
+
+        // ================= XỬ LÝ TTS ENGINE =================
+        function populateVoiceList() {
+            let voices = synth.getVoices();
+            const voiceSelectEn = document.getElementById('voiceSelectEn');
+            const voiceSelectVi = document.getElementById('voiceSelectVi');
+            if(voices.length === 0) return;
+
+            let enVoices = voices.filter(v => v.lang.startsWith('en'));
+            let currentEn = voiceSelectEn.value;
+            voiceSelectEn.innerHTML = enVoices.map((v) => `<option value="${v.name}">🇬🇧 ${v.name.substring(0, 20)}${v.name.length>20?'...':''}</option>`).join('');
+            if (currentEn && enVoices.find(v => v.name === currentEn)) voiceSelectEn.value = currentEn;
+            else {
+                const bestEn = enVoices.find(v => v.localService && /(David|Zira|Samantha|Apple)/i.test(v.name)) || enVoices[0];
+                if (bestEn) voiceSelectEn.value = bestEn.name;
+            }
+
+            let viVoices = voices.filter(v => v.lang.startsWith('vi') && !/An/i.test(v.name));
+            let currentVi = voiceSelectVi.value;
+            if(viVoices.length === 0) {
+                voiceSelectVi.innerHTML = `<option value="">🇻🇳 Không có giọng VN</option>`;
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
+                voiceSelectVi.innerHTML = viVoices.map((v) => `<option value="${v.name}">🇻🇳 ${v.name.substring(0, 20)}${v.name.length>20?'...':''}</option>`).join('');
+                if (currentVi && viVoices.find(v => v.name === currentVi)) voiceSelectVi.value = currentVi;
+                else {
+                    const bestVi = viVoices.find(v => v.localService && /(Linh|HoaiMy)/i.test(v.name)) || viVoices[0];
+                    if (bestVi) voiceSelectVi.value = bestVi.name;
+                }
+            }
+        }
+        window.addEventListener('DOMContentLoaded', () => { 
+            populateVoiceList(); 
+            if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = populateVoiceList; 
+        });
+
+        // ================= ĐIỀU HƯỚNG ÂM THANH =================
+        function togglePlay() {
+            if (currentMode === 'NONE') { toggleDataOverlay(); return; }
+            if (currentMode === 'MP3') {
+                if (isPlaying) { audioEl.pause(); setPlayBtnState(false); }
+                else { audioEl.play().catch(e=>console.log(e)); setPlayBtnState(true); }
+            } else if (currentMode === 'TTS') {
+                if (isPlaying) {
+                    synth.pause(); isTTSPaused = true; setPlayBtnState(false);
+                } else {
+                    if (isTTSPaused && manualSeekIdx === -1) {
+                        synth.resume(); isTTSPaused = false; setPlayBtnState(true);
+                    } else {
+                        let startIdx = manualSeekIdx !== -1 ? manualSeekIdx : ttsGlobalStartIdx;
+                        manualSeekIdx = -1; isTTSPaused = false;
+                        playTTSFrom(startIdx); setPlayBtnState(true);
+                    }
                 }
             }
         }
 
-        // ================= KEYBOARD BINDINGS =================
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextCard();
-            if (e.key === 'ArrowLeft') prevCard();
-            if (e.key === 'ArrowDown') { e.preventDefault(); nextVariant(); }
-            if (e.key === 'ArrowUp') { e.preventDefault(); prevVariant(); }
-            if (e.key === ' ' || e.code === 'Space') {
-                e.preventDefault(); 
-                playCurrentAudio(); // Dấu cách nay dùng để đọc phát âm ví dụ
+        function setPlayBtnState(playing) {
+            isPlaying = playing;
+            if (!playing) { btnPlayPause.textContent = "▶"; mainAppContainer.classList.remove('playing'); } 
+            else { btnPlayPause.textContent = "⏸"; mainAppContainer.classList.add('playing'); }
+        }
+
+        function forceCancelTTS() { if (synth.paused) synth.resume(); synth.cancel(); }
+
+        function resetReading() {
+            if (currentMode === 'NONE') return;
+            if (audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
+            forceCancelTTS(); clearInterval(ttsSyncInterval);
+            isPlaying = false; isTTSPaused = false; manualSeekIdx = -1; ttsGlobalStartIdx = 0;
+            currentActiveWordIdx = -1; activeLyricIndex = -1; currentContinuousScrollY = 0;
+            lyricsScroll.style.transform = 'translate3d(0px, 0px, 0px)';
+            setPlayBtnState(false);
+            progressBar.value = 0; timeCurrent.textContent = "00:00"; 
+            
+            document.querySelectorAll('.k-word').forEach(el => el.className = 'k-word');
+            document.querySelectorAll('.lyric-line').forEach(el => el.className = 'lyric-line');
+            document.querySelectorAll('.tts-line').forEach(el => el.classList.remove('active'));
+
+            if (currentMode === 'TTS') updateTTSHighlight(0);
+            else if (currentMode === 'MP3') updateKaraokeDisplay();
+        }
+
+        function skipBack() { 
+            if(currentMode === 'MP3' && audioEl.src) { audioEl.currentTime = Math.max(0, audioEl.currentTime - 10); updateKaraokeDisplay(); }
+            else if (currentMode === 'TTS') { ttsGlobalStartIdx = Math.max(0, ttsGlobalStartIdx - 50); manualSeekIdx = ttsGlobalStartIdx; isTTSPaused = false; if(isPlaying) playTTSFrom(ttsGlobalStartIdx); else updateTTSHighlight(ttsGlobalStartIdx); }
+        }
+        function skipForward() { 
+            if(currentMode === 'MP3' && audioEl.src) { audioEl.currentTime = Math.min(audioEl.duration, audioEl.currentTime + 10); updateKaraokeDisplay(); }
+            else if (currentMode === 'TTS') { ttsGlobalStartIdx = Math.min(ttsText.length, ttsGlobalStartIdx + 50); manualSeekIdx = ttsGlobalStartIdx; isTTSPaused = false; if(isPlaying) playTTSFrom(ttsGlobalStartIdx); else updateTTSHighlight(ttsGlobalStartIdx); }
+        }
+
+        // ================= XỬ LÝ PROGRESS BAR & SCROLL =================
+        progressBar.addEventListener('mousedown', () => isDraggingSlider = true);
+        progressBar.addEventListener('touchstart', () => isDraggingSlider = true, {passive: true});
+        progressBar.addEventListener('mouseup', () => isDraggingSlider = false);
+        progressBar.addEventListener('touchend', () => isDraggingSlider = false);
+
+        progressBar.addEventListener('input', (e) => { 
+            isDraggingSlider = true;
+            if (currentMode === 'MP3' && audioEl.src) {
+                audioEl.currentTime = (e.target.value / 100) * audioEl.duration; updateKaraokeDisplay(); 
+            } else if (currentMode === 'TTS' && ttsText !== "") {
+                let targetIdx = Math.floor((e.target.value / 100) * ttsText.length);
+                let spaceIdx = ttsText.indexOf(' ', targetIdx);
+                let finalIdx = spaceIdx === -1 ? targetIdx : spaceIdx;
+                ttsGlobalStartIdx = finalIdx; manualSeekIdx = finalIdx; updateTTSHighlight(finalIdx, true);
             }
         });
 
-        // Initialize First Card
-        renderCard(0);
+        progressBar.addEventListener('change', () => {
+            isDraggingSlider = false;
+            if (currentMode === 'TTS' && ttsText !== "") {
+                if (isPlaying) { playTTSFrom(ttsGlobalStartIdx); manualSeekIdx = -1; } 
+                else { forceCancelTTS(); clearInterval(ttsSyncInterval); isTTSPaused = false; }
+            }
+        });
 
+        function getOffsetTopRelativeToContainer(element, container) {
+            let offsetTop = 0;
+            while(element && element !== container) { offsetTop += element.offsetTop; element = element.offsetParent; }
+            return offsetTop;
+        }
+
+        function scrollActiveWordToView() {
+            const container = document.getElementById('karaokeContainer');
+            const containerHeight = container.clientHeight;
+            let activeEl = null;
+
+            if (currentMode === 'TTS' && currentActiveWordIdx !== -1) activeEl = wordMapping[currentActiveWordIdx].el;
+            else if (currentMode === 'MP3' && activeLyricIndex !== -1) activeEl = document.getElementById(`lyric-${activeLyricIndex}`);
+
+            if (activeEl) {
+                let offsetTop = getOffsetTopRelativeToContainer(activeEl, lyricsScroll);
+                if (currentReadMode === 'karaoke') {
+                    let offset = offsetTop + (activeEl.clientHeight / 2);
+                    lyricsScroll.style.transform = `translate3d(0, ${-offset + (containerHeight * 0.50)}px, 0)`;
+                } else {
+                    const bottomFadeZone = containerHeight * 0.15; 
+                    const lineEstimate = currentTextSize * 1.5; 
+                    const bottomBuffer = bottomFadeZone + (lineEstimate * 3); 
+                    const topBuffer = containerHeight * 0.15; 
+                    let positionOnScreen = offsetTop + currentContinuousScrollY;
+
+                    if (positionOnScreen > (containerHeight - bottomBuffer) || positionOnScreen < topBuffer) {
+                        let targetY = -(offsetTop - topBuffer);
+                        currentContinuousScrollY = Math.min(0, targetY); 
+                        lyricsScroll.style.transform = `translate3d(0, ${currentContinuousScrollY}px, 0)`;
+                    }
+                }
+            }
+        }
+
+        // ================= XỬ LÝ MP3 =================
+        function updateKaraokeDisplay() {
+            if(currentMode !== 'MP3' || !currentLyrics.length) return;
+            const container = document.getElementById('karaokeContainer');
+            const time = audioEl.currentTime; let newIndex = -1;
+            
+            for (let i = 0; i < currentLyrics.length; i++) { if (time >= currentLyrics[i].time) newIndex = i; else break; }
+            
+            if (newIndex !== activeLyricIndex && newIndex !== -1) {
+                if (activeLyricIndex !== -1) { const oldEl = document.getElementById(`lyric-${activeLyricIndex}`); if(oldEl) oldEl.className = 'lyric-line'; }
+                activeLyricIndex = newIndex; const activeEl = document.getElementById(`lyric-${activeLyricIndex}`);
+                if(activeEl) { activeEl.className = 'lyric-line active'; scrollActiveWordToView(); }
+            } else if (newIndex === -1 && activeLyricIndex === -1) {
+                 if (currentReadMode === 'karaoke') lyricsScroll.style.transform = `translate3d(0, ${container.clientHeight * 0.50}px, 0)`; 
+                 else { currentContinuousScrollY = 0; lyricsScroll.style.transform = `translate3d(0, 0px, 0)`; }
+            }
+        }
+
+        audioEl.addEventListener('timeupdate', () => {
+            if(currentMode !== 'MP3' || !audioEl.duration) return;
+            if(!isDraggingSlider) progressBar.value = (audioEl.currentTime / audioEl.duration) * 100;
+            timeCurrent.textContent = formatTime(audioEl.currentTime);
+            updateKaraokeDisplay();
+        });
+        audioEl.addEventListener('loadedmetadata', () => { if(currentMode==='MP3') timeTotal.textContent = formatTime(audioEl.duration); });
+        audioEl.addEventListener('ended', () => { audioEl.pause(); audioEl.currentTime = 0; setPlayBtnState(false); updateKaraokeDisplay(); });
+
+        // ================= XỬ LÝ VĂN BẢN ĐẦU VÀO =================
+        function clearCustomText() { document.getElementById('customText').value = ''; }
+        function handleTextUpload(event) {
+            const file = event.target.files[0]; if(!file) return;
+            if (file.name.endsWith('.docx')) {
+                const reader = new FileReader();
+                reader.onload = function(loadEvent) {
+                    mammoth.extractRawText({arrayBuffer: loadEvent.target.result})
+                        .then(result => document.getElementById('customText').value = result.value)
+                        .catch(err => { console.error(err); alert("Lỗi khi đọc file Word: " + err.message); });
+                };
+                reader.readAsArrayBuffer(file);
+            } else alert("Vui lòng chọn file định dạng .docx");
+            event.target.value = '';
+        }
+
+        function loadCustomData() {
+            let txt = document.getElementById('customText').value;
+            if(!txt.trim()) { alert("Vui lòng nhập văn bản!"); return; }
+            
+            if(audioEl) audioEl.pause();
+            forceCancelTTS(); clearInterval(ttsSyncInterval);
+            isTTSPaused = false; manualSeekIdx = -1; currentMode = 'TTS'; 
+            renderTTSText(txt); dataOverlay.classList.remove('active'); 
+        }
+
+        function analyzeLanguageChunks(text) {
+            let chunks = []; let currentIndex = 0; let regex = /([^.!?;\n,:]+[.!?;\n,:]*)/g; let segments = text.match(regex);
+            if(segments) {
+                let tempChunks = [];
+                segments.forEach(segment => {
+                    let lang = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(segment) ? 'vi' : 'en';
+                    tempChunks.push({ text: segment, lang: lang, startIndex: currentIndex, endIndex: currentIndex + segment.length - 1 });
+                    currentIndex += segment.length;
+                });
+                let mergedChunks = [];
+                if(tempChunks.length > 0) {
+                    let currentMerge = tempChunks[0];
+                    for(let i = 1; i < tempChunks.length; i++) {
+                        if(tempChunks[i].lang === currentMerge.lang) { 
+                            currentMerge.text += tempChunks[i].text; currentMerge.endIndex = tempChunks[i].endIndex; 
+                        } else { mergedChunks.push(currentMerge); currentMerge = tempChunks[i]; }
+                    }
+                    mergedChunks.push(currentMerge);
+                }
+                chunks = mergedChunks;
+            } else if(text.trim() !== "") {
+                 let lang = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(text) ? 'vi' : 'en';
+                 chunks.push({ text: text, lang: lang, startIndex: 0, endIndex: text.length - 1 });
+            }
+            return chunks;
+        }
+
+        function renderTTSText(text) {
+            let finalHtml = "<div class='tts-paragraph'>";
+            let currentTextAcc = ""; wordMapping = []; textChunks = analyzeLanguageChunks(text);
+            const paragraphs = text.split('\n'); let lineIndex = 0;
+
+            paragraphs.forEach((para, index) => {
+                let paraHtml = "";
+                
+                // Áp dụng định dạng DOM cấu trúc từ IPA App (Thụt lề đoạn, Căn chỉnh khoảng trống)
+                // Đồng thời tích hợp class tts-line của Neuro Player để bảo toàn hiệu ứng cuộn và Karaoke Mode
+                if (para.trim() !== "") {
+                    paraHtml += `<p class='tts-line' id='tts-line-${lineIndex}' style="text-indent: 1.5rem; margin-top: 0; margin-bottom: 0.8rem;">`;
+                } else {
+                    paraHtml += `<div class='tts-line' id='tts-line-${lineIndex}' style="height: 0.8rem;"></div>`;
+                }
+
+                const words = para.split(/(\s+)/);
+                words.forEach(p => {
+                    if (/\s+/.test(p)) { 
+                        paraHtml += p; 
+                        currentTextAcc += p; 
+                    } else if (p !== "") {
+                        wordMapping.push({ start: currentTextAcc.length, end: currentTextAcc.length + p.length - 1, lineIdx: lineIndex });
+                        paraHtml += `<span class="k-word">${p}</span>`; 
+                        currentTextAcc += p;
+                    }
+                });
+
+                if (para.trim() !== "") paraHtml += `</p>`;
+                finalHtml += paraHtml;
+                
+                lineIndex++;
+                if (index < paragraphs.length - 1) currentTextAcc += '\n'; 
+            });
+            finalHtml += "</div>";
+
+            lyricsScroll.innerHTML = finalHtml; ttsText = currentTextAcc;
+            const kElements = lyricsScroll.querySelectorAll('.k-word');
+            wordMapping.forEach((m, i) => {
+                m.el = kElements[i];
+                m.el.onclick = () => { 
+                    ttsGlobalStartIdx = m.start; manualSeekIdx = m.start; isTTSPaused = false;     
+                    if(!isPlaying) updateTTSHighlight(m.start, false); 
+                    else { manualSeekIdx = -1; playTTSFrom(m.start); }
+                }
+            });
+            
+            document.getElementById('uiTitle').textContent = "Văn Bản (AI Reader)";
+            document.getElementById('uiArtist').textContent = "🗣️ AI Bilingual";
+            emptyState.style.opacity = '0';
+            currentContinuousScrollY = 0; ttsGlobalStartIdx = 0; 
+            updateTTSHighlight(0); setPlayBtnState(false);
+        }
+
+        // ================= XỬ LÝ TTS & BÔI MÀU =================
+        function updateTTSHighlight(charIdx, fromSlider = false) {
+            if(ttsText.length === 0) return;
+            let tempo = parseFloat(document.getElementById('sliderTempo').value);
+            let percent = (charIdx / ttsText.length) * 100;
+            
+            if (!fromSlider && !isDraggingSlider) progressBar.value = percent;
+            
+            let estTotal = (ttsText.length / 15) / tempo;
+            timeTotal.textContent = formatTime(estTotal);
+            timeCurrent.textContent = formatTime((percent / 100) * estTotal);
+
+            let newIdx = wordMapping.findIndex(m => charIdx >= m.start && charIdx <= m.end);
+            if (newIdx === -1) newIdx = wordMapping.findIndex(m => m.start >= charIdx);
+
+            if (newIdx !== currentActiveWordIdx && newIdx !== -1) {
+                let activeLineIdx = wordMapping[newIdx].lineIdx;
+
+                wordMapping.forEach((m, i) => {
+                    if (i < newIdx) m.el.className = 'k-word read'; 
+                    else if (i === newIdx) m.el.className = 'k-word active'; 
+                    else m.el.className = 'k-word'; 
+                });
+
+                document.querySelectorAll('.tts-line').forEach((line, idx) => {
+                    if (idx === activeLineIdx) line.classList.add('active'); 
+                    else line.classList.remove('active'); 
+                });
+                
+                currentActiveWordIdx = newIdx; scrollActiveWordToView();
+            } else if (newIdx === -1 && currentActiveWordIdx === -1) {
+                const container = document.getElementById('karaokeContainer');
+                if (currentReadMode === 'karaoke') lyricsScroll.style.transform = `translate3d(0, ${container.clientHeight * 0.50}px, 0)`;
+                else { currentContinuousScrollY = 0; lyricsScroll.style.transform = `translate3d(0, 0px, 0)`; }
+            }
+        }
+
+        function playTTSFrom(index) {
+            forceCancelTTS(); clearInterval(ttsSyncInterval); hasBoundaryEvent = false;
+            if (index >= ttsText.length) { setPlayBtnState(false); return; }
+            let activeChunkIndex = textChunks.findIndex(c => index >= c.startIndex && index <= c.endIndex);
+            if(activeChunkIndex === -1) activeChunkIndex = 0;
+            setTimeout(() => { playTTSChunk(activeChunkIndex, index); }, 50);
+        }
+
+        function playTTSChunk(chunkIdx, globalStartIdx) {
+            if (chunkIdx >= textChunks.length) { setPlayBtnState(false); return; }
+            let chunk = textChunks[chunkIdx];
+            let textToPlay = chunk.text; let relativeStart = globalStartIdx - chunk.startIndex;
+            if (relativeStart > 0) textToPlay = chunk.text.substring(relativeStart);
+            if(textToPlay.trim() === "") { playTTSChunk(chunkIdx + 1, textChunks[chunkIdx + 1]?.startIndex); return; }
+
+            const isEnEnabled = document.getElementById('enableEn').checked;
+            const isViEnabled = document.getElementById('enableVi').checked;
+            let targetLang = chunk.lang;
+
+            if (!isEnEnabled && isViEnabled) targetLang = 'vi'; 
+            else if (isEnEnabled && !isViEnabled) targetLang = 'en'; 
+            else if (!isEnEnabled && !isViEnabled) { setTimeout(() => playTTSChunk(chunkIdx + 1, textChunks[chunkIdx + 1]?.startIndex), 10); return; }
+
+            // LỌC DẤU NHÁY: Thay thế mọi loại ngoặc kép, ngoặc đơn thành khoảng trắng để AI không đánh vần sai
+            // Việc thay bằng khoảng trắng giúp tổng chiều dài chuỗi không đổi -> Không làm lệch nhịp bôi màu
+            let textForSpeech = textToPlay.replace(/["“”'‘’«»]/g, ' ');
+
+            let myId = ++ttsUtteranceId; 
+            let utterance = new SpeechSynthesisUtterance(textForSpeech);
+            utterance.rate = parseFloat(document.getElementById('sliderTempo').value);
+            utterance.volume = parseFloat(document.getElementById('sliderVolume').value);
+            
+            const voices = synth.getVoices();
+            if (targetLang === 'vi') {
+                utterance.lang = 'vi-VN'; const viVoiceName = document.getElementById('voiceSelectVi').value;
+                const selectedViVoice = voices.find(v => v.name === viVoiceName); if(selectedViVoice) utterance.voice = selectedViVoice;
+            } else {
+                utterance.lang = 'en-US'; const enVoiceName = document.getElementById('voiceSelectEn').value;
+                const selectedEnVoice = voices.find(v => v.name === enVoiceName); if(selectedEnVoice) utterance.voice = selectedEnVoice;
+            }
+
+            utterance.onstart = () => {
+                if (myId !== ttsUtteranceId) return; 
+                hasBoundaryEvent = false; ttsGlobalStartIdx = globalStartIdx; updateTTSHighlight(globalStartIdx);
+                let startTime = Date.now();
+                ttsSyncInterval = setInterval(() => {
+                    if (myId !== ttsUtteranceId) { clearInterval(ttsSyncInterval); return; }
+                    if (synth.paused || hasBoundaryEvent) return;
+                    let elapsed = (Date.now() - startTime) / 1000;
+                    timeCurrent.textContent = formatTime(((globalStartIdx / ttsText.length) * ((ttsText.length / 15) / utterance.rate)) + elapsed);
+                }, 100);
+            };
+            utterance.onboundary = (e) => {
+                if (myId !== ttsUtteranceId) return;
+                if (e.name === 'word') { hasBoundaryEvent = true; ttsGlobalStartIdx = globalStartIdx + e.charIndex; updateTTSHighlight(ttsGlobalStartIdx); }
+            };
+            utterance.onend = () => {
+                if (myId !== ttsUtteranceId) return;
+                clearInterval(ttsSyncInterval); let nextIdx = chunkIdx + 1;
+                if (nextIdx < textChunks.length && isPlaying) setTimeout(() => playTTSChunk(nextIdx, textChunks[nextIdx].startIndex), 20);
+                else if (isPlaying) setPlayBtnState(false);
+            };
+            utterance.onerror = (e) => {
+                 if (myId !== ttsUtteranceId) return;
+                 console.error("TTS Error", e); clearInterval(ttsSyncInterval); if(isPlaying) setPlayBtnState(false);
+            };
+
+            synth.speak(utterance);
+        }
+
+        // ================= QUẢN LÝ THANH TRƯỢT (CHỐNG SPAM API) =================
+        const sliderVolume = document.getElementById('sliderVolume');
+        const sliderTempo = document.getElementById('sliderTempo');
+        const volValue = document.getElementById('volValue');
+        const tempoValue = document.getElementById('tempoValue');
+
+        // Sự kiện Input: Chỉ đổi nhãn số hiển thị tức thì (Không gọi TTS)
+        sliderVolume.addEventListener('input', (e) => { 
+            const val = e.target.value; volValue.textContent = Math.round(val * 100) + '%';
+            if(audioEl) audioEl.volume = val; 
+        });
+        sliderTempo.addEventListener('input', (e) => { 
+            const val = parseFloat(e.target.value).toFixed(1); tempoValue.textContent = val + 'x';
+            if(audioEl) audioEl.playbackRate = val;
+        });
+
+        // Sự kiện Change: Chỉ khởi động lại luồng đọc AI khi người dùng thả tay kéo thanh trượt
+        sliderVolume.addEventListener('change', () => { if(currentMode === 'TTS' && isPlaying) { forceCancelTTS(); playTTSFrom(ttsGlobalStartIdx); } });
+        sliderTempo.addEventListener('change', () => { if(currentMode === 'TTS' && isPlaying) { forceCancelTTS(); playTTSFrom(ttsGlobalStartIdx); } });
+
+        // Khởi động
+        cycleTheme(); 
     </script>
 </body>
 </html>
