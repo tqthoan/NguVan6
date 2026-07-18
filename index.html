@@ -70,10 +70,11 @@
             position: relative; 
         }
         #emptyState { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 5; transition: opacity 0.4s; width: 100%;}
-        .empty-title { font-size: 32px; font-weight: 800; color: var(--theme-color); margin-bottom: 10px; text-shadow: 0 0 15px var(--theme-glow); letter-spacing: 2px;}
-        .empty-sub { color: #94a3b8; font-size: 16px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
-        .empty-dev { margin-top: 35px; font-size: 13px; color: #475569; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        .empty-title { font-size: clamp(20px, 5vw, 32px); font-weight: 800; color: var(--theme-color); margin-bottom: 10px; text-shadow: 0 0 15px var(--theme-glow); letter-spacing: 2px; white-space: nowrap;}
+        .empty-sub { color: #94a3b8; font-size: clamp(12px, 3.5vw, 16px); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; white-space: nowrap;}
+        .empty-dev { margin-top: 35px; font-size: clamp(11px, 3vw, 14px); color: #d97706; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; white-space: nowrap; text-shadow: 0 0 10px rgba(217, 119, 6, 0.2);}
         
+        /* HIỆU ỨNG CUỘN (Tối ưu GPU) */
         .lyrics-scroll { 
             position: absolute; top: 0; left: 0; width: 100%; 
             transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); 
@@ -227,7 +228,9 @@
                 -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
             }
             .lyrics-scroll { padding: max(10vh, env(safe-area-inset-top)) 8px 50vh 8px !important; }
-            .empty-title { font-size: 22px; }
+            
+            /* Tối ưu chống nóng máy trên Mobile GPU */
+            .aurora-blob { filter: blur(80px) !important; animation-duration: 60s !important; }
             
             /* Tùy chỉnh công cụ nổi trên Mobile (Tự động né Camera/Notch) */
             .btn-fullscreen { display: none !important; }
@@ -281,11 +284,11 @@
     <div class="app-container" id="mainAppContainer">
         <div class="panel karaoke-panel mode-continuous" id="karaokeContainer">
             <div id="emptyState">
-                <div style="font-size: 64px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));">🎧</div>
+                <div style="font-size: clamp(40px, 10vw, 64px); margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));">🎧</div>
                 <div class="empty-title">NEURO-PLAYER PRO</div>
                 <div class="empty-sub">Kích vào chấm tròn <span style="color: #a855f7; font-weight: 900;">➕</span> bên dưới để nạp dữ liệu</div>
                 <div class="empty-sub">(Hỗ trợ Trí tuệ Nhân tạo Google Premium)</div>
-                <div class="empty-dev">Powered by Google Cloud TTS AI</div>
+                <div class="empty-dev">Developed by Viễn Thông Quy Nhơn</div>
             </div>
             
             <div class="lyrics-scroll" id="lyricsScroll"></div>
@@ -405,6 +408,7 @@
         let ttsSyncInterval = null;
         let currentEngine = 'none'; // 'none', 'google', 'system'
         let isTTSPaused = false;
+        let currentActiveLineIdx = -1; // Tối ưu hóa DOM O(1) chống nóng máy
 
         // ================= DỮ LIỆU CHỦ ĐỀ & TRẠNG THÁI =================
         const themeColors = [
@@ -602,7 +606,7 @@
             audioEl.pause(); audioEl.currentTime = 0; audioEl.src = "";
             forceCancelTTS(); clearInterval(ttsSyncInterval);
             isPlaying = false; isTTSPaused = false; currentChunkIndexForAudio = -1; ttsGlobalStartIdx = 0; currentEngine = 'none';
-            currentActiveWordIdx = -1; activeLyricIndex = -1; currentContinuousScrollY = 0;
+            currentActiveWordIdx = -1; activeLyricIndex = -1; currentContinuousScrollY = 0; currentActiveLineIdx = -1;
             lyricsScroll.style.transform = 'translate3d(0px, 0px, 0px)';
             setPlayBtnState(false);
             progressBar.value = 0; timeCurrent.textContent = "00:00"; 
@@ -806,7 +810,7 @@
             document.getElementById('uiTitle').textContent = "Văn Bản (Hybrid Reader)";
             document.getElementById('uiArtist').textContent = "🗣️ Hệ Thống EN & Google AI/Hệ Thống VI";
             emptyState.style.opacity = '0';
-            currentContinuousScrollY = 0; ttsGlobalStartIdx = 0; 
+            currentContinuousScrollY = 0; ttsGlobalStartIdx = 0; currentActiveLineIdx = -1;
             updateTTSHighlight(0); setPlayBtnState(false);
         }
 
@@ -835,10 +839,17 @@
                     else m.el.className = 'k-word'; 
                 });
 
-                document.querySelectorAll('.tts-line').forEach((line, idx) => {
-                    if (idx === activeLineIdx) line.classList.add('active'); 
-                    else line.classList.remove('active'); 
-                });
+                // TỐI ƯU HÓA: Thay vì duyệt toàn bộ các dòng, chỉ cập nhật dòng cũ và dòng mới (O(1) thay vì O(n))
+                // Điều này giúp CPU không bị quá tải khi gọi hàm này liên tục mỗi 100ms
+                if (activeLineIdx !== currentActiveLineIdx) {
+                    if (currentActiveLineIdx !== -1) {
+                        const oldLine = document.getElementById(`tts-line-${currentActiveLineIdx}`);
+                        if (oldLine) oldLine.classList.remove('active');
+                    }
+                    const newLine = document.getElementById(`tts-line-${activeLineIdx}`);
+                    if (newLine) newLine.classList.add('active');
+                    currentActiveLineIdx = activeLineIdx;
+                }
                 
                 currentActiveWordIdx = newIdx; scrollActiveWordToView();
             } else if (newIdx === -1 && currentActiveWordIdx === -1) {
