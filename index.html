@@ -229,8 +229,8 @@
             }
             .lyrics-scroll { padding: max(10vh, env(safe-area-inset-top)) 8px 50vh 8px !important; }
             
-            /* Tối ưu chống nóng máy trên Mobile GPU */
-            .aurora-blob { filter: blur(80px) !important; animation-duration: 60s !important; }
+            /* TẮT HOÀN TOÀN cực quang trên thiết bị di động để GPU không làm việc, chống nóng máy tuyệt đối */
+            .aurora-container { display: none !important; animation: none !important; }
             
             /* Tùy chỉnh công cụ nổi trên Mobile (Tự động né Camera/Notch) */
             .btn-fullscreen { display: none !important; }
@@ -833,14 +833,21 @@
             if (newIdx !== currentActiveWordIdx && newIdx !== -1) {
                 let activeLineIdx = wordMapping[newIdx].lineIdx;
 
-                wordMapping.forEach((m, i) => {
-                    if (i < newIdx) m.el.className = 'k-word read'; 
-                    else if (i === newIdx) m.el.className = 'k-word active'; 
-                    else m.el.className = 'k-word'; 
-                });
+                // TỐI ƯU HÓA CPU TUYỆT ĐỐI CHO MOBILE: Xử lý TỪ (Word) theo O(1) thay vì O(n)
+                if (currentActiveWordIdx !== -1 && newIdx === currentActiveWordIdx + 1 && !fromSlider) {
+                    // Nếu đang đọc bình thường tuần tự: Chỉ đổi màu 1 từ cũ thành 'đã đọc' và 1 từ mới thành 'đang đọc'
+                    if (wordMapping[currentActiveWordIdx]) wordMapping[currentActiveWordIdx].el.className = 'k-word read';
+                    wordMapping[newIdx].el.className = 'k-word active';
+                } else {
+                    // Chỉ dùng vòng lặp nặng để tính lại toàn bộ khi người dùng Tua (Seek) hoặc Vừa load xong
+                    wordMapping.forEach((m, i) => {
+                        if (i < newIdx) m.el.className = 'k-word read'; 
+                        else if (i === newIdx) m.el.className = 'k-word active'; 
+                        else m.el.className = 'k-word'; 
+                    });
+                }
 
-                // TỐI ƯU HÓA: Thay vì duyệt toàn bộ các dòng, chỉ cập nhật dòng cũ và dòng mới (O(1) thay vì O(n))
-                // Điều này giúp CPU không bị quá tải khi gọi hàm này liên tục mỗi 100ms
+                // TỐI ƯU HÓA DOM: Thay vì duyệt toàn bộ các dòng, chỉ cập nhật dòng cũ và dòng mới (O(1) thay vì O(n))
                 if (activeLineIdx !== currentActiveLineIdx) {
                     if (currentActiveLineIdx !== -1) {
                         const oldLine = document.getElementById(`tts-line-${currentActiveLineIdx}`);
