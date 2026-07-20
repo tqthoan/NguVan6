@@ -87,7 +87,7 @@
         .lyrics-scroll { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             overflow-y: auto; overflow-x: hidden;
-            padding: 10vh 20px 60vh 20px; 
+            padding: 10vh 20px 10vh 20px; 
             box-sizing: border-box; z-index: 2; 
             scroll-behavior: smooth;
         }
@@ -101,7 +101,7 @@
         
         .k-word { 
             transition: color 0.15s ease, text-shadow 0.15s ease; 
-            will-change: color, text-shadow; /* Hardware Acceleration */
+            will-change: color, text-shadow; /* Đã tối ưu bằng GPU */
             border-radius: 4px; display: inline-block; cursor: pointer; padding: 1px 2px;
             font-weight: inherit !important; 
             margin: 0 1px;
@@ -153,7 +153,7 @@
             backdrop-filter: blur(10px);
         }
         .speech-feedback-bar span.accent {
-            color: #38bdf8; /* Màu Xanh lơ nổi bật */
+            color: #38bdf8;
             font-size: 20px;
             font-style: italic;
             font-weight: 800;
@@ -219,11 +219,15 @@
         @media (max-width: 1024px) {
             .app-container { height: 100dvh !important; width: 100vw !important; max-width: 100vw !important; border-radius: 0 !important; margin: 0 !important; border: none !important; background-color: var(--bg-deep); padding: 0 !important; gap: 0; }
             .aurora-container, .btn-fullscreen, .volume-control { display: none !important; }
-            .lyrics-scroll { padding: max(60px, env(safe-area-inset-top)) 15px 50vh 15px; height: calc(100vh - 140px); overflow-y: auto;} 
+            .lyrics-scroll { padding: max(60px, env(safe-area-inset-top)) 15px 15px 15px; height: calc(100vh - 140px); overflow-y: auto;} 
             .control-deck { padding: 10px 15px max(15px, env(safe-area-inset-bottom)) 15px; background: var(--bg-card); border-top: 1px solid rgba(255,255,255,0.05); } 
-            .deck-bottom-row { flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center; }
-            .deck-left { flex: 1; justify-content: flex-start; width: auto; min-width: 0; }
-            .deck-center { flex: 0 0 auto; justify-content: center; width: 100%; flex-wrap: nowrap; order: -1; }
+            
+            .deck-bottom-row { flex-wrap: nowrap; gap: 15px; justify-content: center; align-items: center; }
+            .track-info-mini { display: none !important; } 
+            
+            /* Tinh chỉnh nút nạp dữ liệu gom hàng ngang ở di động */
+            .deck-left { flex: 0 0 auto; justify-content: center; width: auto; min-width: 0; margin: 0;}
+            .deck-center { flex: 0 0 auto; justify-content: center; width: auto; flex-wrap: nowrap; order: 0; }
             
             .deck-right { 
                 position: fixed; top: max(15px, env(safe-area-inset-top)); right: 15px; z-index: 1000;
@@ -365,14 +369,14 @@
             </div>
         </div>
     </div>
-    <audio id="mainAudio"></audio>
+    
+    <audio id="mainAudio" preload="auto"></audio>
 
     <script>
-        // Mở khóa âm thanh iOS an toàn
         document.body.addEventListener('touchstart', function() {
             if(!window.audioUnlocked) {
                 const audioEl = document.getElementById('mainAudio');
-                audioEl.src = 'data:audio/mp3;base64,//OExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
+                audioEl.src = 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
                 audioEl.play().then(() => { audioEl.pause(); }).catch(e => {});
                 window.audioUnlocked = true;
             }
@@ -402,13 +406,16 @@
         let textChunks = [];
         let wordMapping = [];
         let currentChunkIndex = 0; 
+        
         let isPlaying = false;
+        let isPaused = false;
         let isKaraokePlaying = false; 
+        
         let currentThemeIndex = 0;
         let currentTextSize = 22;
         let currentHighlightedWordIdx = -1; 
         let isDraggingSlider = false;
-        window.isForceStopped = false;
+        window.isForceStopped = false; // Cờ kiểm soát nút Dừng khẩn cấp
 
         const btnPlayPause = document.getElementById('btnPlayPause');
         const btnRecord = document.getElementById('btnRecord');
@@ -487,7 +494,6 @@
             if(ttsText.length === 0 || targetWordIndex < 0 || targetWordIndex >= wordMapping.length) return;
             if (currentHighlightedWordIdx === targetWordIndex) return; 
 
-            // Cập nhật giao diện chữ 
             wordMapping.forEach((m, idx) => {
                 let targetClass = 'k-word';
                 if (idx < targetWordIndex) targetClass = 'k-word read';
@@ -510,10 +516,10 @@
             let scrollTop = container.scrollTop;
             
             let elementRelativeTop = offsetTop - scrollTop;
-            // Thuật toán Safe-Zone: Chỉ cuộn khi lọt ngoài khoảng an toàn (30% - 70%)
             let topBoundary = containerHeight * 0.3;
             let bottomBoundary = containerHeight * 0.7;
             
+            // Safe-Zone Scrolling: Chỉ cuộn khi chữ ra khỏi vùng an toàn 30%-70%
             if (elementRelativeTop < topBoundary || elementRelativeTop > bottomBoundary) {
                 container.scrollTo({
                     top: offsetTop - (containerHeight / 2),
@@ -557,31 +563,32 @@
             
             if (targetChunkIdx !== -1) {
                 currentChunkIndex = targetChunkIdx;
-                if (isPlaying) {
-                    playTTSFromChunk(currentChunkIndex); // Phát lại từ Chunk tương ứng
+                // Phát lại ngay từ đoạn mà người dùng vừa thả tay ra
+                if (isPlaying || isPaused) {
+                    isPlaying = true;
+                    isPaused = false;
+                    playTTSFromChunk(currentChunkIndex); 
                 }
             }
         });
 
-        // ĐỒNG BỘ PLAYBACK TỰ ĐỘNG LÊN THANH TRƯỢT TỐI ƯU HÓA (Dành cho Google AI)
         audioEl.addEventListener('timeupdate', () => {
-            // Sửa lỗi nhảy chữ Google AI: Thêm kiểm tra currentTime === 0 và audioEl.readyState để bỏ qua frame cũ (cache)
             if (!isKaraokePlaying || ttsText.length === 0 || !audioEl.duration || !window.activeTTSChunk || audioEl.currentTime === 0) return;
             
             let chunk = window.activeTTSChunk;
             let progressRatio = audioEl.currentTime / audioEl.duration;
             let offsetChars = Math.floor(progressRatio * chunk.text.length);
             let charIdx = chunk.startIndex + offsetChars;
-            
             let globalPercent = (charIdx / ttsText.length) * 100;
             
+            // Animation Frame: Cập nhật siêu mượt 60FPS
             requestAnimationFrame(() => {
                 if(!isDraggingSlider) progressBar.value = globalPercent;
                 
                 let activeIdx = wordMapping.findIndex(m => charIdx >= m.start && charIdx <= m.end);
                 if (activeIdx === -1) activeIdx = wordMapping.findIndex(m => m.start >= charIdx);
                 
-                // Khôi phục ranh giới an toàn: Ngăn không cho chữ nhảy sáng lố sang câu (chunk) tiếp theo do sai số phép chia
+                // Giới hạn chữ không được chạy lố ra khỏi chunk hiện tại
                 if (activeIdx !== -1 && wordMapping[activeIdx].start >= chunk.startIndex && wordMapping[activeIdx].end <= chunk.endIndex) {
                     syncHighlight(activeIdx);
                 }
@@ -599,6 +606,7 @@
             if(isRecording) {
                 if(engine === 'google') stopRecordingGoogle(); else stopRecordingBrowser();
             } else {
+                window.isForceStopped = false; // Reset cờ ép dừng
                 if(engine === 'google') await startRecordingGoogle(); else startRecordingBrowser();
             }
         }
@@ -607,7 +615,7 @@
             isRecording = active;
             if(active) {
                 btnRecord.classList.add('recording'); mainAppContainer.classList.add('recording');
-                if(isPlaying) forceResetAudioOnly(); 
+                if(isPlaying || isPaused) forceResetAudioOnly(); // Đang phát thì tắt để nhường chỗ thu âm
             } else {
                 btnRecord.classList.remove('recording'); mainAppContainer.classList.remove('recording');
             }
@@ -661,7 +669,7 @@
                     else interimTranscript += event.results[i][0].transcript + " ";
                 }
                 
-                // Thuật toán đếm từ giúp tracking chính xác thời gian thực
+                // Chạy chữ theo thời gian thực chuẩn xác bằng Word Count
                 let spokenWordsCount = (finalTranscript + interimTranscript).trim().split(/\s+/).filter(w => w.length > 0).length;
                 let targetIdx = Math.min(startingIndexForVisual + spokenWordsCount - 1, wordMapping.length - 1);
                 
@@ -671,8 +679,11 @@
             };
 
             browserRecognition.onend = () => {
-                // Sửa lỗi Offline không hiện điểm khi nhấn Stop
-                if (window.isForceStopped) { window.isForceStopped = false; return; }
+                // Nếu bị dừng bởi nút Dừng Khẩn Cấp (Stop ■) thì bỏ qua chấm điểm
+                if (window.isForceStopped) {
+                    window.isForceStopped = false;
+                    return;
+                }
                 
                 setRecordingUI(false, "Đang chấm điểm...");
                 if(finalTranscript.trim().length > 0) {
@@ -686,7 +697,8 @@
         }
 
         function stopRecordingBrowser() { 
-            if(browserRecognition) browserRecognition.stop(); // Lệnh này sẽ tự động gọi hàm onend để xử lý chấm điểm
+            // Gọi lệnh stop. Hàm onend sẽ tự động được kích hoạt và lo việc chấm điểm.
+            if(browserRecognition) browserRecognition.stop(); 
             setRecordingUI(false, "Đang xử lý kết quả..."); 
         }
 
@@ -846,14 +858,14 @@
 
         async function playTTSFromChunk(chunkIdx) {
             if (chunkIdx >= textChunks.length || chunkIdx < 0) {
-                btnPlayPause.textContent = "▶"; isPlaying = false; isKaraokePlaying = false;
+                btnPlayPause.textContent = "▶"; isPlaying = false; isPaused = false; isKaraokePlaying = false;
                 mainAppContainer.classList.remove('playing');
                 showSoftMessage("Đã đọc xong toàn bài. Nhấn 🎙️ để tự đọc lại."); return;
             }
             
             audioEl.pause(); synth.cancel();
             currentChunkIndex = chunkIdx; let chunk = textChunks[chunkIdx];
-            window.activeTTSChunk = chunk; // Lưu đoạn để timeupdate lấy
+            window.activeTTSChunk = chunk; 
             
             let speed = parseFloat(document.getElementById('sliderTempo').value);
             let voiceId = document.getElementById('voiceSelectEn').value; 
@@ -875,7 +887,6 @@
                             if(!isDraggingSlider) progressBar.value = globalPercent;
                             let activeIdx = wordMapping.findIndex(m => charIdx >= m.start && charIdx <= m.end);
                             if (activeIdx === -1) activeIdx = wordMapping.findIndex(m => m.start >= charIdx);
-                            // Ranh giới an toàn cho Offline sys_
                             if (activeIdx !== -1 && wordMapping[activeIdx].start >= chunk.startIndex && wordMapping[activeIdx].end <= chunk.endIndex) {
                                 syncHighlight(activeIdx);
                             }
@@ -888,39 +899,64 @@
             } else {
                 let base64Audio = await fetchGoogleAudio(chunk.text, chunk.lang, speed, voiceId);
                 if(base64Audio) {
+                    audioEl.currentTime = 0; // Đặt lại bộ đếm để ngăn nhảy chữ
                     audioEl.src = base64Audio; 
                     audioEl.volume = parseFloat(document.getElementById('sliderVolume').value);
-                    audioEl.currentTime = 0; // Fix nhảy frame đầu tiên cho Google AI
                     audioEl.play(); 
                     btnPlayPause.textContent = "⏸"; mainAppContainer.classList.add('playing');
                     audioEl.onended = () => { isKaraokePlaying = false; if(isPlaying) playTTSFromChunk(chunkIdx + 1); };
                 } else {
                     showSoftMessage("Giọng đọc AI thất bại, hãy thử giọng Offline.");
-                    btnPlayPause.textContent = "▶"; isPlaying = false; isKaraokePlaying = false;
+                    btnPlayPause.textContent = "▶"; isPlaying = false; isPaused = false; isKaraokePlaying = false;
                 }
             }
         }
 
         function forceResetAudioOnly() {
             audioEl.pause(); synth.cancel();
-            isPlaying = false; isKaraokePlaying = false;
+            isPlaying = false; isPaused = false; isKaraokePlaying = false;
             btnPlayPause.textContent = "▶"; mainAppContainer.classList.remove('playing');
             progressBar.value = 0; document.getElementById('timeCurrent').innerText = "00:00";
         }
 
+        // TÍNH NĂNG PLAY / PAUSE / RESUME THÔNG MINH
         function togglePlay() {
             if(textChunks.length === 0) { toggleDataOverlay(); return; }
             if(isRecording) forceReset(); 
             
             if (isPlaying) { 
-                forceResetAudioOnly();
+                // PAUSE LOGIC: Đang đọc -> Tạm Dừng
+                let voiceId = document.getElementById('voiceSelectEn').value;
+                if (voiceId.startsWith("sys_") || !currentApiKey) {
+                    synth.pause();
+                } else {
+                    audioEl.pause();
+                }
+                isPlaying = false;
+                isPaused = true;
+                btnPlayPause.textContent = "▶"; 
+                mainAppContainer.classList.remove('playing');
             } else { 
-                isPlaying = true; playTTSFromChunk(currentChunkIndex); 
+                // RESUME HOẶC PLAY LOGIC: Đang dừng -> Đọc tiếp
+                isPlaying = true;
+                if (isPaused) {
+                    let voiceId = document.getElementById('voiceSelectEn').value;
+                    if (voiceId.startsWith("sys_") || !currentApiKey) {
+                        synth.resume();
+                    } else {
+                        audioEl.play();
+                    }
+                    isPaused = false;
+                    btnPlayPause.textContent = "⏸"; 
+                    mainAppContainer.classList.add('playing');
+                } else {
+                    playTTSFromChunk(currentChunkIndex); 
+                }
             }
         }
 
         function forceReset() {
-            window.isForceStopped = true; // Cờ an toàn để không gọi onend khi bấm Stop chủ động
+            window.isForceStopped = true; 
             forceResetAudioOnly();
             
             if(isRecording) {
@@ -987,6 +1023,13 @@
             lyricsScroll.innerHTML = finalHtml + "</div>";
             ttsText = currentTextAcc;
             
+            // Tự động kiểm tra: Nếu bài dài bị tràn màn hình thì mới chèn khoảng đệm cuộn
+            requestAnimationFrame(() => {
+                if (lyricsScroll.scrollHeight > lyricsScroll.clientHeight) {
+                    lyricsScroll.insertAdjacentHTML('beforeend', '<div style="height: 50vh; pointer-events: none;"></div>');
+                }
+            });
+            
             const kElements = lyricsScroll.querySelectorAll('.k-word');
             wordMapping.forEach((m, i) => { 
                 m.el = kElements[i]; 
@@ -995,7 +1038,12 @@
                     if(clickedChunkIndex !== -1) { 
                         currentChunkIndex = clickedChunkIndex; 
                         syncHighlight(i);
-                        if(isPlaying) { playTTSFromChunk(currentChunkIndex); }
+                        // Cập nhật lại tự động đọc tiếp nếu đang đọc hoặc tạm dừng
+                        if(isPlaying || isPaused) { 
+                            isPlaying = true;
+                            isPaused = false;
+                            playTTSFromChunk(currentChunkIndex); 
+                        }
                     }
                 };
             });
