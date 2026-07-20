@@ -2,12 +2,12 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neuro-Player Pro | Ultimate Audio Matrix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Neuro-Reader Pro | AI Pronunciation Matrix</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
+    
     <style>
-        /* ================= HỆ THỐNG MÀU & BIẾN ================= */
         :root {
             --bg-deep: #090a0f; 
             --bg-card: #111218; 
@@ -20,7 +20,15 @@
             --aurora-2: rgba(245, 158, 11, 0.005);
             --aurora-3: rgba(245, 158, 11, 0.01);
             --reading-size: 22px;
+            --correct-color: #10b981;
+            --wrong-color: #ef4444; 
         }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+        * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent; }
 
         body {
             font-family: 'Inter', sans-serif; 
@@ -31,7 +39,6 @@
             perspective: 2000px;
         }
 
-        /* BACKGROUND EFFECTS */
         .aurora-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; opacity: 0.3; transition: opacity 0.5s; }
         .aurora-blob { position: absolute; filter: blur(150px); border-radius: 50%; animation: float-aurora 45s infinite alternate ease-in-out; transition: background 1.5s ease; transform: translate3d(0,0,0); backface-visibility: hidden;}
         .a1 { background: var(--aurora-1); width: 55vw; height: 55vh; top: -15%; left: -10%; }
@@ -39,13 +46,11 @@
         .a3 { background: var(--aurora-3); width: 45vw; height: 45vh; bottom: -15%; left: 25%; animation-delay: -12s; }
         @keyframes float-aurora { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(8vw, 8vh, 0) scale(1.3); } }
 
-        /* ================= KHUNG THẺ CHÍNH ================= */
         .app-container { 
             display: flex; flex-direction: column; width: 96vw; max-width: 96vw; height: 96vh; gap: 20px; z-index: 10; 
             background-color: var(--bg-card); 
             border: 1px solid rgba(255, 255, 255, 0.06); 
-            border-radius: 24px; 
-            padding: 24px; box-sizing: border-box;
+            border-radius: 24px; padding: 24px; box-sizing: border-box;
             box-shadow: 0 12px 40px rgba(0,0,0,0.5);
             transition: border-color 0.4s ease, box-shadow 0.4s ease;
             position: relative;
@@ -53,6 +58,7 @@
         
         .app-container:hover { border-color: rgba(255, 255, 255, 0.12); box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 8px var(--theme-glow); }
         .app-container.playing { border-color: var(--theme-color); box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 12px var(--theme-glow-strong); }
+        .app-container.recording { border-color: var(--wrong-color); box-shadow: 0 20px 50px rgba(239,68,68,0.2), 0 0 15px rgba(239,68,68,0.3); }
         :fullscreen .app-container, :-webkit-full-screen .app-container { width: 96vw !important; height: 96vh !important; max-width: 96vw !important; margin: auto; }
 
         .panel { 
@@ -62,70 +68,54 @@
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.02);
         }
 
-        /* KHU VỰC HIỂN THỊ CHÍNH */
         .karaoke-panel { 
             flex: 1; overflow: hidden; display: flex; flex-direction: column; 
             mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%); 
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%); 
             position: relative; 
         }
+
         #emptyState { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 5; transition: opacity 0.4s; width: 100%;}
         .empty-title { font-size: clamp(20px, 5vw, 32px); font-weight: 800; color: var(--theme-color); margin-bottom: 10px; text-shadow: 0 0 15px var(--theme-glow); letter-spacing: 2px; white-space: nowrap;}
         .empty-sub { color: #94a3b8; font-size: clamp(12px, 3.5vw, 16px); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; white-space: nowrap;}
-        .empty-dev { margin-top: 35px; font-size: clamp(11px, 3vw, 14px); color: #d97706; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; white-space: nowrap; text-shadow: 0 0 10px rgba(217, 119, 6, 0.2);}
+        .empty-dev { margin-top: 25px; font-size: clamp(11px, 3vw, 14px); color: #d97706; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; white-space: nowrap; text-shadow: 0 0 10px rgba(217, 119, 6, 0.2);}
         
-        /* HIỆU ỨNG CUỘN (Tối ưu GPU) */
+        .btn-api-setup { margin-top: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 10px 20px; border-radius: 100px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-api-setup:hover { background: rgba(255,255,255,0.1); color: white; transform: translateY(-2px); }
+        .btn-api-setup.active { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.3); }
+        
         .lyrics-scroll { 
-            position: absolute; top: 0; left: 0; width: 100%; 
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); 
-            padding: 9vh 15px 80vh 15px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow-y: auto; overflow-x: hidden;
+            padding: 10vh 20px 60vh 20px; 
             box-sizing: border-box; z-index: 2; 
-            will-change: transform; 
-            transform: translate3d(0, 0, 0);
+            scroll-behavior: smooth;
         }
-        
-        /* ================= CHẾ ĐỘ HIỂN THỊ ================= */
+
         .tts-paragraph { 
             font-size: var(--reading-size); font-weight: 500; line-height: 1.6; 
             max-width: 100%; margin: 0 auto; transition: font-size 0.3s;
-            word-wrap: break-word; word-break: break-word;
+            word-wrap: break-word; word-break: break-word; text-align: left;
         }
-        .tts-line { transition: opacity 0.4s ease; transform-origin: center center; }
-        .tts-spacer { transition: height 0.4s; }
+        .tts-line { transition: opacity 0.4s ease; transform-origin: center center; margin: 0; margin-bottom: 0.8rem; }
         
         .k-word { 
-            transition: color 0.3s ease, text-shadow 0.3s ease, opacity 0.3s ease; 
-            border-radius: 4px; display: inline; cursor: pointer; padding: 1px 0;
-            font-weight: inherit; 
+            transition: color 0.15s ease, text-shadow 0.15s ease; 
+            will-change: color, text-shadow; /* Hardware Acceleration */
+            border-radius: 4px; display: inline-block; cursor: pointer; padding: 1px 2px;
+            font-weight: inherit !important; 
+            margin: 0 1px;
+            transform: none !important;
         }
-
-        /* Mode 1: Continuous */
-        #karaokeContainer.mode-continuous .tts-paragraph { text-align: left; width: 95%; }
+        
         #karaokeContainer.mode-continuous .tts-line { opacity: 1; transform: none; }
         #karaokeContainer.mode-continuous .k-word { color: #f8fafc; opacity: 1; }
-        #karaokeContainer.mode-continuous .k-word.read { color: var(--theme-text-color); opacity: 0.55; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-        #karaokeContainer.mode-continuous .k-word:hover { color: var(--theme-color); }
-        #karaokeContainer.mode-continuous .k-word.active { color: var(--theme-color) !important; text-shadow: 0 0 15px var(--theme-glow-strong); opacity: 1 !important; background-color: transparent !important; box-shadow: none !important; border-radius: 0; transform: none !important; }
+        #karaokeContainer.mode-continuous .k-word.read { color: var(--theme-text-color) !important; opacity: 0.65; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        #karaokeContainer.mode-continuous .k-word.active { color: var(--theme-color) !important; text-shadow: 0 0 15px var(--theme-glow-strong), 0 0 5px rgba(255,255,255,0.4); opacity: 1 !important; }
 
-        /* Mode 2: Karaoke */
-        #karaokeContainer.mode-karaoke .tts-paragraph { text-align: center; }
-        #karaokeContainer.mode-karaoke .tts-line { opacity: 0.4; transform: none; width: 82%; margin: 0 auto; }
-        #karaokeContainer.mode-karaoke .tts-line.active { opacity: 1; transform: none; z-index: 10; position: relative; }
-        #karaokeContainer.mode-karaoke .k-word, #karaokeContainer.mode-karaoke .tts-line.active .k-word { color: #f8fafc; opacity: 1; }
-        #karaokeContainer.mode-karaoke .tts-line.active .k-word.read { color: var(--theme-text-color); text-shadow: 0 2px 4px rgba(0,0,0,0.95); opacity: 0.65; }
-        #karaokeContainer.mode-karaoke .tts-line.active .k-word.active { color: var(--theme-color) !important; text-shadow: 0 0 15px var(--theme-glow-strong); opacity: 1; background-color: transparent !important; box-shadow: none !important; border-radius: 0; transform: none !important; }
-        #karaokeContainer.mode-karaoke .tts-spacer { height: 25px !important; }
+        .k-word.word-correct { color: var(--correct-color) !important; text-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
+        .k-word.word-wrong { color: var(--wrong-color) !important; text-shadow: 0 0 10px rgba(239, 68, 68, 0.4); text-decoration: underline; text-decoration-color: var(--wrong-color); }
 
-        /* MP3 Lyrics */
-        .lyric-line { text-align: center; margin: 35px auto; opacity: 0.3; transform: scale(0.9); transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); cursor: pointer; transform-origin: center center; filter: blur(1px); width: 82%; word-wrap: break-word;}
-        .lyric-line:hover { opacity: 0.6; filter: blur(0); }
-        .lyric-main { font-size: calc(var(--reading-size) + 4px); font-weight: 900; margin-bottom: 5px; color: #cbd5e1; transition: color 0.4s, text-shadow 0.4s, font-size 0.3s; } 
-        .lyric-sub { font-size: calc(var(--reading-size) - 4px); font-weight: 700; font-family: 'Inter', sans-serif; margin-bottom: 5px; color: #64748b; transition: color 0.4s, text-shadow 0.4s, font-size 0.3s; } 
-        .lyric-line.active { opacity: 1; transform: scale(1.15); filter: blur(0); }
-        .lyric-line.active .lyric-main { color: var(--theme-color); text-shadow: 0 0 20px var(--theme-glow-strong); }
-        .lyric-line.active .lyric-sub { color: var(--text-main); text-shadow: 0 0 20px rgba(255,255,255,0.4); }
-
-        /* ================= OVERLAY NẠP DỮ LIỆU ================= */
         .data-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 5, 10, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); z-index: 50; display: flex; flex-direction: column; padding: 40px; box-sizing: border-box; border-radius: 25px; opacity: 0; pointer-events: none; transform: scale(0.95); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 0 30px var(--theme-glow); }
         .data-overlay.active { opacity: 1; pointer-events: all; transform: scale(1); }
         .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;}
@@ -133,23 +123,47 @@
         .overlay-close { background: none; border: none; color: #cbd5e1; font-size: 32px; cursor: pointer; transition: 0.3s; line-height: 1;}
         .overlay-close:hover { color: var(--theme-color); transform: rotate(90deg); }
         .overlay-content { display: flex; flex-direction: column; gap: 15px; height: 100%; }
-        textarea.custom-text { flex: 1; background: rgba(0,0,0,0.4); color: #f8fafc; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; font-family: inherit; font-size: 16px; resize: none; outline: none; transition: 0.3s; line-height: 1.6;}
-        textarea.custom-text:focus { border-color: var(--theme-color); box-shadow: inset 0 0 15px var(--theme-glow); }
+        textarea.custom-text, input.api-input { background: rgba(0,0,0,0.4); color: #f8fafc; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; font-family: inherit; font-size: 16px; outline: none; transition: 0.3s; }
+        textarea.custom-text { flex: 1; resize: none; line-height: 1.6;}
+        textarea.custom-text:focus, input.api-input:focus { border-color: var(--theme-color); box-shadow: inset 0 0 15px var(--theme-glow); }
 
         .btn-compact-row { display: flex; gap: 12px; margin-top: 5px; align-items: center; }
         .btn-compact { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; padding: 12px 20px; border-radius: 100px; font-weight: 600; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1; }
         .btn-compact:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .btn-compact.primary { background: var(--theme-color); color: #000; border: none; font-weight: 800;}
         .btn-compact.primary:hover { box-shadow: 0 0 20px var(--theme-glow); background: #ffffff; color: var(--theme-color); }
+        .btn-compact.danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
+        .btn-compact.danger:hover { background: #ef4444; color: white; }
 
-        /* THANH ĐIỀU KHIỂN ================= */
         .control-deck { padding: 20px 30px; display: flex; flex-direction: column; gap: 15px; z-index: 20; }
+        
+        .speech-feedback-bar { 
+            display: none; 
+            background: rgba(10, 11, 16, 0.85); 
+            border-radius: 12px; 
+            padding: 15px 20px; 
+            font-size: 18px; 
+            color: #f8fafc; 
+            text-align: center; 
+            border: 1px dashed var(--theme-color); 
+            border-left: 4px solid var(--theme-color);
+            margin-bottom: 5px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
+        .speech-feedback-bar span.accent {
+            color: #38bdf8; /* Màu Xanh lơ nổi bật */
+            font-size: 20px;
+            font-style: italic;
+            font-weight: 800;
+        }
+        
         .progress-container { display: flex; align-items: center; gap: 15px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #94a3b8; }
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 14px; width: 14px; border-radius: 50%; background: white; cursor: pointer; margin-top: -5px; box-shadow: 0 0 8px white; transition: background 0.2s, transform 0.1s; }
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); background: var(--theme-color); box-shadow: 0 0 10px var(--theme-color);}
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
-        input[type=range]:focus { outline: none; }
         .progress-bar { flex: 1; }
         .progress-bar::-webkit-slider-thumb { background: var(--theme-color); box-shadow: 0 0 10px var(--theme-color); height: 16px; width: 16px; margin-top: -6px; }
 
@@ -162,110 +176,88 @@
         .track-title-mini { font-size: 16px; font-weight: 800; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
         .track-artist-mini { font-size: 11px; color: #94a3b8; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .deck-center { display: flex; align-items: center; justify-content: center; gap: 12px; flex: 1; }
+        .deck-center { display: flex; align-items: center; justify-content: center; gap: 15px; flex: 1; }
         .btn { background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.2) 100%); border: none; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s; box-shadow: 5px 5px 10px rgba(0,0,0,0.4), -3px -3px 10px rgba(255,255,255,0.03); }
         .btn:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
-        .btn-nav, .btn-stop-reset { width: 42px; height: 42px; font-size: 14px; font-weight: bold; color: #94a3b8; }
-        .btn-nav:hover, .btn-stop-reset:hover { color: white; }
-        .btn-play { width: 64px; height: 64px; font-size: 26px; color: var(--theme-color); text-shadow: 0 0 10px var(--theme-glow); border: 1px solid rgba(255,255,255,0.1);}
+        
+        .btn-stop-reset { width: 42px; height: 42px; font-size: 14px; font-weight: bold; color: #94a3b8; }
+        .btn-stop-reset:hover { color: white; background: rgba(239, 68, 68, 0.2); box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);}
+        
+        .btn-play, .btn-mic { width: 64px; height: 64px; font-size: 26px; border: 1px solid rgba(255,255,255,0.1);}
+        
+        .btn-play { color: var(--theme-color); text-shadow: 0 0 10px var(--theme-glow); }
         .btn-play:hover { background: rgba(255,255,255,0.1); box-shadow: 0 0 25px var(--theme-glow); border-color: transparent;}
+        
+        .btn-mic { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn-mic:hover { background: rgba(239, 68, 68, 0.2); box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+        .btn-mic.recording { background: #ef4444; color: white; animation: pulse-mic 1.5s infinite; border-color: #ef4444; }
+        @keyframes pulse-mic { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
         .deck-right { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 1.5; flex-wrap: nowrap;}
+        
         .sys-control-box { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 100px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
-        .sys-icon { font-size: 13px; opacity: 0.8; }
+        .sys-icon { font-size: 14px; opacity: 0.9; }
         .sys-control-box input[type=range] { width: 55px; height: 4px; }
-        .sys-val { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: #94a3b8; min-width: 32px; text-align: right; user-select: none; }
-        .lang-control-box { display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); padding: 5px 10px; border-radius: 100px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
-        .lang-cb-label { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #94a3b8; cursor: pointer; user-select: none; font-weight: 700; text-transform: uppercase;}
-        .lang-cb-label input { accent-color: var(--theme-color); cursor: pointer; width: 14px; height: 14px; margin: 0; }
-        .lang-cb-label:hover { color: white; }
-        .audio-select { background: transparent; color: white; border: none; outline: none; font-size: 11px; max-width: 100px; text-overflow: ellipsis; cursor: pointer; font-family: inherit;}
-        .audio-select option { background: var(--bg-deep); color: white; }
+        
+        .lang-control-box { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 100px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
+        .audio-select { background: transparent; color: white; border: none; outline: none; font-size: 13px; max-width: 140px; text-overflow: ellipsis; cursor: pointer; font-family: inherit;}
+        .audio-select option { background: var(--bg-deep); color: white; font-size: 14px;}
+        .audio-select optgroup { background: var(--bg-card); font-weight: bold; color: #cbd5e1; }
 
-        /* FIXED TOOLS ================= */
+        .mobile-speed-btn { display: none; }
+
         .btn-fullscreen { position: fixed; bottom: 25px; right: 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 24px; z-index: 100; transition: all 0.3s; backdrop-filter: blur(10px); }
         .btn-fullscreen:hover { background: rgba(255,255,255,0.15); color: white; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.3);}
+        
         .fixed-left-tools { position: fixed; bottom: 25px; left: 25px; z-index: 100; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
-        .btn-theme-toggle { width: 34px; height: 34px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: var(--theme-color); box-shadow: 0 0 15px var(--theme-glow), 4px 4px 10px rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s; flex-shrink: 0;}
-        .btn-theme-toggle:hover { transform: scale(1.15); border-color: white; box-shadow: 0 0 25px var(--theme-glow-strong); }
+        .btn-theme-toggle { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); background: var(--theme-color); cursor: pointer; transition: all 0.3s; flex-shrink: 0; opacity: 0.7;}
+        .btn-theme-toggle:hover { opacity: 1; transform: scale(1.1); border-color: white; box-shadow: 0 0 15px var(--theme-glow); }
         .text-size-tools { display: flex; gap: 5px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .btn-ts { background: transparent; border: none; color: #94a3b8; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; justify-content: center;}
         .btn-ts:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        .fixed-top-right-tools { position: fixed; top: 25px; right: 25px; z-index: 100; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
-        .btn-mode-toggle { width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: rgba(15, 23, 42, 0.6); color: white; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0,0,0,0.5); cursor: pointer; transition: all 0.3s; display: flex; justify-content: center; align-items: center; font-size: 16px; }
-        .btn-mode-toggle:hover { transform: scale(1.15); border-color: var(--theme-color); box-shadow: 0 0 20px var(--theme-glow); color: var(--theme-color);}
 
         @media (max-width: 1024px) {
-            .deck-bottom-row { flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+            .app-container { height: 100dvh !important; width: 100vw !important; max-width: 100vw !important; border-radius: 0 !important; margin: 0 !important; border: none !important; background-color: var(--bg-deep); padding: 0 !important; gap: 0; }
+            .aurora-container, .btn-fullscreen, .volume-control { display: none !important; }
+            .lyrics-scroll { padding: max(60px, env(safe-area-inset-top)) 15px 50vh 15px; height: calc(100vh - 140px); overflow-y: auto;} 
+            .control-deck { padding: 10px 15px max(15px, env(safe-area-inset-bottom)) 15px; background: var(--bg-card); border-top: 1px solid rgba(255,255,255,0.05); } 
+            .deck-bottom-row { flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center; }
             .deck-left { flex: 1; justify-content: flex-start; width: auto; min-width: 0; }
-            .deck-center { flex: 0 0 auto; justify-content: flex-end; width: auto; flex-wrap: nowrap; }
+            .deck-center { flex: 0 0 auto; justify-content: center; width: 100%; flex-wrap: nowrap; order: -1; }
             
-            .btn-nav { display: none !important; }
-            .btn-stop-reset { margin-right: 8px; width: 38px; height: 38px; }
-            .btn-play { width: 54px; height: 54px; font-size: 22px; }
-
-            .btn-compact-row { flex-direction: row; gap: 6px; }
-            .btn-compact { padding: 12px 2px; font-size: 11px; letter-spacing: -0.3px; flex: 1; }
-            .data-overlay { padding: 20px; }
-            
-            /* Tối ưu tràn viền, nhận diện tai thỏ và thanh điều hướng (100dvh + Safe Area) */
-            .app-container { 
-                height: 100dvh !important; 
-                padding: max(6px, env(safe-area-inset-top)) 4px max(6px, env(safe-area-inset-bottom)) 4px !important; 
-                width: 100vw !important; 
-                max-width: 100vw !important; 
-                border-radius: 0 !important; 
-                margin: 0 !important; 
-                border: none !important; 
-                background-color: var(--bg-deep);
-            }
-            .panel { border-radius: 12px; }
-            .control-deck { padding: 8px 6px max(8px, env(safe-area-inset-bottom)) 6px !important; gap: 10px !important; }
-            .karaoke-panel { 
-                height: auto !important; 
-                flex: 1 !important; 
-                mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%); 
-                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
-            }
-            .lyrics-scroll { padding: max(10vh, env(safe-area-inset-top)) 8px 50vh 8px !important; }
-            
-            /* TẮT HOÀN TOÀN cực quang trên thiết bị di động để GPU không làm việc, chống nóng máy tuyệt đối */
-            .aurora-container { display: none !important; animation: none !important; }
-            
-            /* Tùy chỉnh công cụ nổi trên Mobile (Tự động né Camera/Notch) */
-            .btn-fullscreen { display: none !important; }
-            .fixed-left-tools { 
-                top: max(15px, env(safe-area-inset-top)); bottom: auto; left: 15px; 
-                opacity: 0.15; transition: opacity 0.3s;
-            }
-            .fixed-top-right-tools { 
-                top: max(15px, env(safe-area-inset-top)); right: 15px; 
-                opacity: 0.15; transition: opacity 0.3s;
-            }
-            .fixed-left-tools:active, .fixed-left-tools:hover,
-            .fixed-top-right-tools:active, .fixed-top-right-tools:hover { 
-                opacity: 1; 
-            }
-
-            /* Thanh điều khiển dưới trên Mobile */
-            .volume-control { display: none !important; }
             .deck-right { 
-                flex: 1 1 100% !important; flex-direction: row !important; flex-wrap: nowrap !important; justify-content: space-between !important; 
-                width: 100% !important; overflow-x: auto; padding-bottom: max(5px, env(safe-area-inset-bottom)); gap: 5px; margin-top: 4px;
+                position: fixed; top: max(15px, env(safe-area-inset-top)); right: 15px; z-index: 1000;
+                width: auto !important; margin: 0 !important; padding: 0;
+                display: flex; flex-direction: row; flex-wrap: nowrap !important; gap: 6px !important; justify-content: flex-end;
             }
-            .sys-control-box, .lang-control-box { flex-shrink: 0; padding: 6px 8px; }
-            .audio-select { max-width: 80px; }
-            .sys-val { min-width: 25px; }
-            .sys-control-box input[type=range] { width: 45px; }
+
+            .engine-control-box, .lang-control-box { 
+                width: 28px; height: 28px; padding: 0; border-radius: 50%; 
+                background: rgba(10, 11, 16, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+                border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+                display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;
+            }
+            .engine-control-box .sys-icon, .lang-control-box .sys-icon { margin: 0; font-size: 13px; position: absolute; pointer-events: none; opacity: 0.8;}
+            .engine-control-box select, .lang-control-box select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+            
+            .desktop-speed-control { display: none !important; }
+            .mobile-speed-btn { 
+                display: flex; justify-content: center; align-items: center;
+                width: 32px; height: 28px; border-radius: 14px; 
+                background: rgba(10, 11, 16, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+                border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                font-size: 10px; font-weight: 800; color: var(--theme-color); cursor: pointer; border: none;
+            }
+
+            .fixed-left-tools { position: fixed; top: max(15px, env(safe-area-inset-top)); left: 15px; bottom: auto; background: rgba(10, 11, 16, 0.4); padding: 4px 6px; border-radius: 100px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: row; align-items: center; gap: 6px; }
+            .btn-theme-toggle { width: 22px; height: 22px; border-width: 1px; opacity: 0.5; }
+            .text-size-tools { background: transparent; border: none; padding: 0; box-shadow: none; gap: 2px;}
+            .btn-ts { width: 26px; height: 26px; font-size: 12px; padding: 0;}
         }
     </style>
 </head>
 <body>
-
-    <div class="aurora-container">
-        <div class="aurora-blob a1"></div><div class="aurora-blob a2"></div><div class="aurora-blob a3"></div>
-    </div>
-
+    <div class="aurora-container"><div class="aurora-blob a1"></div><div class="aurora-blob a2"></div><div class="aurora-blob a3"></div></div>
     <button class="btn-fullscreen no-print" onclick="toggleFullScreen()" title="Phóng to Toàn màn hình">⛶</button>
     
     <div class="fixed-left-tools no-print">
@@ -277,46 +269,58 @@
         </div>
     </div>
 
-    <div class="fixed-top-right-tools no-print">
-        <button class="btn-mode-toggle" id="btnModeToggle" onclick="toggleReadMode()" title="Chế độ đọc: Hiện tại / Karaoke">🎤</button>
-    </div>
-
     <div class="app-container" id="mainAppContainer">
         <div class="panel karaoke-panel mode-continuous" id="karaokeContainer">
             <div id="emptyState">
                 <div style="font-size: clamp(40px, 10vw, 64px); margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));">🎧</div>
-                <div class="empty-title">NEURO-PLAYER PRO</div>
-                <div class="empty-sub">Kích vào chấm tròn <span style="color: #a855f7; font-weight: 900;">➕</span> bên dưới để nạp dữ liệu</div>
-                <div class="empty-sub">(Hỗ trợ Trí tuệ Nhân tạo Google Premium)</div>
+                <div class="empty-title">NEURO-READER PRO</div>
+                <div class="empty-sub">Hệ thống Đánh giá Phát âm AI</div>
+                <div class="empty-sub">Kích vào <span style="color: #a855f7; font-weight: 900;">➕</span> để nạp dữ liệu luyện đọc</div>
                 <div class="empty-dev">Developed by Viễn Thông Quy Nhơn</div>
+                <button id="btnApiSetup" class="btn-api-setup" onclick="openApiModal()">🔑 Tích hợp Google AI (Tùy chọn)</button>
             </div>
             
             <div class="lyrics-scroll" id="lyricsScroll"></div>
             
             <div class="data-overlay" id="dataOverlay">
                 <div class="overlay-header">
-                    <div class="overlay-title"><span>📥</span> NẠP VĂN BẢN CỦA BẠN</div>
+                    <div class="overlay-title"><span>📥</span> NẠP BÀI LUYỆN ĐỌC EN/VN</div>
                     <button class="overlay-close" onclick="toggleDataOverlay()" title="Đóng cửa sổ">×</button>
                 </div>
-                
                 <div class="overlay-content">
-                    <span style="color: #94a3b8; font-size: 14px; line-height: 1.5; margin-bottom: 5px;">Nhập, dán (Paste) hoặc tải lên tệp văn bản Word (.docx). Hệ thống tự động nhận diện tiếng Anh/Việt.</span>
-                    <textarea id="customText" class="custom-text" placeholder="Dán văn bản Tiếng Anh / Tiếng Việt vào đây..."></textarea>
-                    
+                    <span style="color: #94a3b8; font-size: 14px; line-height: 1.5; margin-bottom: 5px;">Nhập đoạn văn tiếng Anh để luyện đọc. Hệ thống sẽ lắng nghe, đối chiếu và chỉ ra từ bạn phát âm sai.</span>
+                    <textarea id="customText" class="custom-text" placeholder="Dán văn bản tiếng Anh vào đây..."></textarea>
                     <div class="btn-compact-row">
-                        <button class="btn-compact" onclick="clearCustomText()" title="Làm trống ô nhập liệu">🗑️ Xóa Trắng</button>
-                        <button class="btn-compact" onclick="document.getElementById('textUpload').click()" title="Tải file từ máy tính">📄 Tải File Word</button>
+                        <button class="btn-compact" onclick="clearCustomText()">🗑️ Xóa Trắng</button>
+                        <button class="btn-compact" onclick="document.getElementById('textUpload').click()">📄 Tải File Word</button>
                         <input type="file" id="textUpload" accept=".docx" style="display: none;" onchange="handleTextUpload(event)">
-                        <button class="btn-compact primary" onclick="loadCustomData()" title="Lưu lại và về màn hình chờ đọc">📥 Nạp Dữ Liệu</button>
+                        <button class="btn-compact primary" onclick="loadCustomData()">📥 Nạp Dữ Liệu</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-overlay" id="apiModal" style="z-index: 999;">
+                <div class="overlay-header">
+                    <div class="overlay-title"><span>🔑</span> CẤU HÌNH GOOGLE AI</div>
+                    <button class="overlay-close" onclick="closeApiModal()">×</button>
+                </div>
+                <div class="overlay-content" style="justify-content: center; max-width: 600px; margin: 0 auto; width: 100%;">
+                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; text-align: center;">Nếu bạn có mã <b>Khóa API Google Cloud (Speech & Text)</b>, hãy nhập vào đây để mở khóa giọng đọc Siêu thực và Bộ máy chấm điểm chuyên sâu.</p>
+                    <input type="password" id="apiKeyInput" class="api-input" placeholder="Dán mã API Key của bạn (VD: AIzaSy...)" style="margin: 20px 0; text-align: center;">
+                    <div class="btn-compact-row">
+                        <button class="btn-compact danger" onclick="removeApiKey()">🗑️ Xóa Khóa</button>
+                        <button class="btn-compact primary" onclick="saveApiKey()">✅ Xác Nhận</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="panel control-deck">
+            <div class="speech-feedback-bar" id="speechFeedback"></div>
+            
             <div class="progress-container">
                 <span id="timeCurrent">00:00</span>
-                <input type="range" class="progress-bar" id="progressBar" value="0" min="0" max="100" step="0.1">
+                <input type="range" class="progress-bar" id="progressBar" value="0" min="0" max="100" step="0.1" title="Kéo để tua thời gian">
                 <span id="timeTotal">00:00</span>
             </div>
             
@@ -325,763 +329,739 @@
                     <button class="btn-data-dot" id="btnDataToggle" onclick="toggleDataOverlay()" title="Nạp Dữ Liệu (Văn Bản)">➕</button>
                     <div class="track-info-mini">
                         <div class="track-title-mini" id="uiTitle">Chưa có dữ liệu</div>
-                        <div class="track-artist-mini" id="uiArtist">Bấm nút ➕ để bắt đầu...</div>
+                        <div class="track-artist-mini" id="uiArtist">Bấm ➕ để bắt đầu luyện...</div>
                     </div>
                 </div>
 
                 <div class="deck-center">
-                    <button class="btn btn-nav" onclick="skipBack()" title="Tua lùi">⏪</button>
-                    <button class="btn btn-stop-reset" onclick="resetReading()" title="Dừng và Về lại đầu bài">■</button>
-                    <button class="btn btn-play" id="btnPlayPause" onclick="togglePlay()">▶</button>
-                    <button class="btn btn-nav" onclick="skipForward()" title="Tua tới">⏩</button>
+                    <button class="btn btn-mic" id="btnRecord" onclick="toggleRecording()" title="Nhấn để tự luyện đọc">🎙️</button>
+                    <button class="btn btn-play" id="btnPlayPause" onclick="togglePlay()" title="Nghe máy đọc mẫu">▶</button>
+                    <button class="btn btn-stop-reset" onclick="forceReset()" title="Dừng đọc / Hủy thu âm khẩn cấp">■</button>
                 </div>
 
                 <div class="deck-right">
-                    <div class="sys-control-box volume-control" title="Âm lượng tổng">
+                    <div class="sys-control-box engine-control-box" title="Bộ máy Chấm điểm (STT)">
+                        <span class="sys-icon">🎙️</span>
+                        <select id="engineSelectSTT" class="audio-select"></select>
+                    </div>
+                    
+                    <div class="sys-control-box volume-control" title="Âm lượng mẫu">
                         <span class="sys-icon">🔊</span>
                         <input type="range" id="sliderVolume" min="0" max="1" step="0.05" value="1">
-                        <span id="volValue" class="sys-val">100%</span>
                     </div>
                     
-                    <div class="sys-control-box speed-control" title="Tốc độ (Speed)">
+                    <div class="sys-control-box speed-control desktop-speed-control" title="Tốc độ mẫu">
                         <span class="sys-icon" style="color: var(--theme-color);">⚡</span>
                         <input type="range" id="sliderTempo" min="0.8" max="1.3" step="0.05" value="1.0">
-                        <span id="tempoValue" class="sys-val">1.0x</span>
                     </div>
                     
-                    <div class="lang-control-box" title="Giọng Tiếng Anh">
-                        <label class="lang-cb-label"><input type="checkbox" id="enableEn" checked> EN</label>
-                        <select id="voiceSelectEn" class="audio-select"></select>
-                    </div>
+                    <button class="mobile-speed-btn" id="mobileSpeedBtn" onclick="toggleMobileSpeed()" title="Đổi tốc độ">1.0x</button>
                     
-                    <div class="lang-control-box" title="Giọng Tiếng Việt">
-                        <label class="lang-cb-label"><input type="checkbox" id="enableVi" checked> VN</label>
-                        <select id="voiceSelectVi" class="audio-select"></select>
+                    <div class="lang-control-box" title="Chọn Giọng đọc AI / Hệ thống">
+                        <span class="sys-icon" id="voiceIconSys">💻</span>
+                        <select id="voiceSelectEn" class="audio-select" onchange="updateVoiceIcon()"></select>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Mọi thứ đều được phát qua audioElement, bao gồm cả TTS API trả về -->
     <audio id="mainAudio"></audio>
 
     <script>
-        // ================= CẤU HÌNH GOOGLE CLOUD TTS API =================
-        const GOOGLE_TTS_API_KEY = "AIzaSyC_khGBU6y1jCovSwg-kNFmdiLgGFiBDMI";
-        const GOOGLE_TTS_URL = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`;
+        // Mở khóa âm thanh iOS an toàn
+        document.body.addEventListener('touchstart', function() {
+            if(!window.audioUnlocked) {
+                const audioEl = document.getElementById('mainAudio');
+                audioEl.src = 'data:audio/mp3;base64,//OExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
+                audioEl.play().then(() => { audioEl.pause(); }).catch(e => {});
+                window.audioUnlocked = true;
+            }
+        }, { once: true });
+        
+        let currentApiKey = localStorage.getItem('neuro_reader_api_key') || "";
+        
+        const premiumGoogleVoicesHardcoded = `
+            <optgroup label="✨ Giọng đọc Google AI (VIP)">
+                <option value="en-US-Journey-F">🇺🇸 Mỹ - Nữ (Siêu Thực)</option>
+                <option value="en-US-Journey-D">🇺🇸 Mỹ - Nam (Siêu Thực)</option>
+                <option value="en-US-Studio-O">🇺🇸 Mỹ - Nữ (Phòng Thu)</option>
+                <option value="en-US-Studio-M">🇺🇸 Mỹ - Nam (Phòng Thu)</option>
+                <option value="en-GB-Journey-F">🇬🇧 Anh - Nữ (Siêu Thực)</option>
+                <option value="en-GB-Journey-D">🇬🇧 Anh - Nam (Siêu Thực)</option>
+                <option value="en-GB-Studio-C">🇬🇧 Anh - Nữ (Phòng Thu)</option>
+                <option value="en-GB-Studio-B">🇬🇧 Anh - Nam (Phòng Thu)</option>
+            </optgroup>
+        `;
 
-        // Danh sách giọng cao cấp Google Cloud
-        const GOOGLE_VOICES = {
-            vi: [
-                { id: "vi-VN-Neural2-A", name: "Google Neural2 Nữ (Premium)" },
-                { id: "vi-VN-Neural2-D", name: "Google Neural2 Nam (Premium)" },
-                { id: "vi-VN-Wavenet-A", name: "Google Wavenet Nữ" },
-                { id: "vi-VN-Wavenet-B", name: "Google Wavenet Nam" },
-                { id: "vi-VN-Wavenet-C", name: "Google Wavenet Nữ 2" },
-                { id: "vi-VN-Wavenet-D", name: "Google Wavenet Nam 2" },
-                { id: "vi-VN-Standard-A", name: "Google Standard Nữ" },
-                { id: "vi-VN-Standard-B", name: "Google Standard Nam" },
-                { id: "vi-VN-Standard-C", name: "Google Standard Nữ 2" },
-                { id: "vi-VN-Standard-D", name: "Google Standard Nam 2" }
-            ],
-            en: [
-                { id: "en-US-Journey-F", name: "Google Journey Nữ (Siêu thực)" },
-                { id: "en-US-Journey-D", name: "Google Journey Nam (Siêu thực)" },
-                { id: "en-US-Neural2-F", name: "Google Neural2 Nữ 1" },
-                { id: "en-US-Neural2-J", name: "Google Neural2 Nam 1" },
-                { id: "en-US-Neural2-G", name: "Google Neural2 Nữ 2" },
-                { id: "en-US-Neural2-I", name: "Google Neural2 Nam 2" },
-                { id: "en-US-Wavenet-F", name: "Google Wavenet Nữ" },
-                { id: "en-US-Wavenet-D", name: "Google Wavenet Nam" }
-            ]
-        };
-
-        // Cache lưu các file âm thanh đã tải về để tránh gọi API nhiều lần
-        const ttsAudioCache = {}; 
-        let currentChunkIndexForAudio = -1; // Chunk đang phát hiện tại
-        let isFetchingTTS = false; // Trạng thái chống spam API
-
-        // Hệ thống đọc cục bộ
+        function getGoogleTTSUrl() { return `https://texttospeech.googleapis.com/v1/text:synthesize?key=${currentApiKey}`; }
+        function getGoogleSTTUrl() { return `https://speech.googleapis.com/v1/speech:recognize?key=${currentApiKey}`; }
+        
         const synth = window.speechSynthesis;
-        let ttsUtteranceId = 0;
-        let ttsSyncInterval = null;
-        let currentEngine = 'none'; // 'none', 'google', 'system'
-        let isTTSPaused = false;
-        let currentActiveLineIdx = -1; // Tối ưu hóa DOM O(1) chống nóng máy
-
-        // ================= DỮ LIỆU CHỦ ĐỀ & TRẠNG THÁI =================
-        const themeColors = [
-            { name: "Amber Warm", hex: "#d97706", textHex: "#f59e0b", glow: "rgba(217, 119, 6, 0.02)", glowStrong: "rgba(217, 119, 6, 0.06)", a1: "rgba(217, 119, 6, 0.04)", a2: "rgba(217, 119, 6, 0.01)", a3: "rgba(217, 119, 6, 0.02)" },
-            { name: "Tea Mint", hex: "#059669", textHex: "#10b981", glow: "rgba(5, 150, 105, 0.02)", glowStrong: "rgba(5, 150, 105, 0.06)", a1: "rgba(5, 150, 105, 0.04)", a2: "rgba(5, 150, 105, 0.01)", a3: "rgba(5, 150, 105, 0.02)" },
-            { name: "Soft Sky Cyan", hex: "#0891b2", textHex: "#22d3ee", glow: "rgba(8, 145, 178, 0.02)", glowStrong: "rgba(8, 145, 178, 0.06)", a1: "rgba(8, 145, 178, 0.04)", a2: "rgba(8, 145, 178, 0.01)", a3: "rgba(8, 145, 178, 0.02)" },
-            { name: "Violet Soft", hex: "#7c3aed", textHex: "#a78bfa", glow: "rgba(124, 58, 237, 0.02)", glowStrong: "rgba(124, 58, 237, 0.06)", a1: "rgba(124, 58, 237, 0.04)", a2: "rgba(124, 58, 237, 0.01)", a3: "rgba(124, 58, 237, 0.02)" },
-            { name: "Rose Silk", hex: "#db2777", textHex: "#fb7185", glow: "rgba(219, 39, 119, 0.02)", glowStrong: "rgba(219, 39, 119, 0.06)", a1: "rgba(219, 39, 119, 0.04)", a2: "rgba(219, 39, 119, 0.01)", a3: "rgba(219, 39, 119, 0.02)" }
-        ];
-        
-        let currentThemeIndex = 0;
-        let currentReadMode = 'continuous';
-        let currentTextSize = window.innerWidth <= 768 ? 22 : 34; // Tự động tối ưu cỡ chữ cho mobile
-        let currentMode = 'NONE'; // 'NONE', 'TTS', 'MP3'
-        let isPlaying = false;
-        let isDraggingSlider = false;
-        let currentContinuousScrollY = 0;
-        
-        const btnPlayPause = document.getElementById('btnPlayPause');
-        const progressBar = document.getElementById('progressBar');
-        const timeCurrent = document.getElementById('timeCurrent');
-        const timeTotal = document.getElementById('timeTotal');
-        const lyricsScroll = document.getElementById('lyricsScroll');
-        const emptyState = document.getElementById('emptyState');
-        const mainAppContainer = document.getElementById('mainAppContainer');
-        const dataOverlay = document.getElementById('dataOverlay');
         const audioEl = document.getElementById('mainAudio');
-
-        let currentLyrics = []; 
-        let activeLyricIndex = -1;
-        
-        let ttsText = "";
+        let ttsText = ""; 
         let textChunks = [];
         let wordMapping = [];
-        let currentActiveWordIdx = -1;
-        let ttsGlobalStartIdx = 0;
+        let currentChunkIndex = 0; 
+        let isPlaying = false;
+        let isKaraokePlaying = false; 
+        let currentThemeIndex = 0;
+        let currentTextSize = 22;
+        let currentHighlightedWordIdx = -1; 
+        let isDraggingSlider = false;
+        window.isForceStopped = false;
 
-        // ================= CÀI ĐẶT UI & THEME =================
-        function cycleTheme() {
-            currentThemeIndex = (currentThemeIndex + 1) % themeColors.length;
-            const t = themeColors[currentThemeIndex];
-            const root = document.documentElement;
-            root.style.setProperty('--theme-color', t.hex);
-            root.style.setProperty('--theme-glow', t.glow);
-            root.style.setProperty('--theme-glow-strong', t.glowStrong);
-            root.style.setProperty('--theme-text-color', t.textHex || t.hex);
-            root.style.setProperty('--aurora-1', t.a1);
-            root.style.setProperty('--aurora-2', t.a2);
-            root.style.setProperty('--aurora-3', t.a3);
-            if(currentReadMode === 'karaoke') {
-                const btn = document.getElementById('btnModeToggle');
-                btn.style.borderColor = 'var(--theme-color)';
-                btn.style.color = 'var(--theme-color)';
-                btn.style.boxShadow = '0 0 12px var(--theme-glow)';
+        const btnPlayPause = document.getElementById('btnPlayPause');
+        const btnRecord = document.getElementById('btnRecord');
+        const mainAppContainer = document.getElementById('mainAppContainer');
+        const lyricsScroll = document.getElementById('lyricsScroll');
+        const speechFeedback = document.getElementById('speechFeedback');
+        const progressBar = document.getElementById('progressBar');
+
+        function openApiModal() { document.getElementById('apiModal').classList.add('active'); }
+        function closeApiModal() { document.getElementById('apiModal').classList.remove('active'); }
+        
+        function saveApiKey() {
+            const val = document.getElementById('apiKeyInput').value.trim();
+            if(val) {
+                localStorage.setItem('neuro_reader_api_key', val);
+                currentApiKey = val;
+                updateUIBasedOnApi();
+                closeApiModal();
+                showSoftMessage("Đã lưu Khóa API Google Cloud thành công!");
             }
         }
+        function removeApiKey() {
+            localStorage.removeItem('neuro_reader_api_key');
+            currentApiKey = ""; document.getElementById('apiKeyInput').value = "";
+            updateUIBasedOnApi(); closeApiModal();
+            showSoftMessage("Đã xóa Khóa API hệ thống.");
+        }
 
-        function toggleReadMode() {
-            const container = document.getElementById('karaokeContainer');
-            const btn = document.getElementById('btnModeToggle');
-            if (currentReadMode === 'continuous') {
-                currentReadMode = 'karaoke';
-                container.classList.remove('mode-continuous');
-                container.classList.add('mode-karaoke');
-                btn.innerText = '🌟';
-                btn.title = "Chế độ đọc: Karaoke";
-                btn.style.borderColor = 'var(--theme-color)';
-                btn.style.color = 'var(--theme-color)';
-                btn.style.boxShadow = '0 0 12px var(--theme-glow)';
-            } else {
-                currentReadMode = 'continuous';
-                currentContinuousScrollY = 0;
-                container.classList.remove('mode-karaoke');
-                container.classList.add('mode-continuous');
-                btn.innerText = '🎤';
-                btn.title = "Chế độ đọc: Hiện tại";
-                btn.style.borderColor = 'rgba(255,255,255,0.8)';
-                btn.style.color = 'white';
-                btn.style.boxShadow = '0 0 15px rgba(0,0,0,0.5)';
+        function showSoftMessage(msg) {
+            speechFeedback.style.display = 'block';
+            speechFeedback.innerHTML = `<span style="font-weight:400; font-size:16px;">${msg}</span>`;
+            setTimeout(() => { if(!isRecording && !speechFeedback.innerHTML.includes("🎯")) speechFeedback.style.display = 'none'; }, 4000);
+        }
+
+        function updateUIBasedOnApi() {
+            const hasKey = currentApiKey && currentApiKey.trim() !== "";
+            const btnApiSetup = document.getElementById('btnApiSetup');
+            if (btnApiSetup) {
+                if (hasKey) { btnApiSetup.classList.add('active'); btnApiSetup.innerHTML = '✅ Đã tích hợp Google AI'; }
+                else { btnApiSetup.classList.remove('active'); btnApiSetup.innerHTML = '🔑 Tích hợp Google AI (Tùy chọn)'; }
             }
-            scrollActiveWordToView();
-        }
-
-        function adjustTextSize(delta) {
-            currentTextSize = Math.max(16, Math.min(80, currentTextSize + delta));
-            document.documentElement.style.setProperty('--reading-size', currentTextSize + 'px');
-            if (currentMode === 'TTS') updateTTSHighlight(ttsGlobalStartIdx);
-        }
-
-        function resetTextSize() {
-            currentTextSize = window.innerWidth <= 768 ? 22 : 34;
-            document.documentElement.style.setProperty('--reading-size', currentTextSize + 'px');
-            if (currentMode === 'TTS') updateTTSHighlight(ttsGlobalStartIdx);
-        }
-
-        function toggleDataOverlay() { dataOverlay.classList.toggle('active'); }
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => console.log(err));
-            else if (document.exitFullscreen) document.exitFullscreen();
-        }
-
-        function formatTime(sec) {
-            if (isNaN(sec) || !isFinite(sec)) return "00:00";
-            return `${Math.floor(sec/60).toString().padStart(2,'0')}:${Math.floor(sec%60).toString().padStart(2,'0')}`;
-        }
-
-        // ================= KHỞI TẠO DANH SÁCH GIỌNG ĐỌC (HYBRID) =================
-        function populateVoiceList() {
-            const voiceSelectEn = document.getElementById('voiceSelectEn');
-            const voiceSelectVi = document.getElementById('voiceSelectVi');
-            let voices = synth.getVoices();
-
-            // Tiếng Anh: Kết hợp Google Cloud + Hệ thống
-            let enVoices = voices.filter(v => v.lang.startsWith('en'));
-            let currentEn = voiceSelectEn.value;
-            
-            let enOptions = GOOGLE_VOICES.en.map(v => `<option value="${v.id}">🇬🇧 ${v.name}</option>`).join('');
-            if(enVoices.length > 0) {
-                enOptions += `<optgroup label="Giọng Hệ Thống (Offline)">`;
-                enOptions += enVoices.map((v) => `<option value="${v.name}">🇬🇧 ${v.name.substring(0, 25)}${v.name.length>25?'...':''}</option>`).join('');
-                enOptions += `</optgroup>`;
+            const engineSelect = document.getElementById('engineSelectSTT');
+            if (engineSelect) {
+                let html = hasKey ? '<option value="google">Google Cloud AI</option>' : '';
+                html += '<option value="browser">Trình duyệt (Offline)</option>';
+                engineSelect.innerHTML = html;
+                engineSelect.value = hasKey ? 'google' : 'browser';
             }
-            voiceSelectEn.innerHTML = enOptions;
-            
-            if (currentEn) {
-                const isGoogleEn = GOOGLE_VOICES.en.some(v => v.id === currentEn);
-                const isSystemEn = enVoices.some(v => v.name === currentEn);
-                if (isGoogleEn || isSystemEn) voiceSelectEn.value = currentEn;
-            }
-
-            // Tiếng Việt: Kết hợp Google Cloud + Hệ thống (Loại bỏ giọng "An")
-            let viVoices = voices.filter(v => v.lang.startsWith('vi') && !/An/i.test(v.name));
-            let currentVi = voiceSelectVi.value;
-            
-            let viOptions = GOOGLE_VOICES.vi.map(v => `<option value="${v.id}">🇻🇳 ${v.name}</option>`).join('');
-            if(viVoices.length > 0) {
-                viOptions += `<optgroup label="Giọng Hệ Thống (Offline)">`;
-                viOptions += viVoices.map((v) => `<option value="${v.name}">🇻🇳 ${v.name.substring(0, 25)}${v.name.length>25?'...':''}</option>`).join('');
-                viOptions += `</optgroup>`;
-            }
-            
-            voiceSelectVi.innerHTML = viOptions;
-            
-            // Phục hồi lựa chọn nếu có
-            if (currentVi) {
-                const isGoogle = GOOGLE_VOICES.vi.some(v => v.id === currentVi);
-                const isSystem = viVoices.some(v => v.name === currentVi);
-                if (isGoogle || isSystem) voiceSelectVi.value = currentVi;
-            }
+            loadVoices(); 
         }
-        window.addEventListener('DOMContentLoaded', () => { 
-            populateVoiceList(); 
-            if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = populateVoiceList; 
+
+        function updateVoiceIcon() {
+            const val = document.getElementById('voiceSelectEn').value;
+            const iconSpan = document.getElementById('voiceIconSys');
+            if(val.startsWith('sys_') || val === '') iconSpan.innerText = '💻';
+            else iconSpan.innerText = '🧠';
+        }
+
+        let currentMobileSpeed = 1.0;
+        function toggleMobileSpeed() {
+            const speeds = [0.8, 1.0, 1.2];
+            let idx = speeds.indexOf(currentMobileSpeed);
+            currentMobileSpeed = speeds[(idx + 1) % speeds.length];
+            document.getElementById('sliderTempo').value = currentMobileSpeed;
+            document.getElementById('mobileSpeedBtn').innerText = currentMobileSpeed.toFixed(1) + "x";
+            if(isPlaying && !isRecording) playTTSFromChunk(currentChunkIndex);
+        }
+
+        document.getElementById('sliderTempo').addEventListener('change', function() {
+            currentMobileSpeed = parseFloat(this.value);
+            document.getElementById('mobileSpeedBtn').innerText = currentMobileSpeed.toFixed(1) + "x";
+            if(isPlaying && !isRecording) playTTSFromChunk(currentChunkIndex);
         });
 
-        // ================= ĐIỀU HƯỚNG ÂM THANH CHUNG =================
-        function forceCancelTTS() { if (synth.paused) synth.resume(); synth.cancel(); }
+        function syncHighlight(targetWordIndex) {
+            if(ttsText.length === 0 || targetWordIndex < 0 || targetWordIndex >= wordMapping.length) return;
+            if (currentHighlightedWordIdx === targetWordIndex) return; 
 
-        function togglePlay() {
-            if (currentMode === 'NONE') { toggleDataOverlay(); return; }
+            // Cập nhật giao diện chữ 
+            wordMapping.forEach((m, idx) => {
+                let targetClass = 'k-word';
+                if (idx < targetWordIndex) targetClass = 'k-word read';
+                else if (idx === targetWordIndex) targetClass = 'k-word active';
+                
+                if (m.el && m.el.className !== targetClass) m.el.className = targetClass;
+            });
             
-            if (isPlaying) { 
-                if (currentEngine === 'google') audioEl.pause(); 
-                else if (currentEngine === 'system') { synth.pause(); isTTSPaused = true; }
-                setPlayBtnState(false); 
-            } else { 
-                if (currentMode === 'TTS' && currentChunkIndexForAudio === -1) {
-                    // Lần đầu play
-                    playTTSFromChunk(0);
-                } else {
-                    if (currentEngine === 'google') audioEl.play().catch(e=>console.log(e)); 
-                    else if (currentEngine === 'system') {
-                        if (isTTSPaused) { synth.resume(); isTTSPaused = false; }
-                        else playTTSFromChunk(currentChunkIndexForAudio);
-                    }
-                }
-                setPlayBtnState(true); 
-            }
+            currentHighlightedWordIdx = targetWordIndex;
+            scrollSmoothlyToWord(targetWordIndex);
         }
 
-        function setPlayBtnState(playing) {
-            isPlaying = playing;
-            if (!playing) { 
-                btnPlayPause.textContent = "▶"; 
-                mainAppContainer.classList.remove('playing'); 
-            } else { 
-                btnPlayPause.textContent = "⏸"; 
-                mainAppContainer.classList.add('playing'); 
-                if(isFetchingTTS) btnPlayPause.textContent = "⏳";
-            }
-        }
-
-        function resetReading() {
-            if (currentMode === 'NONE') return;
-            audioEl.pause(); audioEl.currentTime = 0; audioEl.src = "";
-            forceCancelTTS(); clearInterval(ttsSyncInterval);
-            isPlaying = false; isTTSPaused = false; currentChunkIndexForAudio = -1; ttsGlobalStartIdx = 0; currentEngine = 'none';
-            currentActiveWordIdx = -1; activeLyricIndex = -1; currentContinuousScrollY = 0; currentActiveLineIdx = -1;
-            lyricsScroll.style.transform = 'translate3d(0px, 0px, 0px)';
-            setPlayBtnState(false);
-            progressBar.value = 0; timeCurrent.textContent = "00:00"; 
+        function scrollSmoothlyToWord(index) {
+            if (!wordMapping[index] || !wordMapping[index].el) return;
+            let activeEl = wordMapping[index].el;
+            let container = lyricsScroll;
             
-            document.querySelectorAll('.k-word').forEach(el => el.className = 'k-word');
-            document.querySelectorAll('.tts-line').forEach(el => el.classList.remove('active'));
-
-            if (currentMode === 'TTS') updateTTSHighlight(0);
-        }
-
-        function skipBack() { 
-            if (currentMode === 'TTS' && textChunks.length > 0) { 
-                let targetChunk = Math.max(0, currentChunkIndexForAudio - 1);
-                playTTSFromChunk(targetChunk);
+            let containerHeight = container.offsetHeight;
+            let offsetTop = activeEl.offsetTop;
+            let scrollTop = container.scrollTop;
+            
+            let elementRelativeTop = offsetTop - scrollTop;
+            // Thuật toán Safe-Zone: Chỉ cuộn khi lọt ngoài khoảng an toàn (30% - 70%)
+            let topBoundary = containerHeight * 0.3;
+            let bottomBoundary = containerHeight * 0.7;
+            
+            if (elementRelativeTop < topBoundary || elementRelativeTop > bottomBoundary) {
+                container.scrollTo({
+                    top: offsetTop - (containerHeight / 2),
+                    behavior: 'smooth'
+                });
             }
         }
-        function skipForward() { 
-            if (currentMode === 'TTS' && textChunks.length > 0) { 
-                let targetChunk = Math.min(textChunks.length - 1, currentChunkIndexForAudio + 1);
-                playTTSFromChunk(targetChunk);
-            }
+
+        function formatTime(seconds) {
+            if(isNaN(seconds)) return "00:00";
+            let m = Math.floor(seconds / 60);
+            let s = Math.floor(seconds % 60);
+            return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
         }
 
-        // ================= XỬ LÝ PROGRESS BAR & SCROLL =================
         progressBar.addEventListener('mousedown', () => isDraggingSlider = true);
         progressBar.addEventListener('touchstart', () => isDraggingSlider = true, {passive: true});
         progressBar.addEventListener('mouseup', () => isDraggingSlider = false);
         progressBar.addEventListener('touchend', () => isDraggingSlider = false);
 
-        progressBar.addEventListener('input', (e) => { 
+        progressBar.addEventListener('input', function() {
+            if(ttsText.length === 0) return;
             isDraggingSlider = true;
-            if (currentMode === 'TTS' && ttsText !== "") {
-                let targetIdx = Math.floor((e.target.value / 100) * ttsText.length);
-                let newIdx = wordMapping.findIndex(m => targetIdx >= m.start && targetIdx <= m.end);
-                if (newIdx === -1) newIdx = wordMapping.findIndex(m => m.start >= targetIdx);
-                if (newIdx !== -1) {
-                    ttsGlobalStartIdx = wordMapping[newIdx].start; 
-                    updateTTSHighlight(ttsGlobalStartIdx, true);
-                }
+            let percent = this.value / 100;
+            let targetCharIdx = Math.floor(percent * ttsText.length);
+
+            let activeIdx = wordMapping.findIndex(m => targetCharIdx >= m.start && targetCharIdx <= m.end);
+            if (activeIdx === -1) activeIdx = wordMapping.findIndex(m => m.start >= targetCharIdx);
+            if (activeIdx !== -1) {
+                syncHighlight(activeIdx);
             }
         });
 
-        progressBar.addEventListener('change', () => {
+        progressBar.addEventListener('change', function() {
+            if(ttsText.length === 0) return;
             isDraggingSlider = false;
-            if (currentMode === 'TTS' && ttsText !== "") {
-                // Khi thả chuột tua, tìm Chunk chứa từ hiện tại và phát lại từ Chunk đó
-                let activeChunkIndex = textChunks.findIndex(c => ttsGlobalStartIdx >= c.startIndex && ttsGlobalStartIdx <= c.endIndex);
-                if(activeChunkIndex === -1) activeChunkIndex = 0;
-                
-                // Tính phần trăm lệch bên trong chunk để Tua audio chính xác
-                let chunk = textChunks[activeChunkIndex];
-                let offsetPct = (ttsGlobalStartIdx - chunk.startIndex) / chunk.text.length;
-                
-                playTTSFromChunk(activeChunkIndex, offsetPct);
+            let percent = this.value / 100;
+            let targetCharIdx = Math.floor(percent * ttsText.length);
+            
+            let targetChunkIdx = textChunks.findIndex(c => targetCharIdx >= c.startIndex && targetCharIdx <= c.endIndex);
+            
+            if (targetChunkIdx !== -1) {
+                currentChunkIndex = targetChunkIdx;
+                if (isPlaying) {
+                    playTTSFromChunk(currentChunkIndex); // Phát lại từ Chunk tương ứng
+                }
             }
         });
 
-        function getOffsetTopRelativeToContainer(element, container) {
-            let offsetTop = 0;
-            while(element && element !== container) { offsetTop += element.offsetTop; element = element.offsetParent; }
-            return offsetTop;
+        // ĐỒNG BỘ PLAYBACK TỰ ĐỘNG LÊN THANH TRƯỢT TỐI ƯU HÓA (Dành cho Google AI)
+        audioEl.addEventListener('timeupdate', () => {
+            // Sửa lỗi nhảy chữ Google AI: Thêm kiểm tra currentTime === 0 và audioEl.readyState để bỏ qua frame cũ (cache)
+            if (!isKaraokePlaying || ttsText.length === 0 || !audioEl.duration || !window.activeTTSChunk || audioEl.currentTime === 0) return;
+            
+            let chunk = window.activeTTSChunk;
+            let progressRatio = audioEl.currentTime / audioEl.duration;
+            let offsetChars = Math.floor(progressRatio * chunk.text.length);
+            let charIdx = chunk.startIndex + offsetChars;
+            
+            let globalPercent = (charIdx / ttsText.length) * 100;
+            
+            requestAnimationFrame(() => {
+                if(!isDraggingSlider) progressBar.value = globalPercent;
+                
+                let activeIdx = wordMapping.findIndex(m => charIdx >= m.start && charIdx <= m.end);
+                if (activeIdx === -1) activeIdx = wordMapping.findIndex(m => m.start >= charIdx);
+                
+                // Khôi phục ranh giới an toàn: Ngăn không cho chữ nhảy sáng lố sang câu (chunk) tiếp theo do sai số phép chia
+                if (activeIdx !== -1 && wordMapping[activeIdx].start >= chunk.startIndex && wordMapping[activeIdx].end <= chunk.endIndex) {
+                    syncHighlight(activeIdx);
+                }
+            });
+        });
+
+        let isRecording = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let browserRecognition = null; 
+
+        async function toggleRecording() {
+            if(textChunks.length === 0) { showSoftMessage("Vui lòng nạp văn bản trước!"); return; }
+            const engine = document.getElementById('engineSelectSTT').value;
+            if(isRecording) {
+                if(engine === 'google') stopRecordingGoogle(); else stopRecordingBrowser();
+            } else {
+                if(engine === 'google') await startRecordingGoogle(); else startRecordingBrowser();
+            }
         }
 
-        function scrollActiveWordToView() {
-            const container = document.getElementById('karaokeContainer');
-            const containerHeight = container.clientHeight;
-            let activeEl = null;
+        function setRecordingUI(active, msg) {
+            isRecording = active;
+            if(active) {
+                btnRecord.classList.add('recording'); mainAppContainer.classList.add('recording');
+                if(isPlaying) forceResetAudioOnly(); 
+            } else {
+                btnRecord.classList.remove('recording'); mainAppContainer.classList.remove('recording');
+            }
+            if(msg) showSoftMessage(msg);
+        }
 
-            if (currentMode === 'TTS' && currentActiveWordIdx !== -1) activeEl = wordMapping[currentActiveWordIdx].el;
+        async function startRecordingGoogle() {
+            if(!currentApiKey) { showSoftMessage("Bạn chưa tích hợp mã Khóa Google AI!"); return; }
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                let options = { mimeType: 'audio/webm;codecs=opus' };
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) options = { mimeType: 'audio/webm' };
+                
+                mediaRecorder = new MediaRecorder(stream, options);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+                mediaRecorder.onstop = processAudioWithGoogleSTT;
+                mediaRecorder.start();
+                
+                startVisualTracking(); 
+                setRecordingUI(true, "Đang ghi âm (Google AI)... Đọc to bài rồi bấm lại 🎙️.");
+            } catch (err) { showSoftMessage("Lỗi Micro: Vui lòng cấp quyền trong trình duyệt."); }
+        }
 
-            if (activeEl) {
-                let offsetTop = getOffsetTopRelativeToContainer(activeEl, lyricsScroll);
-                if (currentReadMode === 'karaoke') {
-                    let offset = offsetTop + (activeEl.clientHeight / 2);
-                    lyricsScroll.style.transform = `translate3d(0, ${-offset + (containerHeight * 0.50)}px, 0)`;
+        function stopRecordingGoogle() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop(); mediaRecorder.stream.getTracks().forEach(t => t.stop());
+            }
+            stopVisualTracking();
+            setRecordingUI(false, "Đang gửi lên Google Server phân tích...");
+        }
+
+        function startRecordingBrowser() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showSoftMessage("Trình duyệt không hỗ trợ chấm điểm. Hãy dùng Google AI."); return;
+            }
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            browserRecognition = new SpeechRec();
+            browserRecognition.lang = 'en-US';
+            browserRecognition.continuous = true;
+            browserRecognition.interimResults = true;
+            let finalTranscript = "";
+            let startingIndexForVisual = currentHighlightedWordIdx > -1 ? currentHighlightedWordIdx : 0;
+
+            browserRecognition.onstart = () => { setRecordingUI(true, "Đang ghi âm (Offline)... Đọc xong bấm lại 🎙️."); };
+            
+            browserRecognition.onresult = (event) => {
+                let interimTranscript = "";
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript + " ";
+                    else interimTranscript += event.results[i][0].transcript + " ";
+                }
+                
+                // Thuật toán đếm từ giúp tracking chính xác thời gian thực
+                let spokenWordsCount = (finalTranscript + interimTranscript).trim().split(/\s+/).filter(w => w.length > 0).length;
+                let targetIdx = Math.min(startingIndexForVisual + spokenWordsCount - 1, wordMapping.length - 1);
+                
+                if (targetIdx >= 0 && targetIdx < wordMapping.length) {
+                    syncHighlight(targetIdx);
+                }
+            };
+
+            browserRecognition.onend = () => {
+                // Sửa lỗi Offline không hiện điểm khi nhấn Stop
+                if (window.isForceStopped) { window.isForceStopped = false; return; }
+                
+                setRecordingUI(false, "Đang chấm điểm...");
+                if(finalTranscript.trim().length > 0) {
+                     let words = finalTranscript.trim().split(/\s+/).map(w => ({ word: w, confidence: 0.9 }));
+                     evaluatePronunciationWagnerFischer(words, finalTranscript.trim());
                 } else {
-                    const bottomFadeZone = containerHeight * 0.15; 
-                    const lineEstimate = currentTextSize * 1.5; 
-                    const bottomBuffer = bottomFadeZone + (lineEstimate * 3); 
-                    const topBuffer = containerHeight * 0.15; 
-                    let positionOnScreen = offsetTop + currentContinuousScrollY;
+                     showSoftMessage("Đã hủy. Không nghe thấy tiếng.");
+                }
+            };
+            browserRecognition.start();
+        }
 
-                    if (positionOnScreen > (containerHeight - bottomBuffer) || positionOnScreen < topBuffer) {
-                        let targetY = -(offsetTop - topBuffer);
-                        currentContinuousScrollY = Math.min(0, targetY); 
-                        lyricsScroll.style.transform = `translate3d(0, ${currentContinuousScrollY}px, 0)`;
+        function stopRecordingBrowser() { 
+            if(browserRecognition) browserRecognition.stop(); // Lệnh này sẽ tự động gọi hàm onend để xử lý chấm điểm
+            setRecordingUI(false, "Đang xử lý kết quả..."); 
+        }
+
+        let visualRecognition = null;
+        function startVisualTracking() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return;
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            visualRecognition = new SpeechRec();
+            visualRecognition.lang = 'en-US';
+            visualRecognition.continuous = true;
+            visualRecognition.interimResults = true;
+            let visualFinal = "";
+            let startingIndexForVisual = currentHighlightedWordIdx > -1 ? currentHighlightedWordIdx : 0;
+
+            visualRecognition.onresult = (event) => {
+                let visualInterim = "";
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) visualFinal += event.results[i][0].transcript + " ";
+                    else visualInterim += event.results[i][0].transcript + " ";
+                }
+                let spokenCount = (visualFinal + visualInterim).trim().split(/\s+/).filter(w=>w.length>0).length;
+                let targetIdx = Math.min(startingIndexForVisual + spokenCount - 1, wordMapping.length - 1);
+                if(targetIdx >= 0 && targetIdx < wordMapping.length) {
+                    syncHighlight(targetIdx);
+                }
+            };
+            visualRecognition.start();
+        }
+        function stopVisualTracking() { if(visualRecognition) { visualRecognition.stop(); visualRecognition = null; } }
+
+        function blobToBase64(blob) {
+            return new Promise((res, rej) => { const reader = new FileReader(); reader.readAsDataURL(blob); reader.onloadend = () => res(reader.result.split(',')[1]); reader.onerror = rej; });
+        }
+
+        async function processAudioWithGoogleSTT() {
+            if (audioChunks.length === 0 || !currentApiKey) return;
+            const base64Audio = await blobToBase64(new Blob(audioChunks, { type: 'audio/webm' }));
+            
+            let phraseChunks = []; let currentChunk = "";
+            wordMapping.forEach(m => {
+                if(!m.el) return;
+                let word = m.el.innerText.replace(/[^\p{L}\p{N}]/gu, ''); 
+                if(!word) return;
+                if ((currentChunk + " " + word).length < 90) currentChunk += (currentChunk === "" ? "" : " ") + word;
+                else { phraseChunks.push(currentChunk); currentChunk = word; }
+            });
+            if (currentChunk !== "") phraseChunks.push(currentChunk);
+
+            const payload = {
+                config: {
+                    encoding: "WEBM_OPUS", languageCode: "en-US", enableWordConfidence: true,
+                    model: "latest_long", useEnhanced: true,
+                    speechContexts: [{ phrases: phraseChunks, boost: 100 }]
+                },
+                audio: { content: base64Audio }
+            };
+
+            try {
+                const res = await fetch(getGoogleSTTUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (!res.ok) { showSoftMessage(`LỖI API: ${data.error?.message}`); return; }
+                if (data.results && data.results.length > 0) {
+                    let allRecognizedWords = []; let fullTranscript = "";
+                    data.results.forEach(r => {
+                        if(r.alternatives && r.alternatives[0]) {
+                            fullTranscript += r.alternatives[0].transcript + " ";
+                            if(r.alternatives[0].words) allRecognizedWords = allRecognizedWords.concat(r.alternatives[0].words);
+                        }
+                    });
+                    evaluatePronunciationWagnerFischer(allRecognizedWords, fullTranscript.trim());
+                } else { showSoftMessage("Không nghe rõ âm thanh. Vui lòng đọc to và gần Micro hơn!"); }
+            } catch (err) { showSoftMessage("Lỗi kết nối AI Server."); }
+        }
+
+        function evaluatePronunciationWagnerFischer(recognizedWordsArray, fullTranscript) {
+            document.querySelectorAll('.k-word').forEach(el => { el.classList.remove('word-correct', 'word-wrong'); el.title = ""; });
+
+            const normalizeWord = (w) => w.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+            
+            let expectedArr = wordMapping.map((m, idx) => ({ word: normalizeWord(m.el ? m.el.innerText : ""), idx: idx })).filter(item => item.word !== '');
+            let recognizedArr = fullTranscript.trim().split(/\s+/).map(normalizeWord).filter(w => w !== '');
+
+            if (expectedArr.length === 0 || recognizedArr.length === 0) {
+                wordMapping.forEach(m => { if(m.el) m.el.classList.add('word-wrong'); }); return;
+            }
+
+            let n = expectedArr.length; let m = recognizedArr.length;
+            let dp = Array(n + 1).fill(null).map(() => Array(m + 1).fill(0));
+            for (let i = 0; i <= n; i++) dp[i][0] = i;
+            for (let j = 0; j <= m; j++) dp[0][j] = j;
+
+            for (let i = 1; i <= n; i++) {
+                for (let j = 1; j <= m; j++) {
+                    let w1 = expectedArr[i - 1].word;
+                    let w2 = recognizedArr[j - 1];
+                    let isMatch = (w1 === w2) || (w1.length >= 4 && w2.length >= 4 && (w1.includes(w2) || w2.includes(w1)));
+                    let cost = isMatch ? 0 : 1;
+
+                    dp[i][j] = Math.min(
+                        dp[i - 1][j] + 1,       // Bỏ sót
+                        dp[i][j - 1] + 1,       // Đọc thừa
+                        dp[i - 1][j - 1] + cost // Khớp/Thay thế
+                    );
+                }
+            }
+
+            let i = n; let j = m; let matchCount = 0;
+            while (i > 0 && j > 0) {
+                let currentCost = dp[i][j];
+                let w1 = expectedArr[i - 1].word; let w2 = recognizedArr[j - 1];
+                let cost = (w1 === w2 || (w1.length >= 4 && w2.length >= 4 && (w1.includes(w2) || w2.includes(w1)))) ? 0 : 1;
+
+                if (currentCost === dp[i - 1][j - 1] + cost) {
+                    let realIndex = expectedArr[i - 1].idx;
+                    if (cost === 0) {
+                        if(wordMapping[realIndex].el) wordMapping[realIndex].el.classList.add('word-correct');
+                        matchCount++;
+                    } else {
+                        if(wordMapping[realIndex].el) {
+                            wordMapping[realIndex].el.classList.add('word-wrong');
+                            wordMapping[realIndex].el.title = `Máy nghe thành: "${w2}"`;
+                        }
                     }
+                    i--; j--;
+                } else if (currentCost === dp[i - 1][j] + 1) {
+                    let realIndex = expectedArr[i - 1].idx;
+                    if(wordMapping[realIndex].el) wordMapping[realIndex].el.classList.add('word-wrong');
+                    i--;
+                } else { j--; }
+            }
+            while (i > 0) {
+                let realIndex = expectedArr[i - 1].idx;
+                if(wordMapping[realIndex].el) wordMapping[realIndex].el.classList.add('word-wrong');
+                i--;
+            }
+
+            let score = Math.round((matchCount / n) * 100);
+            
+            speechFeedback.style.display = 'block';
+            speechFeedback.innerHTML = `🎯 Độ chuẩn xác <b>${score}%</b>. 🎙️ Máy nghe được: <span class="accent">"${fullTranscript}"</span>`;
+        }
+
+        async function fetchGoogleAudio(text, lang, speed, voiceId) {
+            let cleanText = text.replace(/["“”'‘’«»]/g, ' ');
+            const payload = {
+                input: { text: cleanText },
+                voice: { languageCode: voiceId.substring(0, 5) || 'en-US', name: voiceId },
+                audioConfig: { audioEncoding: "MP3", speakingRate: speed }
+            };
+            try {
+                const res = await fetch(getGoogleTTSUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.audioContent) return "data:audio/mp3;base64," + data.audioContent;
+            } catch(e) {}
+            return null;
+        }
+
+        async function playTTSFromChunk(chunkIdx) {
+            if (chunkIdx >= textChunks.length || chunkIdx < 0) {
+                btnPlayPause.textContent = "▶"; isPlaying = false; isKaraokePlaying = false;
+                mainAppContainer.classList.remove('playing');
+                showSoftMessage("Đã đọc xong toàn bài. Nhấn 🎙️ để tự đọc lại."); return;
+            }
+            
+            audioEl.pause(); synth.cancel();
+            currentChunkIndex = chunkIdx; let chunk = textChunks[chunkIdx];
+            window.activeTTSChunk = chunk; // Lưu đoạn để timeupdate lấy
+            
+            let speed = parseFloat(document.getElementById('sliderTempo').value);
+            let voiceId = document.getElementById('voiceSelectEn').value; 
+            
+            btnPlayPause.textContent = "⏳"; isKaraokePlaying = true;
+            
+            if (voiceId.startsWith("sys_") || !currentApiKey) {
+                let utterance = new SpeechSynthesisUtterance(chunk.text);
+                utterance.rate = speed; utterance.volume = parseFloat(document.getElementById('sliderVolume').value);
+                let voices = synth.getVoices();
+                let selectedVoice = voices.find(v => v.name === voiceId.replace("sys_", ""));
+                if(selectedVoice) utterance.voice = selectedVoice; else utterance.lang = 'en-US'; 
+                
+                utterance.onboundary = (e) => {
+                    if (e.name === 'word') {
+                        let charIdx = chunk.startIndex + e.charIndex;
+                        let globalPercent = (charIdx / ttsText.length) * 100;
+                        requestAnimationFrame(() => {
+                            if(!isDraggingSlider) progressBar.value = globalPercent;
+                            let activeIdx = wordMapping.findIndex(m => charIdx >= m.start && charIdx <= m.end);
+                            if (activeIdx === -1) activeIdx = wordMapping.findIndex(m => m.start >= charIdx);
+                            // Ranh giới an toàn cho Offline sys_
+                            if (activeIdx !== -1 && wordMapping[activeIdx].start >= chunk.startIndex && wordMapping[activeIdx].end <= chunk.endIndex) {
+                                syncHighlight(activeIdx);
+                            }
+                        });
+                    }
+                };
+                utterance.onend = () => { isKaraokePlaying = false; if(isPlaying) playTTSFromChunk(chunkIdx + 1); };
+                synth.speak(utterance);
+                btnPlayPause.textContent = "⏸"; mainAppContainer.classList.add('playing');
+            } else {
+                let base64Audio = await fetchGoogleAudio(chunk.text, chunk.lang, speed, voiceId);
+                if(base64Audio) {
+                    audioEl.src = base64Audio; 
+                    audioEl.volume = parseFloat(document.getElementById('sliderVolume').value);
+                    audioEl.currentTime = 0; // Fix nhảy frame đầu tiên cho Google AI
+                    audioEl.play(); 
+                    btnPlayPause.textContent = "⏸"; mainAppContainer.classList.add('playing');
+                    audioEl.onended = () => { isKaraokePlaying = false; if(isPlaying) playTTSFromChunk(chunkIdx + 1); };
+                } else {
+                    showSoftMessage("Giọng đọc AI thất bại, hãy thử giọng Offline.");
+                    btnPlayPause.textContent = "▶"; isPlaying = false; isKaraokePlaying = false;
                 }
             }
         }
 
-        // ================= XỬ LÝ VĂN BẢN ĐẦU VÀO =================
+        function forceResetAudioOnly() {
+            audioEl.pause(); synth.cancel();
+            isPlaying = false; isKaraokePlaying = false;
+            btnPlayPause.textContent = "▶"; mainAppContainer.classList.remove('playing');
+            progressBar.value = 0; document.getElementById('timeCurrent').innerText = "00:00";
+        }
+
+        function togglePlay() {
+            if(textChunks.length === 0) { toggleDataOverlay(); return; }
+            if(isRecording) forceReset(); 
+            
+            if (isPlaying) { 
+                forceResetAudioOnly();
+            } else { 
+                isPlaying = true; playTTSFromChunk(currentChunkIndex); 
+            }
+        }
+
+        function forceReset() {
+            window.isForceStopped = true; // Cờ an toàn để không gọi onend khi bấm Stop chủ động
+            forceResetAudioOnly();
+            
+            if(isRecording) {
+                isRecording = false; 
+                if(mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+                if(browserRecognition) browserRecognition.stop();
+                stopVisualTracking();
+                btnRecord.classList.remove('recording'); mainAppContainer.classList.remove('recording');
+            }
+            
+            currentChunkIndex = 0; currentHighlightedWordIdx = -1;
+            wordMapping.forEach(m => { if(m.el) m.el.className = 'k-word'; }); 
+            speechFeedback.style.display = 'none'; 
+            lyricsScroll.scrollTo({top: 0, behavior: 'smooth'});
+            
+            if(textChunks.length > 0) syncHighlight(0);
+        }
+
+        function toggleDataOverlay() { document.getElementById('dataOverlay').classList.toggle('active'); }
         function clearCustomText() { document.getElementById('customText').value = ''; }
+        
         function handleTextUpload(event) {
             const file = event.target.files[0]; if(!file) return;
             if (file.name.endsWith('.docx')) {
                 const reader = new FileReader();
-                reader.onload = function(loadEvent) {
-                    mammoth.extractRawText({arrayBuffer: loadEvent.target.result})
-                        .then(result => document.getElementById('customText').value = result.value)
-                        .catch(err => { console.error(err); alert("Lỗi khi đọc file Word: " + err.message); });
-                };
-                reader.readAsArrayBuffer(file);
-            } else alert("Vui lòng chọn file định dạng .docx");
+                reader.onload = function(e) {
+                    mammoth.extractRawText({arrayBuffer: e.target.result})
+                        .then(r => document.getElementById('customText').value = r.value).catch(err => showSoftMessage("Lỗi xử lý file Word"));
+                }; reader.readAsArrayBuffer(file);
+            } else showSoftMessage("Hệ thống chỉ hỗ trợ định dạng .docx");
             event.target.value = '';
         }
 
         function loadCustomData() {
             let txt = document.getElementById('customText').value;
-            if(!txt.trim()) { alert("Vui lòng nhập văn bản!"); return; }
+            if(!txt.trim()) { showSoftMessage("Vui lòng nhập văn bản!"); return; }
             
-            audioEl.pause();
-            audioEl.src = "";
-            currentChunkIndexForAudio = -1;
-            currentMode = 'TTS'; 
-            renderTTSText(txt); 
-            dataOverlay.classList.remove('active'); 
-        }
-
-        // Tách câu để đẩy vào Google TTS từng đoạn nhỏ, giúp khớp chữ chính xác 100%
-        function analyzeLanguageChunks(text) {
-            let chunks = []; let currentIndex = 0; 
-            let regex = /([^.!?;\n,:]+[.!?;\n,:]*)/g; 
-            let segments = text.match(regex);
-            if(segments) {
-                let tempChunks = [];
-                segments.forEach(segment => {
-                    let lang = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(segment) ? 'vi' : 'en';
-                    tempChunks.push({ text: segment, lang: lang, startIndex: currentIndex, endIndex: currentIndex + segment.length - 1 });
-                    currentIndex += segment.length;
-                });
-                // Gộp các đoạn nhỏ cùng ngôn ngữ nếu chúng quá ngắn
-                let mergedChunks = [];
-                if(tempChunks.length > 0) {
-                    let currentMerge = tempChunks[0];
-                    for(let i = 1; i < tempChunks.length; i++) {
-                        if(tempChunks[i].lang === currentMerge.lang && currentMerge.text.length < 150) { 
-                            currentMerge.text += tempChunks[i].text; currentMerge.endIndex = tempChunks[i].endIndex; 
-                        } else { mergedChunks.push(currentMerge); currentMerge = tempChunks[i]; }
-                    }
-                    mergedChunks.push(currentMerge);
+            forceReset();
+            wordMapping = []; textChunks = []; let currentIndex = 0;
+            let segments = txt.match(/([^.!?;\n]+[.!?;\n]*)/g) || [txt];
+            segments.forEach(seg => {
+                if(seg.trim().length > 0) {
+                    textChunks.push({ text: seg, lang: 'en', startIndex: currentIndex, endIndex: currentIndex + seg.length - 1 });
+                    currentIndex += seg.length;
                 }
-                chunks = mergedChunks;
-            } else if(text.trim() !== "") {
-                 let lang = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(text) ? 'vi' : 'en';
-                 chunks.push({ text: text, lang: lang, startIndex: 0, endIndex: text.length - 1 });
-            }
-            return chunks;
-        }
-
-        function renderTTSText(text) {
+            });
+            
             let finalHtml = "<div class='tts-paragraph'>";
-            let currentTextAcc = ""; wordMapping = []; textChunks = analyzeLanguageChunks(text);
-            const paragraphs = text.split('\n'); let lineIndex = 0;
-
+            let currentTextAcc = ""; const paragraphs = txt.split('\n');
             paragraphs.forEach((para, index) => {
-                let paraHtml = "";
-                if (para.trim() !== "") {
-                    paraHtml += `<p class='tts-line' id='tts-line-${lineIndex}' style="text-indent: 1.5rem; margin-top: 0; margin-bottom: 0.8rem;">`;
-                } else {
-                    paraHtml += `<div class='tts-line' id='tts-line-${lineIndex}' style="height: 0.8rem;"></div>`;
-                }
-
+                if(para.trim() === "") { finalHtml += `<div class='tts-line' style="height: 1rem;"></div>`; currentTextAcc += '\n'; return; }
+                let paraHtml = `<p class='tts-line'>`;
                 const words = para.split(/(\s+)/);
                 words.forEach(p => {
-                    if (/\s+/.test(p)) { 
-                        paraHtml += p; 
-                        currentTextAcc += p; 
-                    } else if (p !== "") {
-                        wordMapping.push({ start: currentTextAcc.length, end: currentTextAcc.length + p.length - 1, lineIdx: lineIndex });
-                        paraHtml += `<span class="k-word">${p}</span>`; 
-                        currentTextAcc += p;
+                    if (/\s+/.test(p)) { paraHtml += p; currentTextAcc += p; } 
+                    else if (p !== "") {
+                        wordMapping.push({ start: currentTextAcc.length, end: currentTextAcc.length + p.length - 1, el: null });
+                        paraHtml += `<span class="k-word">${p}</span>`; currentTextAcc += p;
                     }
                 });
-
-                if (para.trim() !== "") paraHtml += `</p>`;
-                finalHtml += paraHtml;
-                lineIndex++;
-                if (index < paragraphs.length - 1) currentTextAcc += '\n'; 
+                paraHtml += `</p>`; finalHtml += paraHtml; 
+                if (index < paragraphs.length - 1) currentTextAcc += '\n';
             });
-            finalHtml += "</div>";
-
-            lyricsScroll.innerHTML = finalHtml; ttsText = currentTextAcc;
+            lyricsScroll.innerHTML = finalHtml + "</div>";
+            ttsText = currentTextAcc;
+            
             const kElements = lyricsScroll.querySelectorAll('.k-word');
-            wordMapping.forEach((m, i) => {
-                m.el = kElements[i];
-                m.el.onclick = () => { 
-                    ttsGlobalStartIdx = m.start;
-                    if(!isPlaying) {
-                        updateTTSHighlight(m.start, false); 
-                    } else {
-                        // Kích nhảy chữ tự động
-                        let activeChunkIndex = textChunks.findIndex(c => m.start >= c.startIndex && m.start <= c.endIndex);
-                        if(activeChunkIndex === -1) activeChunkIndex = 0;
-                        let offsetPct = (m.start - textChunks[activeChunkIndex].startIndex) / textChunks[activeChunkIndex].text.length;
-                        playTTSFromChunk(activeChunkIndex, offsetPct);
+            wordMapping.forEach((m, i) => { 
+                m.el = kElements[i]; 
+                m.el.onclick = () => {
+                    let clickedChunkIndex = textChunks.findIndex(c => m.start >= c.startIndex && m.start <= c.endIndex);
+                    if(clickedChunkIndex !== -1) { 
+                        currentChunkIndex = clickedChunkIndex; 
+                        syncHighlight(i);
+                        if(isPlaying) { playTTSFromChunk(currentChunkIndex); }
                     }
-                }
+                };
             });
             
-            document.getElementById('uiTitle').textContent = "Văn Bản (Hybrid Reader)";
-            document.getElementById('uiArtist').textContent = "🗣️ Hệ Thống EN & Google AI/Hệ Thống VI";
-            emptyState.style.opacity = '0';
-            currentContinuousScrollY = 0; ttsGlobalStartIdx = 0; currentActiveLineIdx = -1;
-            updateTTSHighlight(0); setPlayBtnState(false);
+            document.getElementById('uiTitle').textContent = "Bài Luyện Đọc Tiếng Anh";
+            document.getElementById('uiArtist').textContent = "Hệ Thống Phân Tích Phát Âm AI";
+            document.getElementById('emptyState').style.display = 'none';
+            toggleDataOverlay();
+            
+            setTimeout(() => syncHighlight(0), 100);
+            showSoftMessage("Đã nạp văn bản! Bấm 🎙️ để bắt đầu luyện đọc.");
         }
 
-        // ================= GOOGLE CLOUD TTS ENGINE & HIỂN THỊ =================
-        function updateTTSHighlight(charIdx, fromSlider = false) {
-            if(ttsText.length === 0) return;
-            
-            let percent = (charIdx / ttsText.length) * 100;
-            if (!fromSlider && !isDraggingSlider) progressBar.value = percent;
-            
-            // Ước tính thời gian tổng
-            let tempo = parseFloat(document.getElementById('sliderTempo').value);
-            let estTotal = (ttsText.length / 15) / tempo; 
-            timeTotal.textContent = formatTime(estTotal);
-            timeCurrent.textContent = formatTime((percent / 100) * estTotal);
-
-            let newIdx = wordMapping.findIndex(m => charIdx >= m.start && charIdx <= m.end);
-            if (newIdx === -1) newIdx = wordMapping.findIndex(m => m.start >= charIdx);
-
-            if (newIdx !== currentActiveWordIdx && newIdx !== -1) {
-                let activeLineIdx = wordMapping[newIdx].lineIdx;
-
-                // TỐI ƯU HÓA CPU TUYỆT ĐỐI CHO MOBILE: Xử lý TỪ (Word) theo O(1) thay vì O(n)
-                if (currentActiveWordIdx !== -1 && newIdx === currentActiveWordIdx + 1 && !fromSlider) {
-                    // Nếu đang đọc bình thường tuần tự: Chỉ đổi màu 1 từ cũ thành 'đã đọc' và 1 từ mới thành 'đang đọc'
-                    if (wordMapping[currentActiveWordIdx]) wordMapping[currentActiveWordIdx].el.className = 'k-word read';
-                    wordMapping[newIdx].el.className = 'k-word active';
-                } else {
-                    // Chỉ dùng vòng lặp nặng để tính lại toàn bộ khi người dùng Tua (Seek) hoặc Vừa load xong
-                    wordMapping.forEach((m, i) => {
-                        if (i < newIdx) m.el.className = 'k-word read'; 
-                        else if (i === newIdx) m.el.className = 'k-word active'; 
-                        else m.el.className = 'k-word'; 
-                    });
-                }
-
-                // TỐI ƯU HÓA DOM: Thay vì duyệt toàn bộ các dòng, chỉ cập nhật dòng cũ và dòng mới (O(1) thay vì O(n))
-                if (activeLineIdx !== currentActiveLineIdx) {
-                    if (currentActiveLineIdx !== -1) {
-                        const oldLine = document.getElementById(`tts-line-${currentActiveLineIdx}`);
-                        if (oldLine) oldLine.classList.remove('active');
-                    }
-                    const newLine = document.getElementById(`tts-line-${activeLineIdx}`);
-                    if (newLine) newLine.classList.add('active');
-                    currentActiveLineIdx = activeLineIdx;
-                }
-                
-                currentActiveWordIdx = newIdx; scrollActiveWordToView();
-            } else if (newIdx === -1 && currentActiveWordIdx === -1) {
-                const container = document.getElementById('karaokeContainer');
-                if (currentReadMode === 'karaoke') lyricsScroll.style.transform = `translate3d(0, ${container.clientHeight * 0.50}px, 0)`;
-                else { currentContinuousScrollY = 0; lyricsScroll.style.transform = `translate3d(0, 0px, 0)`; }
-            }
-        }
-
-        // Khớp tiến trình Audio của Chunk với Highlighting chữ thực tế
-        audioEl.addEventListener('timeupdate', () => {
-            if(currentMode !== 'TTS' || currentEngine !== 'google' || !audioEl.duration || isDraggingSlider) return;
-            if(currentChunkIndexForAudio < 0 || currentChunkIndexForAudio >= textChunks.length) return;
-            
-            let chunk = textChunks[currentChunkIndexForAudio];
-            
-            // THUẬT TOÁN ĐỒNG BỘ: Tính % thời gian đã chạy -> Nội suy thành % Ký tự trong chunk.
-            let progressRatio = audioEl.currentTime / audioEl.duration;
-            let offsetChars = Math.floor(progressRatio * chunk.text.length);
-            
-            ttsGlobalStartIdx = chunk.startIndex + offsetChars;
-            updateTTSHighlight(ttsGlobalStartIdx);
-        });
-
-        // Xử lý tự động chuyển câu tiếp theo
-        audioEl.addEventListener('ended', () => {
-            if (currentMode === 'TTS' && currentEngine === 'google' && isPlaying) {
-                // Tự động phát chunk tiếp theo khi Google Audio kết thúc
-                playTTSFromChunk(currentChunkIndexForAudio + 1);
-            }
-        });
-
-        // Hàm gọi API của Google (Hỗ trợ cấu hình động)
-        async function fetchGoogleAudio(text, lang, speed, voiceId) {
-            // Xóa tạp âm, ngoặc để tránh AI đọc vấp
-            let cleanText = text.replace(/["“”'‘’«»]/g, ' ');
-
-            const cacheKey = cleanText + "|" + voiceId + "|" + speed;
-            if (ttsAudioCache[cacheKey]) return ttsAudioCache[cacheKey]; // Trả về nếu có Cache
-
-            const payload = {
-                input: { text: cleanText },
-                voice: { languageCode: lang === 'vi' ? 'vi-VN' : 'en-US', name: voiceId },
-                audioConfig: { audioEncoding: "MP3", speakingRate: speed }
-            };
-
-            const response = await fetch(GOOGLE_TTS_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await response.json();
-            if (data.audioContent) {
-                const base64Data = "data:audio/mp3;base64," + data.audioContent;
-                ttsAudioCache[cacheKey] = base64Data; // Lưu đệm
-                return base64Data;
-            } else {
-                console.error("Google TTS API Error:", data);
-                return null;
-            }
-        }
-
-        // Hàm tải đoạn Text và Phát Audio 
-        async function playTTSFromChunk(chunkIdx, startOffsetPct = 0) {
-            if (chunkIdx >= textChunks.length || chunkIdx < 0) return;
-            
-            audioEl.pause(); // Dừng Google Audio cũ
-            forceCancelTTS(); // Dừng System TTS cũ
-            clearInterval(ttsSyncInterval);
-            isTTSPaused = false;
-            
-            currentChunkIndexForAudio = chunkIdx;
-            let chunk = textChunks[chunkIdx];
-            
-            const isEnEnabled = document.getElementById('enableEn').checked;
-            const isViEnabled = document.getElementById('enableVi').checked;
-            
-            let targetLang = chunk.lang;
-            if (!isEnEnabled && isViEnabled) targetLang = 'vi'; 
-            else if (isEnEnabled && !isViEnabled) targetLang = 'en'; 
-            else if (!isEnEnabled && !isViEnabled) { 
-                playTTSFromChunk(chunkIdx + 1); return; 
-            }
-
-            if(chunk.text.trim() === "") {
-                playTTSFromChunk(chunkIdx + 1); return;
-            }
-            
-            // Lựa chọn Engine linh hoạt dựa trên dropdown chọn giọng
-            let isGoogleEngine = false;
-            let selectedVoiceId = "";
-            
-            if (targetLang === 'vi') {
-                selectedVoiceId = document.getElementById('voiceSelectVi').value;
-                isGoogleEngine = GOOGLE_VOICES.vi.some(v => v.id === selectedVoiceId);
-            } else {
-                selectedVoiceId = document.getElementById('voiceSelectEn').value;
-                isGoogleEngine = GOOGLE_VOICES.en.some(v => v.id === selectedVoiceId);
-            }
-
-            if (isGoogleEngine) {
-                // ================= ENGINE GOOGLE (TIẾNG VIỆT & TIẾNG ANH) =================
-                currentEngine = 'google';
-                isFetchingTTS = true;
-                if(isPlaying) setPlayBtnState(true); 
-
-                let speed = parseFloat(document.getElementById('sliderTempo').value);
-                let base64Audio = await fetchGoogleAudio(chunk.text, targetLang, speed, selectedVoiceId);
-                
-                isFetchingTTS = false;
-                if(isPlaying) setPlayBtnState(true); 
-
-                if (base64Audio) {
-                    audioEl.src = base64Audio;
-                    audioEl.volume = parseFloat(document.getElementById('sliderVolume').value);
-                    
-                    audioEl.onloadedmetadata = () => {
-                        if (startOffsetPct > 0) {
-                            audioEl.currentTime = audioEl.duration * startOffsetPct;
-                        }
-                        if(isPlaying) audioEl.play().catch(e=>console.log(e));
-                        audioEl.onloadedmetadata = null;
-                    };
-                    
-                    ttsGlobalStartIdx = chunk.startIndex + Math.floor(chunk.text.length * startOffsetPct);
-                    updateTTSHighlight(ttsGlobalStartIdx);
-                } else {
-                    playTTSFromChunk(chunkIdx + 1);
-                }
-            } else {
-                // ================= ENGINE SYSTEM (TIẾNG ANH & TIẾNG VIỆT CỤC BỘ) =================
-                currentEngine = 'system';
-                if(isPlaying) setPlayBtnState(true); 
-
-                let globalStartIdx = chunk.startIndex + Math.floor(chunk.text.length * startOffsetPct);
-                let textToPlay = chunk.text;
-                if (startOffsetPct > 0) textToPlay = chunk.text.substring(Math.floor(chunk.text.length * startOffsetPct));
-
-                let textForSpeech = textToPlay.replace(/["“”'‘’«»]/g, ' ');
-
-                let myId = ++ttsUtteranceId;
-                let utterance = new SpeechSynthesisUtterance(textForSpeech);
-                utterance.rate = parseFloat(document.getElementById('sliderTempo').value);
-                utterance.volume = parseFloat(document.getElementById('sliderVolume').value);
-                utterance.lang = targetLang === 'vi' ? 'vi-VN' : 'en-US';
-
-                const voices = synth.getVoices();
-                const selectedSystemVoice = voices.find(v => v.name === selectedVoiceId);
-                if(selectedSystemVoice) utterance.voice = selectedSystemVoice;
-
-                utterance.onstart = () => {
-                    if (myId !== ttsUtteranceId) return;
-                    ttsGlobalStartIdx = globalStartIdx;
-                    updateTTSHighlight(globalStartIdx);
-                    let startTime = Date.now();
-                    ttsSyncInterval = setInterval(() => {
-                        if (myId !== ttsUtteranceId || synth.paused) return;
-                    }, 100);
-                };
-
-                utterance.onboundary = (e) => {
-                    if (myId !== ttsUtteranceId) return;
-                    if (e.name === 'word') {
-                        ttsGlobalStartIdx = globalStartIdx + e.charIndex;
-                        updateTTSHighlight(ttsGlobalStartIdx);
-                    }
-                };
-
-                utterance.onend = () => {
-                    if (myId !== ttsUtteranceId) return;
-                    clearInterval(ttsSyncInterval);
-                    if (isPlaying) setTimeout(() => playTTSFromChunk(chunkIdx + 1), 20);
-                };
-
-                utterance.onerror = (e) => {
-                    if (myId !== ttsUtteranceId) return;
-                    console.error("System TTS Error", e);
-                    clearInterval(ttsSyncInterval);
-                    if(isPlaying) setPlayBtnState(false);
-                };
-
-                synth.speak(utterance);
-            }
-        }
-
-        // ================= QUẢN LÝ THANH TRƯỢT (CHỐNG SPAM API) =================
-        const sliderVolume = document.getElementById('sliderVolume');
-        const sliderTempo = document.getElementById('sliderTempo');
-        const volValue = document.getElementById('volValue');
-        const tempoValue = document.getElementById('tempoValue');
-
-        // Volume thì áp dụng trực tiếp cho the <audio>
-        sliderVolume.addEventListener('input', (e) => { 
-            const val = e.target.value; volValue.textContent = Math.round(val * 100) + '%';
-            audioEl.volume = val; 
-        });
-
-        // Tempo thay đổi thì cần phải tải lại Audio từ Google vì Google tạo lại tệp mới có tốc độ khác
-        sliderTempo.addEventListener('input', (e) => { 
-            const val = parseFloat(e.target.value).toFixed(2); tempoValue.textContent = val + 'x';
-        });
-
-        // Sự kiện Change: Chỉ khởi động lại luồng lấy âm thanh khi người dùng thả tay kéo thanh trượt
-        sliderTempo.addEventListener('change', () => { 
-            if(currentMode === 'TTS' && isPlaying) {
-                // Lấy Chunk hiện tại và tính % để tiếp tục nghe mượt mà với Tốc độ mới
-                let chunk = textChunks[currentChunkIndexForAudio];
-                let offsetPct = currentEngine === 'google' ? (audioEl.duration ? (audioEl.currentTime / audioEl.duration) : 0) : ((ttsGlobalStartIdx - chunk.startIndex) / chunk.text.length);
-                playTTSFromChunk(currentChunkIndexForAudio, Math.max(0, Math.min(1, offsetPct)));
-            }
-        });
+        const themes = [{hex:"#d97706"}, {hex:"#059669"}, {hex:"#7c3aed"}];
+        function cycleTheme() { currentThemeIndex = (currentThemeIndex + 1) % themes.length; document.documentElement.style.setProperty('--theme-color', themes[currentThemeIndex].hex); }
         
-        // Cập nhật âm lượng trực tiếp với System Engine (Cần restart mới áp dụng cho câu hiện tại)
-        sliderVolume.addEventListener('change', () => { 
-            if(currentMode === 'TTS' && currentEngine === 'system' && isPlaying) {
-                 let chunk = textChunks[currentChunkIndexForAudio];
-                 let offsetPct = (ttsGlobalStartIdx - chunk.startIndex) / chunk.text.length;
-                 playTTSFromChunk(currentChunkIndexForAudio, Math.max(0, Math.min(1, offsetPct)));
-            }
-        });
+        function adjustTextSize(delta) { 
+            currentTextSize = Math.max(16, Math.min(80, currentTextSize + delta)); 
+            document.documentElement.style.setProperty('--reading-size', currentTextSize + 'px'); 
+        }
+        
+        function resetTextSize() { 
+            currentTextSize = window.innerWidth <= 1024 ? 22 : 34; 
+            document.documentElement.style.setProperty('--reading-size', currentTextSize + 'px'); 
+        }
+        
+        function toggleFullScreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
 
-        // Khởi động giao diện Theme đầu tiên và thiết lập biến CSS cho cỡ chữ
-        cycleTheme(); 
-        document.documentElement.style.setProperty('--reading-size', currentTextSize + 'px');
+        function loadVoices() {
+            const voiceSelect = document.getElementById('voiceSelectEn');
+            let html = premiumGoogleVoicesHardcoded; 
+
+            let sysVoices = synth.getVoices().filter(v => v.lang.startsWith('en'));
+            const uniqueSysVoices = []; const seenNames = new Set();
+            for (const v of sysVoices) {
+                if (!seenNames.has(v.name)) {
+                    seenNames.add(v.name); uniqueSysVoices.push(v);
+                }
+            }
+
+            if(uniqueSysVoices.length > 0) {
+                html += `<optgroup label="💻 Giọng Hệ thống (Offline)">`;
+                uniqueSysVoices.forEach(v => {
+                    let flag = '🌍';
+                    if(v.lang.includes('US')) flag = '🇺🇸';
+                    else if(v.lang.includes('GB') || v.lang.includes('UK')) flag = '🇬🇧';
+                    else if(v.lang.includes('AU')) flag = '🇦🇺';
+                    
+                    html += `<option value="sys_${v.name}">${flag} [${v.lang.substring(0,2)}] ${v.name.substring(0,25)}</option>`;
+                });
+                html += `</optgroup>`;
+            }
+            
+            let currentVal = voiceSelect.value; 
+            voiceSelect.innerHTML = html;
+            if (currentVal && Array.from(voiceSelect.options).some(opt => opt.value === currentVal)) {
+                voiceSelect.value = currentVal;
+            }
+            updateVoiceIcon();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            resetTextSize(); 
+            updateUIBasedOnApi(); 
+            if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+        });
     </script>
 </body>
 </html>
